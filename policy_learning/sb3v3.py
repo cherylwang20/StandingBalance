@@ -12,7 +12,7 @@ import argparse
 
 # Create directories to hold models and logs
 model_dir = "models"
-log_dir = "logs"
+log_dir = "logs2"
 os.makedirs(model_dir, exist_ok=True)
 os.makedirs(log_dir, exist_ok=True)
 

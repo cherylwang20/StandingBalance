@@ -1,4 +1,4 @@
-<!-- Solving muscles issue torso -->
+<!-- Changing abs pporition in the tree, from sacrum to lumbar 5 -->
 
 <mujoco model="template">
   <!-- This model has been converted from an OpenSim model. Model conversion by MyoConverter https://github.com/MyoHub/myoconverter. This model is licensed under Apache 2.0. -->

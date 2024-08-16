@@ -1,3 +1,5 @@
+<!-- Solving muscles issue torso -->
+
 <mujoco model="template">
   <!-- This model has been converted from an OpenSim model. Model conversion by MyoConverter https://github.com/MyoHub/myoconverter. This model is licensed under Apache 2.0. -->
   <compiler angle="radian" autolimits="true"/>

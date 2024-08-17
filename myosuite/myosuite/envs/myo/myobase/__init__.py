@@ -223,7 +223,7 @@ register_env_with_variants(id='myoStandingBack-v0',
         entry_point='myosuite.envs.myo.myobase.back_v0:BackEnvV0',
         max_episode_steps=200,
         kwargs={
-            'model_path': curr_dir+'/../../../simhive/myo_sim/back/myoback_v2.xml',
+            'model_path': curr_dir+'/../../../simhive/myo_sim/back/myoback_v2.0.xml',
             'target_jnt_range': {'LB_wrapjnt_t1':(-1, 1),'LB_wrapjnt_t2':(-1, 1),'LB_wrapjnt_r3':(-3.14, 3.14),
                                  'Abs_t1':(-1, 1),'Abs_t2':(-1, 1),'Abs_r3':(-1, 1),
                                  'flex_extension':(-1.22, 0.454),'lat_bending':(-0.436, 0.436),'axial_rotation':(-0.785, 0.785),

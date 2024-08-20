@@ -1,7 +1,6 @@
 import numpy as np
 import mujoco
 import cv2
-import os
 import matplotlib.pyplot as plt
 #export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
 

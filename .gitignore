@@ -4,3 +4,8 @@ __pycache__/
 *.npy
 *.sto
 *.TXT
+*.sto
+*.log
+*.osim
+Geometry/
+__pycache__/

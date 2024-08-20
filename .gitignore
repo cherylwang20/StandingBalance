@@ -1,3 +1,7 @@
 *.mp4
 *.mot
+*.sto
+*.log
+*.osim
+Geometry/
 __pycache__/

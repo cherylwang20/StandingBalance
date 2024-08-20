@@ -1,0 +1,9 @@
+<ForwardTool version="4.0">
+    <Model>Lumbar_C_210.osim</Model>
+    <InitialTime>0.0</InitialTime>
+    <FinalTime>1.0</FinalTime>
+    <Outputs>
+        <Output name="state" type="state"/>
+        <Output name="forces" type="forces"/>
+    </Outputs>
+</ForwardTool>

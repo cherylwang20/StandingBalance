@@ -54,7 +54,7 @@ def main(mot_file_path, fps):
     for i in range(len(ctrl_data)):
         data.ctrl = ctrl_data[i][1:]
         mujoco.mj_step(model, data)
-        if i%(int(0.005/model.opt.timestep)):
+        if i%(int(0.005/model.opt.timestep))==0:
             renderer.update_scene(data, camera=camera_id)
             images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
 

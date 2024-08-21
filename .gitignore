@@ -9,3 +9,6 @@ __pycache__/
 *.osim
 Geometry/
 __pycache__/
+wandb/
+logs/
+models/

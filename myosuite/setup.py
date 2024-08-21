@@ -37,7 +37,7 @@ mjc_models_files = package_files('myosuite')
 
 if __name__ == "__main__":
     setup(
-        name="MyoSuite",
+        name="myosuite",
         version=find_version("myosuite/version.py"),
         author='MyoSuite Authors - Vikash Kumar (Meta AI), Vittorio Caggiano (Meta AI), Huawei Wang (University of Twente), Guillaume Durandau (University of Twente), Massimo Sartori (University of Twente)',
         author_email="vikashplus@gmail.com",

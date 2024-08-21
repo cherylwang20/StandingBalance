@@ -20,8 +20,7 @@ def train(run_name):
             "algorithm": args.sb3_algo
         },
         sync_tensorboard=True,  # Synchronize TensorBoard with wandb
-        name=run_name,
-        silent=True
+        name=run_name
     )
     
     # Define the tensorboard log directory

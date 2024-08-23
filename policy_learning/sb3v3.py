@@ -15,6 +15,7 @@ def train(run_name):
     # Initialize wandb with TensorBoard sync
     wandb.init(
         project="myoback",
+        entity="rwalia",
         config={
             "environment": args.gymenv,
             "algorithm": args.sb3_algo

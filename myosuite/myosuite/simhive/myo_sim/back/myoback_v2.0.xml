@@ -242,6 +242,28 @@
         <site name="Cylinder2_cylinder_LTpL_L1_r_1_sidesite" pos="-0.0370101 0.0990854 -0.0777896" size="0.0005"/>
         <site name="Cylinder2_cylinder_LTpL_L1_l_1_sidesite" pos="-0.0370101 0.0990854 0.0777896" size="0.0005"/>
       </body>
+      <body name="Abdomen" pos="-0.008 0.161 0">
+        <inertial pos="0 0 0" mass="0.01" diaginertia="0.001 0.001 0.001"/>
+        <joint name="Abs_t1" pos="0 0 0" axis="1 0 0" limited="false" type="slide" range="-100000 100000"/>
+        <joint name="Abs_t2" pos="0 0 0" axis="0 1 0" limited="false" type="slide" range="-100000 100000"/>
+        <joint name="Abs_r3" pos="0 0 0" axis="0 0 1" limited="false" range="-1.7 1.7"/>
+        <geom name="Abdomen_ellipsoid" size="0.01" group="2" rgba="0.19 0.83 0.78 0.2"/>
+        <site name="Abdomen_sidesite" pos="0.011 0 0" size="0.0005"/>
+        <site name="EO1_r_EO1_r-P1" pos="0.0065502 0.0627431 0.0308937"/>
+        <site name="EO2_r_EO2_r-P2" pos="0.00723321 0.0329565 0.0364551"/>
+        <site name="EO3_r_EO3_r-P2" pos="0.00677141 0.0129967 0.0416346"/>
+        <site name="EO4_r_default" pos="0.00695134 -0.00599564 0.0403302"/>
+        <site name="IO1_r_IO1_r-P1" pos="0.00306951 -0.0406576 0.0453754"/>
+        <site name="IO2_r_IO2_r-P1" pos="0.00068053 -0.0115304 0.0513889"/>
+        <site name="IO3_r_IO3_r-P1" pos="0.00338096 0.0293052 0.0418774"/>
+        <site name="EO1_l_EO1_l-P1" pos="0.0065502 0.0627431 -0.03089"/>
+        <site name="EO2_l_EO2_l-P2" pos="0.00723321 0.0329565 -0.03646"/>
+        <site name="EO3_l_EO3_l-P2" pos="0.00677141 0.0129967 -0.04163"/>
+        <site name="EO4_l_EO4_l-P2" pos="0.00695134 -0.00599564 -0.04033"/>
+        <site name="IO1_l_IO1_l-P1" pos="0.00306951 -0.0406576 -0.04538"/>
+        <site name="IO2_l_IO2_l-P1" pos="0.00068053 -0.0115304 -0.05139"/>
+        <site name="IO3_l_IO3_l-P1" pos="0.00338096 0.0293052 -0.04188"/>
+      </body>
       <body name="lumbar5" pos="-0.098 0.071 0">
         <inertial pos="0.053744 0.02 0" quat="0.707107 0 0 0.707107" mass="1.824" diaginertia="0.01765 0.01219 0.00546"/>
         <joint name="flex_extension" pos="0 0 0" axis="0 0 1" range="-1.222 0.4538"/>
@@ -274,28 +296,6 @@
         <site name="MF_m5t.3_l_MF_m5t.3_l-P2" pos="-0.0328228 0.015247 -0.00277"/>
         <site name="MF_m3.laminar_l_MF_m3.laminar_l-P1" pos="-0.0187003 0.0374421 -0.01617"/>
         <site name="MF_m5.laminar_l_MF_m5.laminar_l-P2" pos="-0.0258996 0.01705 -0.00564"/>
-        <body name="Abdomen" pos="0.098 0.071 0">
-          <inertial pos="0 0 0" mass="0.01" diaginertia="0.001 0.001 0.001"/>
-          <joint name="Abs_t1" pos="0 0 0" axis="1 0 0" limited="false" type="slide" range="-100000 100000"/>
-          <joint name="Abs_t2" pos="0 0 0" axis="0 1 0" limited="false" type="slide" range="-100000 100000"/>
-          <joint name="Abs_r3" pos="0 0 0" axis="0 0 1" limited="false" range="-1.7 1.7"/>
-          <geom name="Abdomen_ellipsoid" size="0.01" group="2" rgba="0.19 0.83 0.78 0.2"/>
-          <site name="Abdomen_sidesite" pos="0.011 0 0" size="0.0005"/>
-          <site name="EO1_r_EO1_r-P1" pos="0.0065502 0.0627431 0.0308937"/>
-          <site name="EO2_r_EO2_r-P2" pos="0.00723321 0.0329565 0.0364551"/>
-          <site name="EO3_r_EO3_r-P2" pos="0.00677141 0.0129967 0.0416346"/>
-          <site name="EO4_r_default" pos="0.00695134 -0.00599564 0.0403302"/>
-          <site name="IO1_r_IO1_r-P1" pos="0.00306951 -0.0406576 0.0453754"/>
-          <site name="IO2_r_IO2_r-P1" pos="0.00068053 -0.0115304 0.0513889"/>
-          <site name="IO3_r_IO3_r-P1" pos="0.00338096 0.0293052 0.0418774"/>
-          <site name="EO1_l_EO1_l-P1" pos="0.0065502 0.0627431 -0.03089"/>
-          <site name="EO2_l_EO2_l-P2" pos="0.00723321 0.0329565 -0.03646"/>
-          <site name="EO3_l_EO3_l-P2" pos="0.00677141 0.0129967 -0.04163"/>
-          <site name="EO4_l_EO4_l-P2" pos="0.00695134 -0.00599564 -0.04033"/>
-          <site name="IO1_l_IO1_l-P1" pos="0.00306951 -0.0406576 -0.04538"/>
-          <site name="IO2_l_IO2_l-P1" pos="0.00068053 -0.0115304 -0.05139"/>
-          <site name="IO3_l_IO3_l-P1" pos="0.00338096 0.0293052 -0.04188"/>
-        </body>
         <body name="lumbar4" pos="0.009 0.0321 0">
           <inertial pos="0.0170296 0.018 0" quat="0.707107 0 0 0.707107" mass="1.799" diaginertia="0.01643 0.01123 0.0052"/>
           <joint name="L4_L5_FE" pos="0 0 0" axis="0 0 1" limited="false" range="-100000 100000"/>

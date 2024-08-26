@@ -37,6 +37,12 @@ def main(joint, res):
     muscle_lengths = []
     if joint=="flex_extension":
         joint_val = np.linspace(-1.222, 0.4538, res)
+        qpos_flex[:,0] = 0.033 * joint_val
+        qpos_flex[:,1] = 0.011 * joint_val
+        qpos_flex[:,2] = 0.599 * joint_val
+        qpos_flex[:,6] = 0 * joint_val
+        qpos_flex[:,7] = 0 * joint_val
+        qpos_flex[:,8] = 0.643 * joint_val
         qpos_flex[:,9] = 0.185 * joint_val
         qpos_flex[:,12] = 0.204 * joint_val
         qpos_flex[:,15] = 0.231 * joint_val

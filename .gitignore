@@ -12,3 +12,4 @@ __pycache__/
 wandb/
 logs/
 models/
+*.xlsx

@@ -348,7 +348,7 @@
           <site name="MF_m2.laminar_l_MF_m2.laminar_l-P1" pos="-0.0305622 0.0335037 -0.01694"/>
           <site name="MF_m4.laminar_l_MF_m4.laminar_l-P2" pos="-0.0321153 0.00581344 -0.00694"/>
           <body name="lumbar3" pos="0.0006 0.0332 0">
-            <body name="Abdomen" pos="0.098 0.071 0">
+            <body name="Abdomen" pos="0.098 -0.0211 0">
               <inertial pos="0 0 0" mass="0.01" diaginertia="0.001 0.001 0.001"/>
               <joint name="Abs_t1" pos="0 0 0" axis="1 0 0" limited="false" type="slide" range="-100000 100000"/>
               <joint name="Abs_t2" pos="0 0 0" axis="0 1 0" limited="false" type="slide" range="-100000 100000"/>

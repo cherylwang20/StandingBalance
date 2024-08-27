@@ -1,6 +1,13 @@
 <!-- Step 3 performed -->
 
-<mujoco model="template">
+<!-- =================================================
+    Copyright 2024 Morgane Billot, Rohan Walia, Kevin Garzon-Aguirre
+    Author  :: Morgane Billot, Rohan Walia, Kevin Garzon-Aguirre
+    source  :: 
+    License :: 
+====================================================== -->
+
+<mujoco model="myoback">
   <!-- This model has been converted from an OpenSim model. Model conversion by MyoConverter https://github.com/MyoHub/myoconverter. This model is licensed under Apache 2.0. -->
   <compiler angle="radian" autolimits="true"/>
   <option timestep="0.001"/>

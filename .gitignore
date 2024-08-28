@@ -13,3 +13,4 @@ wandb/
 logs/
 models/
 *.xlsx
+*.ods

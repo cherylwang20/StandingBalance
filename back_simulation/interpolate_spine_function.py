@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from numpy.polynomial import Polynomial
 
 x_name = '/jointset/L5_S1_IVDjnt/flex_extension/value'
-y_name = '/jointset/LB_wrapjnt/LB_wrapjnt_t2/value'
+y_name = '/jointset/Abdjnt/Abs_r3/value'
 
 
 # Read Excel file
@@ -16,7 +16,7 @@ x = df[x_name].values
 y = df[y_name].values
 
 # Perform polynomial interpolation (degree 3 for this example)
-degree = 3
+degree = 1
 coefs = np.polyfit(x, y, degree)
 print(coefs)
 poly = np.poly1d(coefs)

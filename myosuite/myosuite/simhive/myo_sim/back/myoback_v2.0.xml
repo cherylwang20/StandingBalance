@@ -21,7 +21,7 @@
     <joint limited="true" armature="1e-05" damping="0.05"/>
     <geom margin="0.001" rgba="0.8 0.6 0.4 1"/>
     <site size="0.001 0.005 0.005"/>
-    <tendon limited="false" width="0.005" rgba="0.95 0.3 0.3 0"/>
+    <tendon limited="false" width="0.005" rgba="0.95 0.3 0.3 1"/>
     <default class="muscle">
       <general ctrllimited="true" ctrlrange="0 1" dyntype="muscle" gaintype="muscle" biastype="muscle" dynprm="0.01 0.04 0 0 0 0 0 0 0 0" gainprm="0.75 1.05 -1 200 0.5 1.6 1.5 1.3 1.2 0" biasprm="0.75 1.05 -1 200 0.5 1.6 1.5 1.3 1.2 0"/>
     </default>
@@ -55,7 +55,9 @@
   </asset>
   <worldbody>
     <light pos="0 0 0" dir="0 0 -1" directional="true"/>
-    <camera name = "front_camera" pos="0.127 -0.264 1.007" xyaxes="0.811 0.585 0.000 0.130 -0.180 0.975"/>
+    <camera name = "front_camera" pos="-0.066 0.010 1.979" xyaxes="0.011 1.000 -0.000 -1.000 0.011 0.019"/>
+    <!-- top camera : camera name = "front_camera" pos="-0.066 0.010 1.979" xyaxes="0.011 1.000 -0.000 -1.000 0.011 0.019"/-->
+    <!-- inside body camera : camera name = "front_camera" pos="0.127 -0.264 1.007" xyaxes="0.811 0.585 0.000 0.130 -0.180 0.975"/-->
     <body name="ground" quat="0.707035 0.707179 0 0">
       <geom name="ground-plane" size="10 10 0.125" quat="0.707035 -0.707179 0 0" type="plane" rgba="1 0.7 0.4 1"/>
     </body>
@@ -572,6 +574,8 @@
                   <geom name="Chest_l_ellipsoid_LTpT_T3_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                   <geom name="Chest_l_ellipsoid_LTpT_T4_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                   <geom name="Chest_l_ellipsoid_LTpT_T5_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
+                  <geom name="Cylinder_abdomen" size="0.13 0.13" pos="0.225 0.07 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
+                  <site name="Abs_sidesite" pos="0.05 0.05 0" size="0.0005" />
                   <site name="Chest_r_sidesite" pos="-0.02082 0.21 0.07816" size="0.0005"/>
                   <site name="Chest_l_sidesite" pos="-0.02082 0.21 -0.07816" size="0.0005"/>
                   <site name="rect_abd_r_rect_abd_r-P2" pos="0.0880597 0.222575 -0.0344509"/>
@@ -902,10 +906,12 @@
     </spatial>
     <spatial name="rect_abd_r_tendon">
       <site site="rect_abd_r_rect_abd_r-P1"/>
+      <geom geom="Cylinder_abdomen" sidesite="Abs_sidesite"/>
       <site site="rect_abd_r_rect_abd_r-P2"/>
     </spatial>
     <spatial name="rect_abd_l_tendon">
       <site site="rect_abd_l_rect_abd_l-P1"/>
+      <geom geom="Cylinder_abdomen" sidesite="Abs_sidesite"/>
       <site site="rect_abd_l_rect_abd_l-P2"/>
     </spatial>
     <spatial name="IL_L1_r_tendon">

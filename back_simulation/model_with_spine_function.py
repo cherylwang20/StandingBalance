@@ -84,4 +84,4 @@ def main(joint, res):
     create_vid(images)
 
 if __name__ == '__main__':
-    main(joint="flex_extension", res=1000)
+    main(joint="axial_rotation", res=1000)

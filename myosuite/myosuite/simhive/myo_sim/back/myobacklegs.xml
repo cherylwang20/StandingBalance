@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<mujoco model="MyoSuite's MyoLeg Model">
+<mujoco model="MyoSuite's MyoBackLeg Model">
 
 <!-- =================================================
     Copyright 2024 Morgane Billot, Rohan Walia, Kevin Garzon-Aguirre

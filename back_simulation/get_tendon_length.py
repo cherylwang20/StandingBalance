@@ -1,7 +1,5 @@
 import numpy as np
 import mujoco
-import cv2
-import matplotlib.pyplot as plt
 
 # Accès au modèle de dos
 model_path = 'myosuite/myosuite/simhive/myo_sim/back/myoback_v2.0 _exo.xml'
@@ -20,3 +18,5 @@ tendon_name = "Exo_RS_LL"
 tendon_index = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_TENDON, tendon_name)
 tendon_length = data.ten_length[tendon_index]
 print(tendon_name, ":", tendon_length)
+
+

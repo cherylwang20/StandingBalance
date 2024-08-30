@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<mujoco model="MyoSuite's MyoLeg Model">
+<mujoco model="MyoSuite's MyoBackLeg Model">
 
 <!-- =================================================
     Copyright 2024 Morgane Billot, Rohan Walia, Kevin Garzon-Aguirre
@@ -199,14 +199,14 @@
         <touch name="l_foot" site="l_foot_touch"/>
         <touch name="l_toes" site="l_toes_touch"/>
     </sensor>
-
+<!--515.5998876-->
     <tendon>
-      <spatial name="Exo_LS_RL" stiffness="515.5998876" springlength="0 0.4353477173131545" group="1" rgba="0.2 0.2 0.2 1">
+      <spatial name="Exo_LS_RL" stiffness="115" springlength="0 0.4353477173131545" group="1" rgba="0.2 0.2 0.2 1">
             <site site="Exo_RightShoulder"/>
             <geom geom="Exo_cylinder" sidesite="Exo_sidesite"/>
             <site site="Exo_LeftLeg"/>
         </spatial>
-        <spatial name="Exo_RS_LL" stiffness="515.5998876" springlength="0 0.43534129933267235" group="1" rgba="0.2 0.2 0.2 1"> 
+        <spatial name="Exo_RS_LL" stiffness="115" springlength="0 0.43534129933267235" group="1" rgba="0.2 0.2 0.2 1"> 
             <site site="Exo_LeftShoulder"/>
             <geom geom="Exo_cylinder" sidesite="Exo_sidesite"/>
             <site site="Exo_RightLeg"/>

@@ -76,7 +76,7 @@ def main(joint, res):
 
     for i in range(res):
         data.qpos = qpos_flex[i]
-        mujoco.mj_forward(model, data)
+        mujoco.mj_step(model, data)
         muscle_lengths.append(np.ctypeslib.as_array(data.actuator_length, shape=(num_actuators,)))
         renderer.update_scene(data, camera=camera_id)
         images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))

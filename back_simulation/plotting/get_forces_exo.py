@@ -86,9 +86,11 @@ def main(joint, res):
             data.qpos = qpos_flex[i]
             mujoco.mj_forward(model, data)
             tendon_length_1 = data.ten_length[tendon_id_1]
+            print("La longueur du tendon pour l'angle ",joint_val[i]," est ",tendon_length_1)
             tendon_length_2 = data.ten_length[tendon_id_1]
-            tendon_force_1=tendon_length_1*stiffness_1
-            tendon_force_2=tendon_length_2*stiffness_2
+            tendon_force_1=(tendon_length_1-0.41017729885414067)*stiffness_1
+            print("La force du tendon pour l'angle ",joint_val[i]," est ",tendon_force_1)
+            tendon_force_2=(tendon_length_2-0.41017729885414067)*stiffness_2
             exo_forces.append([tendon_force_1, tendon_force_2])
             # Écrire la valeur des deux forces dans le fichier CSV
             writer.writerow([tendon_force_1, tendon_force_2])

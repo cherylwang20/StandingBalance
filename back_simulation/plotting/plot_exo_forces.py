@@ -17,12 +17,12 @@ def plot_exo_forces(joint):
     #angle_40= [math.radians(40)] * 9
     #angle_60= [math.radians(60)] * 9
     #angle_80= [math.radians(80)] * 9
-    angle = [math.radians(40),math.radians(60),math.radians(80)]
+    angle = [-math.radians(40),-math.radians(60),-math.radians(80)]
     means=[np.mean(exp_values_1[0]),np.mean(exp_values_1[1]),np.mean(exp_values_1[2])]
     stds = [np.std(exp_values_1[0]),np.std(exp_values_1[1]),np.std(exp_values_1[2])]
     
     # Créer un vecteur pour l'axe des x (index des étapes de simulation)
-    x = - np.linspace(-1.222, 0.4538, 1000)
+    x = np.linspace(-1.222, 0.4538, 1000)[::-1]
 
     # Tracer les forces
     plt.figure(figsize=(10, 6))

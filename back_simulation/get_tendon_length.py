@@ -2,7 +2,7 @@ import numpy as np
 import mujoco
 
 # Accès au modèle de dos
-model_path = 'myosuite/myosuite/simhive/myo_sim/back/myoback_v2.0 _exo.xml'
+model_path = 'myosuite/myosuite/simhive/myo_sim/back/myobacklegs-Exoskeleton.xml'
 model = mujoco.MjModel.from_xml_path(model_path)
 
 # Récupération des données du modèle de dos

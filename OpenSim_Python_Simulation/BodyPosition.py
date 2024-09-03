@@ -64,6 +64,6 @@ with open('joint_positions.csv', 'w', newline='') as csvfile:
     # Imprimer l'angle et la position correspondante
     print(f"Position at {angle} degrees: {position}")
 
-    print("Les données ont été enregistrées dans 'joint_positions.csv'.")
+    print("The data were recorded in 'joint_positions.csv'.")
 
 

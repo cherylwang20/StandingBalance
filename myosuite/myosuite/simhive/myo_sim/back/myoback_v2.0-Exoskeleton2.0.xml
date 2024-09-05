@@ -576,6 +576,8 @@
                   <geom name="Chest_l_ellipsoid_LTpT_T3_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                   <geom name="Chest_l_ellipsoid_LTpT_T4_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                   <geom name="Chest_l_ellipsoid_LTpT_T5_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
+                  <geom name="Cylinder_abdomen" size="0.13 0.13" pos="0.225 0.07 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
+                  <site name="Abs_sidesite" pos="0.05 0.05 0" size="0.005" />
                   <geom name="Exo_cylinder" size="0.15 0.13" pos="0.05 0 0" type="cylinder" group="3" rgba="0 0 1 0.1"/>
                   <site name="Exo_LeftShoulder" pos="-0.11 0.3 -0.07" size="0.0005" rgba="0 1 0 1"/>
                   <site name="Exo_RightShoulder" pos="-0.11 0.3 0.07" size="0.0005" rgba="0 1 0 1"/>
@@ -820,12 +822,12 @@
     <joint name="Abs_t2_locked" joint1="Abs_t2" polycoef="0 0 0 0 0" solimp="0.9999 0.9999 0.001 0.5 2"/>
   </equality>
   <tendon>
-      <spatial name="Exo_LS_RL" stiffness="515.5998876" springlength="0 0.4353477173131545" group="1" rgba="0.2 0.2 0.2 1"> 
+      <spatial name="Exo_LS_RL" stiffness="515.5998876" springlength="0 0.378820941018748" group="1" rgba="0.2 0.2 0.2 1"> 
         <site site="Exo_RightShoulder"/>
         <geom geom="Exo_cylinder" sidesite="Exo_sidesite"/>
         <site site="Exo_LeftLeg"/>
     </spatial>
-    <spatial name="Exo_RS_LL" stiffness="515.5998876" springlength="0 0.43534129933267235" group="1" rgba="0.2 0.2 0.2 1"> 
+    <spatial name="Exo_RS_LL" stiffness="515.5998876" springlength="0 0.378820941018748" group="1" rgba="0.2 0.2 0.2 1"> 
         <site site="Exo_LeftShoulder"/>
         <geom geom="Exo_cylinder" sidesite="Exo_sidesite"/>
         <site site="Exo_RightLeg"/>
@@ -928,10 +930,12 @@
     </spatial>
     <spatial name="rect_abd_r_tendon">
       <site site="rect_abd_r_rect_abd_r-P1"/>
+      <geom geom="Cylinder_abdomen" sidesite="Abs_sidesite"/>
       <site site="rect_abd_r_rect_abd_r-P2"/>
     </spatial>
     <spatial name="rect_abd_l_tendon">
       <site site="rect_abd_l_rect_abd_l-P1"/>
+      <geom geom="Cylinder_abdomen" sidesite="Abs_sidesite"/>
       <site site="rect_abd_l_rect_abd_l-P2"/>
     </spatial>
     <spatial name="IL_L1_r_tendon">

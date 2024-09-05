@@ -14,7 +14,7 @@ def create_vid(images):
         video.write(image)
     video.release()
 
-def main(joint, res):
+def main(joint, res, visualize):
     ## Setup
     images = []
     height = 480
@@ -24,19 +24,15 @@ def main(joint, res):
     model = mujoco.MjModel.from_xml_path(model_path)
     data = mujoco.MjData(model)
     renderer = mujoco.Renderer(model, height=height, width=width)
-    ## Move to grabbing position
     kf = model.keyframe('default-pose')
     data.qpos = kf.qpos
-    body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, 'Abdomen')
     mujoco.mj_forward(model, data)
-    print(data.xpos[body_id])
-   
-    renderer.update_scene(data, camera=camera_id)
-    images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
+
+    print(model.actuator_gainprm)
 
     qpos_flex = np.zeros((res, model.nq))
     num_actuators = model.nu
-    muscle_lengths = []
+    muscle_forces = []
     if joint=="flex_extension":
         joint_val = np.linspace(-1.222, 0.4538, res)
 
@@ -77,11 +73,17 @@ def main(joint, res):
     for i in range(res):
         data.qpos = qpos_flex[i]
         mujoco.mj_forward(model, data)
-        muscle_lengths.append(np.ctypeslib.as_array(data.actuator_length, shape=(num_actuators,)))
+        if i==500:
+            print(data.actuator_moment)
+            print(data.actuator_moment.shape)
+        muscle_forces.append(np.ctypeslib.as_array(data.qfrc_actuator, shape=(num_actuators,)))
         renderer.update_scene(data, camera=camera_id)
         images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
 
-    create_vid(images)
+    muscle_forces = np.array(muscle_forces)
+    np.save("muscle_forces_mj_{}".format(joint), muscle_forces)
+    if visualize:
+        create_vid(images)
 
 if __name__ == '__main__':
-    main(joint="flex_extension", res=1000)
+    main(joint="flex_extension", res=1000, visualize=False)

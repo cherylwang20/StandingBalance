@@ -24,7 +24,7 @@ with open('joint_positions.csv', 'w', newline='') as csvfile:
     # Écrire l'en-tête du fichier CSV
     writer.writerow(['Angle (degrees)', 'Position X', 'Position Y', 'Position Z'])
 
-    # Utiliser une boucle while pour parcourir les angles de 0 à 90 degrés
+    # Utiliser une boucle while pour parcourir les angles
     while angle <= 0.4538:
         # Convertir l'angle en radians
         radian_value = math.radians(math.degrees(angle))

@@ -4,10 +4,27 @@ import cv2
 import matplotlib.pyplot as plt
 import csv
 
+def create_vid(images):
+    height, width, layers = images[0].shape
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    video = cv2.VideoWriter('vid.mp4', fourcc, 200, (width, height))
+    for image in images:
+        video.write(image)
+    video.release()
+
 def main(joint, res):
-    model_path = 'myosuite/myosuite/simhive/myo_sim/back/myobacklegs-Exoskeleton.xml'
+    images = []
+    height = 480
+    width = 640
+    camera_id = 1
+
+    model_path = './myosuite/myosuite/simhive/myo_sim/back/myobacklegs-Exoskeleton.xml'
     model = mujoco.MjModel.from_xml_path(model_path)
     data = mujoco.MjData(model)
+    renderer = mujoco.Renderer(model, height=height, width=width)
+    
+    renderer.update_scene(data, camera=camera_id)
+    images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
 
     kf = model.keyframe('default-pose')
     data.qpos = kf.qpos
@@ -87,17 +104,25 @@ def main(joint, res):
     for i in range(res):
         data.qpos = qpos_flex[i]
         mujoco.mj_forward(model, data)
+        #tendon_length_1 = model.tendon_length0[tendon_id_1]
+        #tendon_length_2 = model.tendon_length0[tendon_id_2]
         tendon_length_1 = data.ten_length[tendon_id_1]
-        tendon_length_2 = data.ten_length[tendon_id_1]
+        tendon_length_2 = data.ten_length[tendon_id_2]
         tendon_force_1=(tendon_length_1-0.4264202995590148)#*stiffness_1
         tendon_force_2=(tendon_length_2-0.4264202995590148)#*stiffness_2
         exo_forces.append([tendon_force_1, tendon_force_2])
+        renderer.update_scene(data, camera=camera_id)
+        images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
+    
 
     exo_forces = np.array(exo_forces)
-    plt.plot(joint_val, exo_forces[:,0])
-    plt.plot(joint_val, exo_forces[:,1])
+    plt.plot(joint_val, exo_forces[:,0], label =  'Exo_LS_RL')
+    plt.plot(joint_val, exo_forces[:,1], label =  'Exo_RS_LL')
+    plt.legend()
     plt.show()
+
     np.save("exo_forces_{}".format(joint), exo_forces)
+    create_vid(images)
 
 
 if __name__ == '__main__':

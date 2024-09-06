@@ -4,6 +4,7 @@ import cv2
 import matplotlib.pyplot as plt
 import csv
 
+<<<<<<< HEAD
 def create_vid(images):
     height, width, layers = images[0].shape
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -11,6 +12,16 @@ def create_vid(images):
     for image in images:
         video.write(image)
     video.release()
+=======
+def site_name2id(model, site_name):
+    # Parcours des indices des sites
+    for i in range(model.nsite):
+        # Récupération du nom du site à partir de la chaîne de caractères
+        name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_SITE, i)
+        if name == site_name:
+            return i
+    raise ValueError(f"Site '{site_name}' not found in model")
+>>>>>>> 20cb1de6cd28811c7290a40a5c02ba16c13ca369
 
 def main(joint, res):
     images = []
@@ -53,15 +64,24 @@ def main(joint, res):
     print(stiffness_1)
     print(stiffness_2)
 
+    # Nom du site
+    top_site_name = "Exo_RightShoulder"
+    bottom_site_name = "Exo_LeftLeg"
+
+    # Obtenir l'ID du site
+    top_site_id = site_name2id(model, top_site_name)
+    bottom_site_id = site_name2id(model, bottom_site_name)
+
     num_actuators = model.nu
     exo_forces = []
     muscle_length = []
+    distances = []
 
     # Initialize qpos_flex
     qpos_flex = np.zeros((res, model.nq))  # res is the number of steps, model.nq is the number of generalized coordinates
 
     if joint == "flex_extension":
-        joint_val = np.linspace(-1.222, 0, res)[::-1]
+        joint_val = np.linspace(-1.222, 0.4, res)[::-1]
 
         qpos_flex[:, 0] = 0.03305523 * joint_val
         qpos_flex[:, 1] = 0.01101841 * joint_val
@@ -111,9 +131,19 @@ def main(joint, res):
         tendon_force_1=(tendon_length_1-0.4264202995590148)#*stiffness_1
         tendon_force_2=(tendon_length_2-0.4264202995590148)#*stiffness_2
         exo_forces.append([tendon_force_1, tendon_force_2])
+<<<<<<< HEAD
         renderer.update_scene(data, camera=camera_id)
         images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
     
+=======
+        top_site_pos = data.site_xpos[top_site_id]
+        #print(f"Position du site '{top_site_name}': {top_site_pos}")
+        bottom_site_pos = data.site_xpos[bottom_site_id]
+        #print(f"Position du site '{bottom_site_name}': {bottom_site_pos}")
+        distance = np.linalg.norm(top_site_pos - bottom_site_pos)
+        print(f"Distance entre les sites : {distance}")
+        distances.append(distance)
+>>>>>>> 20cb1de6cd28811c7290a40a5c02ba16c13ca369
 
     exo_forces = np.array(exo_forces)
     plt.plot(joint_val, exo_forces[:,0], label =  'Exo_LS_RL')
@@ -122,9 +152,16 @@ def main(joint, res):
     plt.show()
 
     np.save("exo_forces_{}".format(joint), exo_forces)
+<<<<<<< HEAD
     create_vid(images)
+=======
+    plt.plot(joint_val, distances)
+    plt.show()
+>>>>>>> 20cb1de6cd28811c7290a40a5c02ba16c13ca369
 
 
 if __name__ == '__main__':
     main(joint="flex_extension", res=500)
+
+
  

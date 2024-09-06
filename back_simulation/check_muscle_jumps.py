@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 #export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
 
 def detect_and_plot_jumps(name, array, threshold):
-    print(name)
     differences = np.diff(array)
     jump_indices = np.where(np.abs(differences) > threshold)[0] + 1
 
     if len(jump_indices)!=0:
+        print(name)
         plt.figure(figsize=(10, 6))
         plt.plot(array, marker='o', linestyle='-', color='b', label='Muscle length progression')
         plt.scatter(jump_indices, array[jump_indices], color='r', label='Jumps', zorder=5)
@@ -37,7 +37,7 @@ def main(joint, res, threshold):
     height = 480
     width = 640
     camera_id = 'front_camera'
-    model_path = 'myosuite/myosuite/simhive/myo_sim/back/myoback_v2.0.xml'
+    model_path = './myosuite/myosuite/simhive/myo_sim/back/myobacklegs-Exoskeleton.xml'
     model = mujoco.MjModel.from_xml_path(model_path)
     data = mujoco.MjData(model)
     renderer = mujoco.Renderer(model, height=height, width=width)
@@ -49,36 +49,74 @@ def main(joint, res, threshold):
     renderer.update_scene(data, camera=camera_id)
     images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
 
-    qpos_flex = np.zeros((res, model.nq))
-    num_actuators = model.nu
+    qpos_flex = np.zeros((res, model.nq))  # res is the number of steps, model.nq is the number of generalized coordinates
     muscle_lengths = []
-    if joint=="flex_extension":
-        joint_val = np.linspace(-1.222, 0.4538, res)
-        qpos_flex[:,3] = joint_val
-    elif joint=="lat_bending":
+    qpos_flex[:, 2] = np.ones(res)
+    qpos_flex[:, 3] = np.ones(res)*0.707388
+    qpos_flex[:, 6] = np.ones(res)*(-0.706825)
+
+    if joint == "flex_extension":
+        joint_val = np.linspace(-1.222, 0.4, res)[::-1]
+
+        qpos_flex[:, 7] = 0.03305523 * joint_val
+        qpos_flex[:, 8] = 0.01101841 * joint_val
+        qpos_flex[:, 9] = 0.6 * joint_val
+        qpos_flex[:, 13] = (0.0008971 * joint_val**4 + 0.00427047 * joint_val**3 -
+                           0.01851051 * joint_val**2 - 0.05787512 * joint_val - 0.00800539)
+        qpos_flex[:, 14] = (3.89329927e-04 * joint_val**4 - 4.18762151e-03 * joint_val**3 -
+                           1.86233838e-02 * joint_val**2 + 5.78749087e-02 * joint_val)
+        qpos_flex[:, 15] = 0.64285726 * joint_val
+        qpos_flex[:, 16] = 0.185 * joint_val
+        qpos_flex[:, 19] = 0.204 * joint_val
+        qpos_flex[:, 22] = 0.231 * joint_val
+        qpos_flex[:, 25] = 0.255 * joint_val
+
+    elif joint == "lat_bending":
         joint_val = np.linspace(-0.4363, 0.4363, res)
-        qpos_flex[:,4] = joint_val
-    elif joint=="axial_rotation":
+
+        qpos_flex[:, 17] = 0.181 * joint_val
+        qpos_flex[:, 20] = 0.245 * joint_val
+        qpos_flex[:, 23] = 0.250 * joint_val
+        qpos_flex[:, 26] = 0.188 * joint_val
+
+    elif joint == "axial_rotation":
         joint_val = np.linspace(-0.7854, 0.7854, res)
-        qpos_flex[:,5] = joint_val
+
+        qpos_flex[:, 18] = 0.0378 * joint_val
+        qpos_flex[:, 22] = 0.0378 * joint_val
+        qpos_flex[:, 24] = 0.0311 * joint_val
+        qpos_flex[:, 27] = 0.0289 * joint_val
+
     else:
         print("Select valid joint!")
         return
 
+    muscle_lengths = []
+
     for i in range(res):
+        # Set qpos and run forward dynamics
         data.qpos = qpos_flex[i]
         mujoco.mj_forward(model, data)
-        muscle_lengths.append(np.ctypeslib.as_array(data.actuator_length, shape=(num_actuators,)))
+
+        # Collect tendon lengths instead of actuator lengths
+        muscle_lengths.append(np.copy(data.ten_length))
+        # Render the scene
         renderer.update_scene(data, camera=camera_id)
         images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
-    
+
+    # Convert muscle_lengths to a numpy array for easier processing
     muscle_lengths = np.array(muscle_lengths)
-    for i in range(num_actuators):
-        if i!=num_actuators-1:
-            detect_and_plot_jumps(model.names[model.name_actuatoradr[i]:model.name_actuatoradr[i+1]].decode(), muscle_lengths[:,i], threshold=threshold)
+
+    # Loop through the tendons and detect/plot jumps
+    for i in range(model.ntendon):
+        if i!=model.ntendon-1:
+            tendon_name = model.names[model.name_tendonadr[i]:model.name_tendonadr[i+1]].decode()
+            detect_and_plot_jumps(tendon_name, muscle_lengths[:, i], threshold=threshold)
         else:
-            detect_and_plot_jumps(model.names[model.name_actuatoradr[i]:len(model.names)].decode()[:-13], muscle_lengths[:,i], threshold=threshold)
+            tendon_name = model.names[model.name_tendonadr[i]:len(model.names)].decode()[:-13]
+            detect_and_plot_jumps(tendon_name, muscle_lengths[:, i], threshold=threshold)
+
     create_vid(images)
 
 if __name__ == '__main__':
-    main(joint="axial_rotation", res=1000, threshold=0.01)
+    main(joint="flex_extension", res=1000, threshold=0.01)

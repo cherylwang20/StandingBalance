@@ -4,7 +4,6 @@ import cv2
 import matplotlib.pyplot as plt
 import csv
 
-<<<<<<< HEAD
 def create_vid(images):
     height, width, layers = images[0].shape
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -12,22 +11,12 @@ def create_vid(images):
     for image in images:
         video.write(image)
     video.release()
-=======
-def site_name2id(model, site_name):
-    # Parcours des indices des sites
-    for i in range(model.nsite):
-        # Récupération du nom du site à partir de la chaîne de caractères
-        name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_SITE, i)
-        if name == site_name:
-            return i
-    raise ValueError(f"Site '{site_name}' not found in model")
->>>>>>> 20cb1de6cd28811c7290a40a5c02ba16c13ca369
 
 def main(joint, res):
     images = []
     height = 480
     width = 640
-    camera_id = 1
+    camera_id = "front_camera"
 
     model_path = './myosuite/myosuite/simhive/myo_sim/back/myobacklegs-Exoskeleton.xml'
     model = mujoco.MjModel.from_xml_path(model_path)
@@ -36,6 +25,13 @@ def main(joint, res):
     
     renderer.update_scene(data, camera=camera_id)
     images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
+
+    print(len(data.qpos))
+
+    for joint_id in range(model.njnt):
+        joint_name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_JOINT, joint_id)  # Get joint name
+        qpos_address = model.jnt_qposadr[joint_id]  # Get the qpos index for the joint
+        print(f"Joint Name: {joint_name}, qpos index: {qpos_address}")
 
     kf = model.keyframe('default-pose')
     data.qpos = kf.qpos
@@ -68,9 +64,6 @@ def main(joint, res):
     top_site_name = "Exo_RightShoulder"
     bottom_site_name = "Exo_LeftLeg"
 
-    # Obtenir l'ID du site
-    top_site_id = site_name2id(model, top_site_name)
-    bottom_site_id = site_name2id(model, bottom_site_name)
 
     num_actuators = model.nu
     exo_forces = []
@@ -79,42 +72,41 @@ def main(joint, res):
 
     # Initialize qpos_flex
     qpos_flex = np.zeros((res, model.nq))  # res is the number of steps, model.nq is the number of generalized coordinates
+    qpos_flex[:, 2] = np.ones(res)
+    qpos_flex[:, 3] = np.ones(res)*0.707388
+    qpos_flex[:, 6] = np.ones(res)*(-0.706825)
 
     if joint == "flex_extension":
         joint_val = np.linspace(-1.222, 0.4, res)[::-1]
 
-        qpos_flex[:, 0] = 0.03305523 * joint_val
-        qpos_flex[:, 1] = 0.01101841 * joint_val
-        qpos_flex[:, 2] = 0.6 * joint_val
-        qpos_flex[:, 6] = (0.0008971 * joint_val**4 + 0.00427047 * joint_val**3 -
+        qpos_flex[:, 7] = 0.03305523 * joint_val
+        qpos_flex[:, 8] = 0.01101841 * joint_val
+        qpos_flex[:, 9] = 0.6 * joint_val
+        qpos_flex[:, 13] = (0.0008971 * joint_val**4 + 0.00427047 * joint_val**3 -
                            0.01851051 * joint_val**2 - 0.05787512 * joint_val - 0.00800539)
-        qpos_flex[:, 7] = (3.89329927e-04 * joint_val**4 - 4.18762151e-03 * joint_val**3 -
+        qpos_flex[:, 14] = (3.89329927e-04 * joint_val**4 - 4.18762151e-03 * joint_val**3 -
                            1.86233838e-02 * joint_val**2 + 5.78749087e-02 * joint_val)
-        qpos_flex[:, 8] = 0.64285726 * joint_val
-        qpos_flex[:, 9] = 0.185 * joint_val
-        qpos_flex[:, 12] = 0.204 * joint_val
-        qpos_flex[:, 15] = 0.231 * joint_val
-        qpos_flex[:, 18] = 0.255 * joint_val
+        qpos_flex[:, 15] = 0.64285726 * joint_val
+        qpos_flex[:, 16] = 0.185 * joint_val
+        qpos_flex[:, 19] = 0.204 * joint_val
+        qpos_flex[:, 22] = 0.231 * joint_val
+        qpos_flex[:, 25] = 0.255 * joint_val
 
     elif joint == "lat_bending":
         joint_val = np.linspace(-0.4363, 0.4363, res)
 
-        qpos_flex[:, 10] = 0.181 * joint_val
-        qpos_flex[:, 13] = 0.245 * joint_val
-        qpos_flex[:, 16] = 0.250 * joint_val
-        qpos_flex[:, 19] = 0.188 * joint_val
-
-        qpos_flex[:, 4] = joint_val
+        qpos_flex[:, 17] = 0.181 * joint_val
+        qpos_flex[:, 20] = 0.245 * joint_val
+        qpos_flex[:, 23] = 0.250 * joint_val
+        qpos_flex[:, 26] = 0.188 * joint_val
 
     elif joint == "axial_rotation":
         joint_val = np.linspace(-0.7854, 0.7854, res)
 
-        qpos_flex[:, 11] = 0.0378 * joint_val
-        qpos_flex[:, 14] = 0.0378 * joint_val
-        qpos_flex[:, 17] = 0.0311 * joint_val
-        qpos_flex[:, 20] = 0.0289 * joint_val
-
-        qpos_flex[:, 5] = joint_val
+        qpos_flex[:, 18] = 0.0378 * joint_val
+        qpos_flex[:, 22] = 0.0378 * joint_val
+        qpos_flex[:, 24] = 0.0311 * joint_val
+        qpos_flex[:, 27] = 0.0289 * joint_val
 
     else:
         print("Select valid joint!")
@@ -131,19 +123,9 @@ def main(joint, res):
         tendon_force_1=(tendon_length_1-0.4264202995590148)#*stiffness_1
         tendon_force_2=(tendon_length_2-0.4264202995590148)#*stiffness_2
         exo_forces.append([tendon_force_1, tendon_force_2])
-<<<<<<< HEAD
         renderer.update_scene(data, camera=camera_id)
         images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
     
-=======
-        top_site_pos = data.site_xpos[top_site_id]
-        #print(f"Position du site '{top_site_name}': {top_site_pos}")
-        bottom_site_pos = data.site_xpos[bottom_site_id]
-        #print(f"Position du site '{bottom_site_name}': {bottom_site_pos}")
-        distance = np.linalg.norm(top_site_pos - bottom_site_pos)
-        print(f"Distance entre les sites : {distance}")
-        distances.append(distance)
->>>>>>> 20cb1de6cd28811c7290a40a5c02ba16c13ca369
 
     exo_forces = np.array(exo_forces)
     plt.plot(joint_val, exo_forces[:,0], label =  'Exo_LS_RL')
@@ -152,12 +134,7 @@ def main(joint, res):
     plt.show()
 
     np.save("exo_forces_{}".format(joint), exo_forces)
-<<<<<<< HEAD
     create_vid(images)
-=======
-    plt.plot(joint_val, distances)
-    plt.show()
->>>>>>> 20cb1de6cd28811c7290a40a5c02ba16c13ca369
 
 
 if __name__ == '__main__':

@@ -127,31 +127,31 @@
         <mesh file="../myo_sim/meshes/l_patella.stl" name="l_patella"/>
 
         <mesh name="pelvis_geom_1_pelvis_rv" file="back/Geometry/pelvis_rv.stl"/>
-        <mesh name="pelvis_geom_2_pelvis_lv" file="back\Geometry/pelvis_lv.stl"/>
-        <mesh name="sacrum_geom_1_sacrum" file="back\Geometry/sacrum.stl"/>
-        <mesh name="lumbar5_geom_1_lumbar5" file="back\Geometry/lumbar5.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="lumbar4_geom_1_lumbar4" file="back\Geometry/lumbar4.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="lumbar3_geom_1_lumbar3" file="back\Geometry/lumbar3.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="lumbar2_geom_1_lumbar2" file="back\Geometry/lumbar2.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="lumbar1_geom_1_lumbar1" file="back\Geometry/lumbar1.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_1_thoracic12_s" file="back\Geometry/thoracic12_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_2_thoracic11_s" file="back\Geometry/thoracic11_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_3_thoracic10_s" file="back\Geometry/thoracic10_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_4_thoracic9_s" file="back\Geometry/thoracic9_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_5_thoracic8_s" file="back\Geometry/thoracic8_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_6_thoracic7_s" file="back\Geometry/thoracic7_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_7_thoracic6_s" file="back\Geometry/thoracic6_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_8_thoracic5_s" file="back\Geometry/thoracic5_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_9_thoracic4_s" file="back\Geometry/thoracic4_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_10_thoracic3_s" file="back\Geometry/thoracic3_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_11_thoracic2_s" file="back\Geometry/thoracic2_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_12_thoracic1_s" file="back\Geometry/thoracic1_s.stl" scale="0.87 0.87 0.87"/>
-        <mesh name="torso_geom_13_ribcage_s" file="back\Geometry/ribcage_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="pelvis_geom_2_pelvis_lv" file="back/Geometry/pelvis_lv.stl"/>
+        <mesh name="sacrum_geom_1_sacrum" file="back/Geometry/sacrum.stl"/>
+        <mesh name="lumbar5_geom_1_lumbar5" file="back/Geometry/lumbar5.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="lumbar4_geom_1_lumbar4" file="back/Geometry/lumbar4.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="lumbar3_geom_1_lumbar3" file="back/Geometry/lumbar3.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="lumbar2_geom_1_lumbar2" file="back/Geometry/lumbar2.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="lumbar1_geom_1_lumbar1" file="back/Geometry/lumbar1.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_1_thoracic12_s" file="back/Geometry/thoracic12_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_2_thoracic11_s" file="back/Geometry/thoracic11_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_3_thoracic10_s" file="back/Geometry/thoracic10_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_4_thoracic9_s" file="back/Geometry/thoracic9_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_5_thoracic8_s" file="back/Geometry/thoracic8_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_6_thoracic7_s" file="back/Geometry/thoracic7_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_7_thoracic6_s" file="back/Geometry/thoracic6_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_8_thoracic5_s" file="back/Geometry/thoracic5_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_9_thoracic4_s" file="back/Geometry/thoracic4_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_10_thoracic3_s" file="back/Geometry/thoracic3_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_11_thoracic2_s" file="back/Geometry/thoracic2_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_12_thoracic1_s" file="back/Geometry/thoracic1_s.stl" scale="0.87 0.87 0.87"/>
+        <mesh name="torso_geom_13_ribcage_s" file="back/Geometry/ribcage_s.stl" scale="0.87 0.87 0.87"/>
 
-        <mesh name="lower_exo_belt_geom_1" file="back\Geometry/LowerExoBelt.stl" scale="0.0013 0.0013 0.0013"/>
-        <mesh name="lower_exo_right_leg_geom_1" file="back\Geometry/LowerExoRightLeg.stl" scale="0.0013 0.0013 0.0013"/>
-        <mesh name="lower_exo_left_leg_geom_1" file="back\Geometry/LowerExoLeftLeg.stl" scale="0.0013 0.0013 0.0013"/>
-        <mesh name="upper_exo_geom_1" file="back\Geometry/UpperExo.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="lower_exo_belt_geom_1" file="back/Geometry/LowerExoBelt.stl" scale="0.0013 0.0013 0.0013"/>
+        <mesh name="lower_exo_right_leg_geom_1" file="back/Geometry/LowerExoRightLeg.stl" scale="0.0013 0.0013 0.0013"/>
+        <mesh name="lower_exo_left_leg_geom_1" file="back/Geometry/LowerExoLeftLeg.stl" scale="0.0013 0.0013 0.0013"/>
+        <mesh name="upper_exo_geom_1" file="back/Geometry/UpperExo.stl" scale="0.001 0.001 0.001"/>
 
     </asset>
 
@@ -204,7 +204,7 @@
       <!--<spatial name="Exo_LS_RL" stiffness="515.5998876" springlength="0.4353477173131545" group="1" rgba="0.2 0.2 0.2 1">-->
       <spatial name="Exo_LS_RL" stiffness="526.38985" springlength="0.4264202995590148" group="1" rgba="0.2 0.2 0.2 1">
             <site site="Exo_RightShoulder"/>
-            <!-- geom geom="Exo_cylinder" sidesite="Exo_sidesite"/-->
+            <geom geom="Exo_cylinder" sidesite="Exo_sidesite"/>
             <site site="Exo_LeftLeg"/>
         </spatial>
         <!--<spatial name="Exo_RS_LL" stiffness="515.5998876" springlength="0.43534129933267235" group="1" rgba="0.2 0.2 0.2 1"> -->
@@ -2058,6 +2058,7 @@
 
     <worldbody>
 
+        <camera name = "front_camera" pos="0.953 0.105 1.190" xyaxes="-0.061 0.998 0.000 -0.022 -0.001 1.000"/>
         <geom name="terrain" type="hfield" hfield="terrain" pos="0 0 -0.005" material="matfloor" conaffinity="1" contype="1" rgba="1 1 1 0"/>
         <site name="pelvis_target" size="0.02" pos="0 0 .92" group="4"/>
         <body name="ground" quat="0.707035 0.707179 0 0">
@@ -3316,7 +3317,7 @@
     </worldbody>
 
     <keyframe>
-        <key name="default-pose" qpos='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'/>
+        <key name="default-pose" qpos='0 0 1 0.707388 0 0 -0.706825 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'/>
         <key qpos='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0.707388 0 0 -0.706825 0.405648 -0.020957 -0.118677 0.0039054 0.00122326 0.7329 0.0102961 0.215496 0.40143 -0.006982 -0.02618 -0.03738 0.0080579 -0.87272 0.405648 -0.020957 -0.118677 0.0039054 0.00122326 0.7329 0.0102961 0.215496 0.40143 -0.006982 -0.02618 -0.03738 0.0080579 -0.87272'/>
         <key qpos='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.0 0.707388 0 0 -0.706825 -0.2326 -0.0279385 -0.041886 0.00247908 0.00101098 1.227 0.0275069 0.136817 0.1672 -0.00117055 -0.000125295 -0.0302192 0.0395202 -0.194029 -0.1652 -0.0279385 -0.041886 0.00247908 0.0010198 0.0888 0.0275069 0.136817 -0.019 -0.00117055 -0.000125295 -0.0302192 0.0395202 -0.194029' qvel='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 0 0 0 0 4.9066 0 0 0 0 -3.597 0 0 0.633 0 0 0 0 0 0.175 0 0 0 0 0.175 0 0 0.988 0 0 0 0 0'/>
         <key qpos='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.0 0.707388 0 0 -0.706825 -0.1652 -0.0279385 -0.041886 0.00247908 0.00101098 0.0888 0.0275069 0.136817 -0.019 -0.00117055 -0.000125295 -0.0302192 0.0395202 -0.194029 -0.2326 -0.0279385 -0.041886 0.00247908 0.0010198 1.227 0.0275069 0.136817 0.1672 -0.00117055 -0.000125295 -0.0302192 0.0395202 -0.194029' qvel='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 0 0 0 0 -0.576 0 0 0 0 0.175 0 0 0.988 0 0 0 0 0 4.9066 0 0 0 0 -3.597 0 0 0.633 0 0 0 0 0'/>

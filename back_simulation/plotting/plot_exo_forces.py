@@ -38,7 +38,7 @@ def plot_exo_forces(joint):
         
     # Ajouter des titres et des légendes
     plt.title("Exoskeleton Forces for Joint: {}".format(joint))
-    plt.xlabel("Simulation Step")
+    plt.xlabel("Flexion extension angle, (flexion on the left)")
     plt.ylabel("Force (N)")
     plt.legend()
     

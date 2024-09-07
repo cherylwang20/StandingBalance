@@ -22,13 +22,6 @@ def main(joint, res):
     model = mujoco.MjModel.from_xml_path(model_path)
     data = mujoco.MjData(model)
 
-    # Activer la visibilité du groupe 1
-    vopt = mujoco.MjvOption()
-    # Activer la visibilité du groupe 1
-    vopt.geomgroup[4] = 1  # 1 pour activer, 0 pour désactiver
-    # Appliquer les options de visualisation par défaut
-    mujoco.mjv_defaultOption(vopt)
-
     target_group = 1  # This is the geom group you want to modify (make invisible)
     # Loop through all geoms
     for i in range(model.ngeom):
@@ -55,38 +48,15 @@ def main(joint, res):
     data.qpos = kf.qpos
     
     # Obtenez l'identifiant des tendons à partir de leurs noms
-    tendon_id_1 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_TENDON, "Exo_LS_RL")
-    tendon_id_2 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_TENDON, "Exo_RS_LL")
-    actuator_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, 'rect_abd_r')
-
+    tendon_id_1 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_TENDON, "IL_R5_r_tendon")
+    tendon_id_2 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_TENDON, "IL_R5_l_tendon")
 
     mujoco.mj_forward(model, data)
 
     print(data.ten_length[tendon_id_1])
     print(data.ten_length[tendon_id_2])
 
-    # Récupérez les propriétés des tendons
-    #tendon_1 = model.tendon[tendon_id_1]
-    #tendon_2 = model.tendon[tendon_id_2]    
-    # La rigidité est généralement stockée dans les attributs de tendons, comme `stiffness`
-    # Vérifiez la documentation pour les attributs exacts disponibles pour le tendon
-    #stiffness_1 = tendon_1.stiffness
-    #stiffness_2 = tendon_2.stiffness
-    
-    stiffness_1 = model.tendon_stiffness[tendon_id_1]
-    stiffness_2 = model.tendon_stiffness[tendon_id_2]
-    print(stiffness_1)
-    print(stiffness_2)
-
-    # Nom du site
-    top_site_name = "Exo_RightShoulder"
-    bottom_site_name = "Exo_LeftLeg"
-
-
-    num_actuators = model.nu
-    exo_forces = []
-    muscle_length = []
-    distances = []
+    tendon_lengths = []
 
     # Initialize qpos_flex
     qpos_flex = np.zeros((res, model.nq))  # res is the number of steps, model.nq is the number of generalized coordinates
@@ -134,24 +104,20 @@ def main(joint, res):
     for i in range(res):
         data.qpos = qpos_flex[i]
         mujoco.mj_forward(model, data)
-        #tendon_length_1 = model.tendon_length0[tendon_id_1]
-        #tendon_length_2 = model.tendon_length0[tendon_id_2]
         tendon_length_1 = data.ten_length[tendon_id_1]
         tendon_length_2 = data.ten_length[tendon_id_2]
-        tendon_force_1=(tendon_length_1-0.4264202995590148)*stiffness_1
-        tendon_force_2=(tendon_length_2-0.4264202995590148)*stiffness_2
-        exo_forces.append([tendon_force_1, tendon_force_2])
+        tendon_lengths.append([tendon_length_1, tendon_length_2])
         renderer.update_scene(data, camera=camera_id)
         images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
     
 
-    exo_forces = np.array(exo_forces)
-    plt.plot(joint_val, exo_forces[:,0], label =  'Exo_LS_RL')
-    plt.plot(joint_val, exo_forces[:,1], label =  'Exo_RS_LL')
+    tendon_lengths = np.array(tendon_lengths)
+    plt.plot(joint_val, tendon_lengths[:,0], label =  'IL_R5_r_tendon')
+    plt.plot(joint_val, tendon_lengths[:,1], label =  'IL_R5_l_tendon')
     plt.legend()
     plt.show()
 
-    np.save("exo_forces_{}".format(joint), exo_forces)
+    np.save("exo_forces_{}".format(joint), tendon_lengths)
     create_vid(images)
 
 

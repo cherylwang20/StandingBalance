@@ -48,13 +48,13 @@
                 <general biasprm="0.75 1.05 -1 400 0.5 1.6 1.5 1.3 1.2 0" biastype="muscle" ctrllimited="true" ctrlrange="0 1" dynprm="0.01 0.04 0 0 0 0 0 0 0 0" dyntype="muscle" gainprm="0.75 1.05 -1 400 0.5 1.6 1.5 1.3 1.2 0" gaintype="muscle"/>
             </default>
             <default class="wrap">
-                <geom rgba=".5 .5 .9 0.5" group="3" contype="0" conaffinity="0"  type="cylinder"/>
+                <geom rgba="0.5 0.5 0.9 0.5" group="3" contype="0" conaffinity="0"  type="cylinder"/>
             </default>
             <default class="coll">
-                <geom type="capsule" group="1" contype="1" conaffinity="0" condim="3" rgba="0.8 0.7 .5 1" margin="0.001" material="MatSkin"/>
+                <geom type="capsule" group="1" contype="1" conaffinity="0" condim="3" rgba="0.8 0.7 0.5 1" margin="0.001" material="MatSkin"/>
             </default>
             <default class="myo_leg_touch">
-                <site type="box" group="3" rgba="0.8 0.2 .2 .4"/>
+                <site type="box" group="3" rgba="0.8 0.2 0.2 0.4"/>
             </default>
             <default class="myo_leg_marker">
                 <site size="0.02" group="4" rgba="0.8 0.8 .2 1"/>
@@ -202,13 +202,13 @@
 <!--515.5998876-->
     <tendon>
       <!--<spatial name="Exo_LS_RL" stiffness="515.5998876" springlength="0.4353477173131545" group="1" rgba="0.2 0.2 0.2 1">-->
-      <spatial name="Exo_LS_RL" stiffness="526.38985" springlength="0.4264202995590148" group="1" rgba="0.2 0.2 0.2 1">
+      <spatial name="Exo_LS_RL" stiffness="526.38985" springlength="0 0.4264202995590148" group="1" rgba="0.2 0.2 0.2 1">
             <site site="Exo_RightShoulder"/>
             <geom geom="Exo_cylinder" sidesite="Exo_sidesite"/>
             <site site="Exo_LeftLeg"/>
         </spatial>
         <!--<spatial name="Exo_RS_LL" stiffness="515.5998876" springlength="0.43534129933267235" group="1" rgba="0.2 0.2 0.2 1"> -->
-        <spatial name="Exo_RS_LL" stiffness="526.38985" springlength="0.4264202995590148" group="1" rgba="0.2 0.2 0.2 1">
+        <spatial name="Exo_RS_LL" stiffness="526.38985" springlength="0 0.4264202995590148" group="1" rgba="0.2 0.2 0.2 1">
             <site site="Exo_LeftShoulder"/>
             <geom geom="Exo_cylinder" sidesite="Exo_sidesite"/>
             <site site="Exo_RightLeg"/>
@@ -820,7 +820,7 @@
             <geom geom="Cylinder_cylinder" sidesite="Cylinder_cylinder_IL_L2_r_1_sidesite"/>
             <site site="IL_L2_r_IL_L2_r-P2"/>
         </spatial>
-        <spatial name="IL_L3_r_tendon">
+        <spatial name="IL_L3_r_tendon" >
             <site site="IL_L3_r_IL_L3_r-P1"/>
             <geom geom="Cylinder_cylinder" sidesite="Cylinder_cylinder_IL_L3_r_1_sidesite"/>
             <site site="IL_L3_r_IL_L3_r-P2"/>
@@ -840,7 +840,7 @@
             <geom geom="Cylinder_cylinder" sidesite="Cylinder_cylinder_IL_L2_l_1_sidesite"/>
             <site site="IL_L2_l_IL_L2_l-P2"/>
         </spatial>
-        <spatial name="IL_L3_l_tendon">
+        <spatial name="IL_L3_l_tendon" >
             <site site="IL_L3_l_IL_L3_l-P1"/>
             <geom geom="Cylinder_cylinder" sidesite="Cylinder_cylinder_IL_L3_l_1_sidesite"/>
             <site site="IL_L3_l_IL_L3_l-P2"/>
@@ -2084,10 +2084,10 @@
                 <geom name="PS_at_brim_l_wrap" pos="-0.074 -0.06 -0.0656" quat="0.981103 0.13006 0.127199 0.0658971" class="wrap" size="0.05 0.05"/>
                 <geom name="IL_at_brim_r_wrap" pos="-0.071 -0.065 0.0756" quat="0.874257 -0.193832 -0.0376181 0.443495" class="wrap" size="0.0549 0.1"/>
                 <geom name="IL_at_brim_l_wrap" pos="-0.071 -0.065 -0.0756" quat="0.874257 0.193832 0.0376181 0.443495" class="wrap" size="0.0549 0.05"/> -->
-                <geom name="PS_at_brim_r_wrap" pos="-0.074 -0.06 0.0656" quat="0.981103 -0.13006 -0.127199 0.0658971" class="wrap" size="0.05" type="sphere"/>
-                <geom name="PS_at_brim_l_wrap" pos="-0.074 -0.06 -0.0656" quat="0.981103 0.13006 0.127199 0.0658971" class="wrap" size="0.05" type="sphere"/>
-                <geom name="IL_at_brim_r_wrap" pos="-0.071 -0.065 0.0756" quat="0.874257 -0.193832 -0.0376181 0.443495" class="wrap" size="0.0549" type="sphere"/>
-                <geom name="IL_at_brim_l_wrap" pos="-0.071 -0.065 -0.0756" quat="0.874257 0.193832 0.0376181 0.443495" class="wrap" size="0.0549" type="sphere"/>
+                <geom name="PS_at_brim_r_wrap" pos="-0.074 -0.06 0.0656" quat="0.981103 -0.13006 -0.127199 0.0658971" class="wrap" size="0.05" type="sphere" rgba=" 1 1 1 0"/>
+                <geom name="PS_at_brim_l_wrap" pos="-0.074 -0.06 -0.0656" quat="0.981103 0.13006 0.127199 0.0658971" class="wrap" size="0.05" type="sphere" rgba=" 1 1 1 0"/>
+                <geom name="IL_at_brim_r_wrap" pos="-0.071 -0.065 0.0756" quat="0.874257 -0.193832 -0.0376181 0.443495" class="wrap" size="0.0549" type="sphere" rgba=" 1 1 1 0"/>
+                <geom name="IL_at_brim_l_wrap" pos="-0.071 -0.065 -0.0756" quat="0.874257 0.193832 0.0376181 0.443495" class="wrap" size="0.0549" type="sphere" rgba=" 1 1 1 0"/>
                 <site name="addbrev_r-P1" pos="-0.0191 -0.094 0.0154"/>
                 <site name="addlong_r-P1" pos="-0.0076 -0.0889 0.0189"/>
                 <site name="addmagDist_r-P1" pos="-0.074 -0.1277 0.0398"/>
@@ -2337,9 +2337,9 @@
                         <geom name="Cylinder2_cylinder" size="0.07 0.13" pos="-0.118 0.0768 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
                         <site name="Cylinder2_cylinder_IL_L1_r_1_sidesite" pos="-0.0340058 0.0777894 -0.00109894" size="0.0005"/>
                         <site name="Cylinder2_cylinder_IL_L1_l_1_sidesite" pos="-0.0418844 0.112331 -0.0720796" size="0.0005"/>
-                        <site name="Cylinder2_cylinder_IL_R5_r_1_sidesite" pos="-0.0340043 0.0759544 -0.0125701" size="0.0005"/>
+                        <site name="Cylinder2_cylinder_IL_R5_r_1_sidesite" pos="-0.0351706 0.0907744 0.0594597" size="0.005" />
                         <site name="Cylinder2_cylinder_IL_R6_r_1_sidesite" pos="-0.0348449 0.0886841 -0.108783" size="0.0005"/>
-                        <site name="Cylinder2_cylinder_IL_R5_l_1_sidesite" pos="-0.0351706 0.0907744 -0.0594597" size="0.0005"/>
+                        <site name="Cylinder2_cylinder_IL_R5_l_1_sidesite" pos="-0.0351706 0.0907744 -0.0594597" size="0.005" />
                         <site name="Cylinder2_cylinder_IL_R6_l_1_sidesite" pos="-0.0408519 0.110029 -0.0306543" size="0.0005"/>
                         <site name="Cylinder2_cylinder_LTpT_R12_r_4_sidesite" pos="-0.0411 0.1048 0.03882" size="0.0005"/>
                         <site name="Cylinder2_cylinder_LTpT_R12_r_2_sidesite" pos="-0.03691 0.06919 0.03508" size="0.0005"/>
@@ -2663,7 +2663,8 @@
                                             <geom name="torso_geom_12" pos="-0.028 0.375 0" quat="0.988771 0 0 -0.149438" type="mesh" rgba="1 1 1 1" mesh="torso_geom_12_thoracic1_s"/>
                                             <geom name="torso_geom_13" type="mesh" rgba="1 1 1 1" mesh="torso_geom_13_ribcage_s"/>
                                             <geom name="upper_exo_geom" type="mesh" rgba="0.4 0.4 0.4 1" euler="1.57 3.14 1.57" pos="-0.01 0.165 0" mesh="upper_exo_geom_1"/>
-                                            <geom name="Cylinder_cylinder" size="0.17 0.13" pos="-0.21 0.04 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
+                                            <geom name="Cylinder_cylinder" size="0.17 0.13" pos="-0.215 0.04 0" type="cylinder" group="2" rgba="1 0 0 0.2"/>
+                                            <!--rgba="0.19 0.83 0.78 0.2"-->
                                             <geom name="Chest_r_ellipsoid" size="0.073" pos="0.008 0.21 0.01" quat="0.97517 -0.0198338 -0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                                             <geom name="Chest_l_ellipsoid" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                                             <geom name="Chest_r_ellipsoid_LTpT_T1_r" size="0.073" pos="0.008 0.21 0.01" quat="0.97517 -0.0198338 -0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
@@ -2676,9 +2677,9 @@
                                             <geom name="Chest_l_ellipsoid_LTpT_T3_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                                             <geom name="Chest_l_ellipsoid_LTpT_T4_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                                             <geom name="Chest_l_ellipsoid_LTpT_T5_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
-                                            <geom name="Exo_cylinder" size="0.15 0.13" pos="0.07 -0.01 0" type="cylinder" group="4" rgba="0 0 1 0.1"/>
-                                            <geom name="Cylinder_abdomen" size="0.12 0.13" pos="0.225 0.07 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
-                                            <site name="Abs_sidesite" pos="0.05 0.05 0" size="0.005" />
+                                            <geom name="Exo_cylinder" size="0.15 0.12" pos="0.07 0.03 0" type="cylinder" group="4" rgba="0 0 1 1"/>
+                                            <geom name="Cylinder_abdomen" size="0.12 0.13" pos="0.225 0.08 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
+                                            <site name="Abs_sidesite" pos="0.05 0.05 0" size="0.0005" rgba="1 0 0 1"/>
                                             <site name="Exo_sidesite" pos="-0.14 0.05 0" size="0.0005" rgba="0.4 0.4 0.4 1"/>
                                             <site name="Exo_LeftShoulder" pos="-0.11 0.3 -0.07" size="0.005" rgba="0.4 0.4 0.4 1"/>
                                             <site name="Exo_RightShoulder" pos="-0.11 0.3 0.07" size="0.005" rgba="0.4 0.4 0.4 1"/> 
@@ -2687,10 +2688,10 @@
                                             <site name="rect_abd_r_rect_abd_r-P2" pos="0.0880597 0.222575 -0.0344509"/>
                                             <site name="rect_abd_l_rect_abd_l-P2" pos="0.08806 0.22257 0.03445"/>
                                             <site name="Cylinder_cylinder_IL_L2_r_1_sidesite" pos="-0.0403295 -0.0732604 -0.120523" size="0.0005"/>
-                                            <site name="Cylinder_cylinder_IL_L3_r_1_sidesite" pos="-0.108976 0.217229 0.0537206" size="0.0005"/>
+                                            <site name="Cylinder_cylinder_IL_L3_r_1_sidesite" pos="-0.108976 0.217229 0.0537206" size="0.005" rgba="1 0 1 1"/>
                                             <site name="Cylinder_cylinder_IL_L4_r_1_sidesite" pos="-0.0465512 0.162068 -0.10054" size="0.0005"/>
                                             <site name="Cylinder_cylinder_IL_L2_l_1_sidesite" pos="-0.157766 -0.157199 -0.100314" size="0.0005"/>
-                                            <site name="Cylinder_cylinder_IL_L3_l_1_sidesite" pos="-0.00732879 0.0167539 0.0354792" size="0.0005"/>
+                                            <site name="Cylinder_cylinder_IL_L3_l_1_sidesite" pos="-0.00732879 0.0167539 0.0354792" size="0.005" rgba="1 0 1 1"/>
                                             <site name="Cylinder_cylinder_IL_L4_l_1_sidesite" pos="-0.00798834 0.0115872 -0.107672" size="0.0005"/>
                                             <site name="IL_R5_r_IL_r5_R-P2_0" pos="-0.07928 0.175415 0.0432678"/>
                                             <site name="IL_R5_r_IL_r5_R-P3" pos="-0.0807876 0.202609 0.0433988"/>

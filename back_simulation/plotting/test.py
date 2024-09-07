@@ -21,6 +21,17 @@ def main(joint, res):
     model_path = './myosuite/myosuite/simhive/myo_sim/back/myobacklegs-Exoskeleton.xml'
     model = mujoco.MjModel.from_xml_path(model_path)
     data = mujoco.MjData(model)
+
+    target_group = 1  # This is the geom group you want to modify (make invisible)
+    # Loop through all geoms
+    for i in range(model.ngeom):
+        # Check if the geom belongs to the target group
+        if model.geom_group[i] == target_group:
+            # Only change the alpha (last) value of the RGBA, leave the RGB unchanged
+            rgba = model.geom_rgba[i]
+            rgba[3] = 0  # Set alpha to 0 (make the geom invisible)
+            model.geom_rgba[i] = rgba
+
     renderer = mujoco.Renderer(model, height=height, width=width)
     
     renderer.update_scene(data, camera=camera_id)
@@ -120,8 +131,8 @@ def main(joint, res):
         #tendon_length_2 = model.tendon_length0[tendon_id_2]
         tendon_length_1 = data.ten_length[tendon_id_1]
         tendon_length_2 = data.ten_length[tendon_id_2]
-        tendon_force_1=(tendon_length_1-0.4264202995590148)#*stiffness_1
-        tendon_force_2=(tendon_length_2-0.4264202995590148)#*stiffness_2
+        tendon_force_1=(tendon_length_1-0.4264202995590148)*stiffness_1
+        tendon_force_2=(tendon_length_2-0.4264202995590148)*stiffness_2
         exo_forces.append([tendon_force_1, tendon_force_2])
         renderer.update_scene(data, camera=camera_id)
         images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))

@@ -3,20 +3,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.polynomial import Polynomial
 
-x_name = '/jointset/L5_S1_IVDjnt/flex_extension/value'
-y_name = '/jointset/Abdjnt/Abs_r3/value'
+# x_name = '/jointset/L5_S1_IVDjnt/flex_extension/value'
+# y_name = '/jointset/Abdjnt/Abs_r3/value'
 
 
 # Read Excel file
-file_path = 'back_simulation/Values_Joinset_26_08.xlsx'  # Replace with your file path
-df = pd.read_excel(file_path, usecols=[x_name, y_name])
-df = df.drop(df.index[::10])
+# file_path = 'back_simulation/Values_Joinset_26_08.xlsx'  # Replace with your file path
+file_path = 'back_simulation/AbdoPosition.xlsx'
+df = pd.read_excel(file_path) #, usecols=[x_name, y_name])
+# df = df.drop(df.index[::10])
 # Extract x and y values
-x = df[x_name].values
-y = df[y_name].values
+# x = df[x_name].values
+# y = df[y_name].values
+
+x = df['Column1'][1:].astype(float).to_numpy()
+index_closest_to_zero = (df['Column1'][1:].astype(float) - 0).abs().idxmin()
+y = df['Column2'][1:].astype(float).to_numpy()
+#y = y-y[index_closest_to_zero]
 
 # Perform polynomial interpolation (degree 3 for this example)
-degree = 1
+degree = 4
 coefs = np.polyfit(x, y, degree)
 print(coefs)
 poly = np.poly1d(coefs)

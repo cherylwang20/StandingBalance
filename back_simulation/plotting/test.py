@@ -95,13 +95,13 @@ def main(joint, res):
     qpos_flex[:, 6] = np.ones(res)*(-0.706825)
 
     if joint == "flex_extension":
-        joint_val = np.linspace(-1.222, 0.4, res)[::-1]
+        joint_val = np.linspace(-1.222, 0, res)[::-1]
 
         qpos_flex[:, 7] = 0.03305523 * joint_val
         qpos_flex[:, 8] = 0.01101841 * joint_val
         qpos_flex[:, 9] = 0.6 * joint_val
-        qpos_flex[:, 13] = (0.0008971 * joint_val**4 + 0.00427047 * joint_val**3 -
-                           0.01851051 * joint_val**2 - 0.05787512 * joint_val - 0.00800539)
+        qpos_flex[:, 13] = 0.03*joint_val #(0.0008971 * joint_val**4 + 0.00427047 * joint_val**3 -
+                           #0.01851051 * joint_val**2 - 0.05787512 * joint_val - 0.00800539) + np.sin(0.64285726 * joint_val)*0.04
         qpos_flex[:, 14] = (3.89329927e-04 * joint_val**4 - 4.18762151e-03 * joint_val**3 -
                            1.86233838e-02 * joint_val**2 + 5.78749087e-02 * joint_val)
         qpos_flex[:, 15] = 0.64285726 * joint_val

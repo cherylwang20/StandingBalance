@@ -5,7 +5,7 @@ import os
 from scipy.signal import find_peaks
 
 # Dossier contenant les fichiers CSV
-directory = 'C:/Users/morga/MyoBack/back_simulation/plotting/Experiment_data/lc_static_stoop_40'  # Remplacez par le chemin de votre dossier
+# directory = 'C:/Users/morga/MyoBack/back_simulation/plotting/Experiment_data/lc_static_stoop_40'  # Remplacez par le chemin de votre dossier
 
 # Initialisation des matrices 3x9
 matrix_col2 = np.zeros((3, 9))
@@ -17,7 +17,9 @@ exp_files=[1,2,3,4,5,6,7,8,9]
 def moving_average(data, window_size):
     return np.convolve(data, np.ones(window_size)/window_size, mode='valid')
 
-def get_data_side1(): 
+def get_data_side1(folder): 
+
+    directory = f'C:/Users/morga/MyoBack/back_simulation/plotting/Experiment_data/{folder}'
 
     # Parcourir tous les fichiers CSV dans le dossier
     for i in exp_files:  # Pour SUB1 à SUB9
@@ -84,12 +86,16 @@ def get_data_side1():
     print(matrix_col2)
     #print("\nMatrix for second side (Column 3):")
     #print(matrix_col3)
-    return matrix_col2
+    max_gauche = [value for row in matrix_col2 for value in row]
+    print(max_gauche)
+    return max_gauche
 
-def get_data_side2(): 
+def get_data_side2(folder): 
+
+    directory = f'C:/Users/morga/MyoBack/back_simulation/plotting/Experiment_data/{folder}'
 
     # Parcourir tous les fichiers CSV dans le dossier
-    for i in range(1, 10):  # Pour SUB1 à SUB9
+    for i in exp_files:  # Pour SUB1 à SUB9
         file_path = os.path.join(directory, f'SUB{i}.csv')
         
         if not os.path.isfile(file_path):
@@ -149,8 +155,10 @@ def get_data_side2():
             print(f"Erreur lors de la lecture du fichier {file_path}: {e}")
 
     # Afficher les matrices
-    #print("Matrix for first side (Column 2):")
-    #print(matrix_col2)
+    print("Matrix for first side (Column 3):")
+    print(matrix_col3)
     #print("\nMatrix for second side (Column 3):")
     #print(matrix_col3)
-    return matrix_col3
+    max_droite = [value for row in matrix_col3 for value in row]
+    print(max_droite)
+    return max_droite

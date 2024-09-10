@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 def create_vid(images):
     height, width, layers = images[0].shape
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    video = cv2.VideoWriter('vid.mp4', fourcc, 200, (width, height))
+    video = cv2.VideoWriter('vid_dynamic.mp4', fourcc, 200, (width, height))
     for image in images:
         video.write(image)
     video.release()
@@ -27,8 +27,6 @@ def main(joint, res, visualize):
     kf = model.keyframe('default-pose')
     data.qpos = kf.qpos
     mujoco.mj_forward(model, data)
-
-    print(model.actuator_gainprm)
 
     qpos_flex = np.zeros((res, model.nq))
     num_actuators = model.nu
@@ -69,21 +67,47 @@ def main(joint, res, visualize):
     else:
         print("Select valid joint!")
         return
+    
+    print(len(data.ctrl))
+    ctrl_data = np.zeros(len(data.ctrl))
+
+    qpos_list = []
 
     for i in range(res):
-        data.qpos = qpos_flex[i]
+        data.ctrl = ctrl_data
+        mujoco.mj_step(model, data)
+        print(data.qpos[3])
+        flex = data.qpos[3]
+        data.qpos[0] = 0.03305523 * flex
+        data.qpos[1] = 0.01101841 * flex
+        data.qpos[2] = 0.6 * flex
+        data.qpos[6] = 0.0008971 * flex**4 + 0.00427047 * flex**3 -0.01851051 * flex**2 - 0.05787512 * flex - 0.00800539
+        data.qpos[7] = 3.89329927e-04 * flex**4 - 4.18762151e-03 * flex**3 - 1.86233838e-02 * flex**2 + 5.78749087e-02 * flex
+        data.qpos[8] = 0.64285726 * flex
+        data.qpos[9] = 0.185 * flex
+        data.qpos[12] = 0.204 * flex
+        data.qpos[15] = 0.231 * flex
+        data.qpos[18] = 0.255 * flex
+        data.qpos[3] = 0
+        qpos_list.append(np.copy(data.qpos))
         mujoco.mj_forward(model, data)
-        if i==500:
-            print(data.actuator_moment)
-            print(data.actuator_moment.shape)
-        muscle_forces.append(np.ctypeslib.as_array(data.qfrc_actuator, shape=(num_actuators,)))
+        #muscle_forces.append(np.ctypeslib.as_array(data.qfrc_actuator, shape=(num_actuators,)))
         renderer.update_scene(data, camera=camera_id)
         images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
+        data.qpos[3] = flex
+    qpos_list = np.array(qpos_list)
+    plt.plot(qpos_list[:,3]*0.185, label="flex")
+    plt.plot(qpos_list[:,9], label="L5")
+    plt.plot(qpos_list[:,12], label="L4")
+    plt.plot(qpos_list[:,15], label="L3")
+    plt.plot(qpos_list[:,18], label="L2")
+    plt.legend()
+    plt.show()
 
-    muscle_forces = np.array(muscle_forces)
-    np.save("muscle_forces_mj_{}".format(joint), muscle_forces)
+    #muscle_forces = np.array(muscle_forces)
+    #np.save("muscle_forces_mj_{}".format(joint), muscle_forces)
     if visualize:
         create_vid(images)
 
 if __name__ == '__main__':
-    main(joint="flex_extension", res=1000, visualize=False)
+    main(joint="flex_extension", res=1000, visualize=True)

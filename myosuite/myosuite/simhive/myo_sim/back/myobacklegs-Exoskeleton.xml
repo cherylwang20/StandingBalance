@@ -2058,7 +2058,7 @@
 
     <worldbody>
 
-        <camera name = "front_camera" pos="0.953 0.105 1.190" xyaxes="-0.061 0.998 0.000 -0.022 -0.001 1.000"/>
+        <camera name = "front_camera" pos="-1.950 -1.251 1.832" xyaxes="0.561 -0.828 -0.000 0.314 0.213 0.925"/>
         <geom name="terrain" type="hfield" hfield="terrain" pos="0 0 -0.005" material="matfloor" conaffinity="1" contype="1" rgba="1 1 1 0"/>
         <site name="pelvis_target" size="0.02" pos="0 0 .92" group="4"/>
         <body name="ground" quat="0.707035 0.707179 0 0">
@@ -2678,7 +2678,7 @@
                                             <geom name="Chest_l_ellipsoid_LTpT_T4_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                                             <geom name="Chest_l_ellipsoid_LTpT_T5_l" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                                             <geom name="Exo_cylinder" size="0.15 0.12" pos="0.07 0.03 0" type="cylinder" group="4" rgba="0 0 1 1"/>
-                                            <geom name="Cylinder_abdomen" size="0.12 0.13" pos="0.225 0.08 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
+                                            <geom name="Cylinder_abdomen" size="0.12 0.13" pos="0.225 0.08 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2" contype="0" conaffinity="0"/>
                                             <site name="Abs_sidesite" pos="0.05 0.05 0" size="0.0005" rgba="1 0 0 1"/>
                                             <site name="Exo_sidesite" pos="-0.14 0.05 0" size="0.0005" rgba="0.4 0.4 0.4 1"/>
                                             <site name="Exo_LeftShoulder" pos="-0.11 0.3 -0.07" size="0.005" rgba="0.4 0.4 0.4 1"/>

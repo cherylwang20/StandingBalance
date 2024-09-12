@@ -63,4 +63,4 @@ def plot_exo_forces(joint):
     plt.show()
 
 if __name__ == '__main__':
-    plot_exo_forces(joint="flex_extension")
+    plot_exo_forces(joint="squat")

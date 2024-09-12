@@ -46,10 +46,10 @@
         <camera name="front_view" pos="0 -3 2.25" xyaxes="1 0 0 0 1 2" mode="trackcom"/>
 
 
-        <geom name="floor" pos="0 0 0" size="7 7 .1" conaffinity="1" contype="1" type="plane" material="matfloor" condim="3"/>
-        <geom type="mesh" pos="0 0 0" mesh="meshscene" material="matscene" conaffinity="0" contype="0"/>
+        <geom name="floor" pos="0 0 0" size="7 7 .1" conaffinity="1" contype="1" type="plane" material="matfloor" condim="3" rgba="1 1 1 0"/>
+        <geom type="mesh" pos="0 0 0" mesh="meshscene" material="matscene" conaffinity="0" contype="0" rgba="1 1 1 0" />
         <!-- <geom type="box" pos="0 0 0" size="1.05 1.05 .005" conaffinity="0" contype="0" group="1" material="matwarning" /> -->
-        <geom type="mesh" mesh="logo" material="matlogo" group="1" conaffinity="0" contype="0" euler="1.57 0 0" pos="0 6.95 2.1"/>
+        <geom type="mesh" mesh="logo" material="matlogo" group="1" conaffinity="0" contype="0" euler="1.57 0 0" pos="0 6.95 2.1"rgba="1 1 1 0" />
 
         <!-- <geom type="box" size=".01 .01 0.85" pos="0 0 0.85"/> -->
         <!-- <geom type="mesh" mesh="human" rgba=".8 .8 .8 1" euler="0 0 3.14" pos="0 0 0"/> -->

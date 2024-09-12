@@ -4,10 +4,25 @@ import cv2
 import matplotlib.pyplot as plt
 import csv
 
+def create_vid(images):
+    height, width, layers = images[0].shape
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    video = cv2.VideoWriter('vid.mp4', fourcc, 200, (width, height))
+    for image in images:
+        video.write(image)
+    video.release()
+
 def main(joint, res):
     model_path = 'myosuite/myosuite/simhive/myo_sim/back/myobacklegs-Exoskeleton.xml'
     model = mujoco.MjModel.from_xml_path(model_path)
     data = mujoco.MjData(model)
+    images = []
+    height = 480
+    width = 640
+    camera_id = "front_camera"
+    renderer = mujoco.Renderer(model, height=height, width=width)
+    renderer.update_scene(data, camera=camera_id)
+    images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
 
     kf = model.keyframe('default-pose')
     data.qpos = kf.qpos
@@ -71,6 +86,16 @@ def main(joint, res):
 
         qpos_flex[:, 5] = joint_val
 
+    if joint == "squat":
+        joint_val = np.linspace(0, 2.09, res)
+
+        qpos_flex[:, 3] = -0.384
+        qpos_flex[:, 21] = joint_val
+        qpos_flex[:, 26] = joint_val
+        qpos_flex[:, 35] = joint_val
+        qpos_flex[:, 40] = joint_val
+
+
     else:
         print("Select valid joint!")
         return
@@ -94,11 +119,14 @@ def main(joint, res):
             exo_forces.append([tendon_force_1, tendon_force_2])
             # Écrire la valeur des deux forces dans le fichier CSV
             writer.writerow([tendon_force_1, tendon_force_2])
+            renderer.update_scene(data, camera=camera_id)
+            images.append(cv2.cvtColor(renderer.render(), cv2.COLOR_RGB2BGR))
 
     exo_forces = np.array(exo_forces)
     np.save("exo_forces_{}".format(joint), exo_forces)
+    create_vid(images)
 
 
 if __name__ == '__main__':
-    main(joint="flex_extension", res=1000)
+    main(joint="squat", res=500)
  

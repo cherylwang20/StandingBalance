@@ -89,11 +89,27 @@ def main(joint, res):
     if joint == "squat":
         joint_val = np.linspace(0, 2.09, res)
 
-        qpos_flex[:, 3] = -0.384
-        qpos_flex[:, 21] = joint_val
+        """
+        qpos_flex[:, 22] = joint_val
         qpos_flex[:, 26] = joint_val
         qpos_flex[:, 35] = joint_val
         qpos_flex[:, 40] = joint_val
+        """
+        
+        FE_val=-0.384
+        qpos_flex[:, 0] = 0.03305523 * FE_val
+        qpos_flex[:, 1] = 0.01101841 * FE_val
+        qpos_flex[:, 2] = 0.6 * FE_val
+        qpos_flex[:, 6] = (0.0008971 * FE_val**4 + 0.00427047 * FE_val**3 -
+                           0.01851051 * FE_val**2 - 0.05787512 * FE_val - 0.00800539)
+        qpos_flex[:, 7] = (3.89329927e-04 * FE_val**4 - 4.18762151e-03 * FE_val**3 -
+                           1.86233838e-02 * FE_val**2 + 5.78749087e-02 * FE_val)
+        qpos_flex[:, 8] = 0.64285726 * FE_val
+        qpos_flex[:, 9] = 0.185 * FE_val
+        qpos_flex[:, 12] = 0.204 * FE_val
+        qpos_flex[:, 15] = 0.231 * FE_val
+        qpos_flex[:, 18] = 0.255 * FE_val
+        
 
 
     else:

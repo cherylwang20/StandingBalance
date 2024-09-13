@@ -9,7 +9,7 @@ import cv2
 
 def plot_exo_forces(joint):
     # Charger les forces enregistrées
-    exo_forces = np.load("exo_forces_{}.npy".format(joint))
+    exo_forces = np.load("exo_forces_static_stoop.npy")
 
     # Extraire les forces des deux actionneurs
     forces_actuator_1 = exo_forces[:, 0]

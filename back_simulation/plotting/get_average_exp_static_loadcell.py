@@ -75,4 +75,6 @@ def get_data(folder):
             
         except Exception as e:
             print(f"Erreur lors de la lecture du fichier {file_path}: {e}")
+    print(max_left)
+    print(max_right)
     return max_left, max_right

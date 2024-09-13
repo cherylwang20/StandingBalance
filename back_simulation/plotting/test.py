@@ -77,7 +77,7 @@ def main(joint, res):
     qpos_flex[:, 6] = np.ones(res)*(-0.706825)
 
     if joint == "flex_extension":
-        joint_val = np.linspace(-1.222, 0, res)[::-1]
+        joint_val = np.linspace(-1.222, -0.314159, res)[::-1]
 
         qpos_flex[:, 7] = 0.03305523 * joint_val
         qpos_flex[:, 8] = 0.01101841 * joint_val
@@ -91,6 +91,10 @@ def main(joint, res):
         qpos_flex[:, 19] = 0.204 * joint_val
         qpos_flex[:, 22] = 0.231 * joint_val
         qpos_flex[:, 25] = 0.255 * joint_val
+
+        qpos_flex[:, 28] = 0.66942284*joint_val**2 -0.75844598*joint_val + 0.38226856
+        qpos_flex[:, 42] = 0.66942284*joint_val**2 -0.75844598*joint_val + 0.38226856
+
 
     elif joint == "lat_bending":
         joint_val = np.linspace(-0.4363, 0.4363, res)

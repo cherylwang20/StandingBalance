@@ -16,13 +16,15 @@ df = pd.read_excel(file_path) #, usecols=[x_name, y_name])
 # x = df[x_name].values
 # y = df[y_name].values
 
-x = df['Column1'][1:].astype(float).to_numpy()
+# x = df['Column1'][1:].astype(float).to_numpy()
+x = np.array([28.867944444444447, 43.895555555555546, 65.11938888888888])*(np.pi/180)
 index_closest_to_zero = (df['Column1'][1:].astype(float) - 0).abs().idxmin()
-y = df['Column2'][1:].astype(float).to_numpy()
+y = np.array([9.74425, 11.122222222222222, 22.0576875])*(np.pi/180)
+# y = df['Column2'][1:].astype(float).to_numpy()
 #y = y-y[index_closest_to_zero]
 
 # Perform polynomial interpolation (degree 3 for this example)
-degree = 4
+degree = 2
 coefs = np.polyfit(x, y, degree)
 print(coefs)
 poly = np.poly1d(coefs)

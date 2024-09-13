@@ -55,7 +55,7 @@ def get_data(folder):
             dist_RL1_RL2 *= stiffness
             dist_LL2_LL1 *= stiffness
 
-            mask = (dist_RL1_RL2 >= 1) & (dist_LL2_LL1 >= 1)
+            mask = (dist_RL1_RL2 >= 5) & (dist_LL2_LL1 >= 5)
             
             time = np.arange(0, len(dist_RL1_RL2 ) * 0.01, 0.01)[mask]
             col2_filtered = dist_RL1_RL2[mask]
@@ -93,4 +93,5 @@ def get_data(folder):
                 print("File ignored:", file_path)
         except Exception as e:
             print(f"Erreur lors de la lecture du fichier {file_path}: {e}")
+    print(max_left, max_right)
     return max_left, max_right

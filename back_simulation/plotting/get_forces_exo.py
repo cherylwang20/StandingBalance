@@ -128,5 +128,5 @@ def main(joint, res):
 
 
 if __name__ == '__main__':
-    main(joint="squat", res=500)
+    main(joint="flex_extension", res=500)
  

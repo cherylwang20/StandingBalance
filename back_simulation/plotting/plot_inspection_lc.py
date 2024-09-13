@@ -31,4 +31,4 @@ def plot_csv_files(folder_name):
             print(f"Missing required columns in {file_path}")
 
 
-plot_csv_files('lc_aux_static_stoop_40')
+plot_csv_files('lc_aux_static_stoop_80')

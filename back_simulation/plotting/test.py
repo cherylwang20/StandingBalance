@@ -92,8 +92,8 @@ def main(joint, res):
         qpos_flex[:, 22] = 0.231 * joint_val
         qpos_flex[:, 25] = 0.255 * joint_val
 
-        qpos_flex[:, 28] = 0.66942284*joint_val**2 -0.75844598*joint_val + 0.38226856
-        qpos_flex[:, 42] = 0.66942284*joint_val**2 -0.75844598*joint_val + 0.38226856
+        # qpos_flex[:, 28] = 0.66942284*joint_val**2 -0.75844598*joint_val + 0.38226856
+        # qpos_flex[:, 42] = 0.66942284*joint_val**2 -0.75844598*joint_val + 0.38226856
 
 
     elif joint == "lat_bending":

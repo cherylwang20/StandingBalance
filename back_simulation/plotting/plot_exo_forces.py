@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-sys.path.append('C:/Users/morga/MyoBack/back_simulation/plotting')
+sys.path.append('/home/rwalia/MyoBack/back_simulation/plotting')
 import get_average_exp_static_loadcell 
 import get_average_exp_static_marker
 import math
@@ -38,9 +38,9 @@ def plot_exo_forces(joint):
     # means_d=[mean40_d,mean60_d,mean80_d]
     # stds_d=[std40_d,std60_d,std80_d]
 
-    exp_values_40_g_m, exp_values_40_d_m=get_average_exp_static_marker.get_data('lc_static_stoop_40')
-    exp_values_60_g_m, exp_values_60_d_m=get_average_exp_static_marker.get_data('lc_static_stoop_60')
-    exp_values_80_g_m, exp_values_80_d_m=get_average_exp_static_marker.get_data('lc_static_stoop_80')
+    exp_values_40_g_m, exp_values_40_d_m=get_average_exp_static_marker.get_data('aux_static_stoop_40')
+    exp_values_60_g_m, exp_values_60_d_m=get_average_exp_static_marker.get_data('aux_static_stoop_60')
+    exp_values_80_g_m, exp_values_80_d_m=get_average_exp_static_marker.get_data('aux_static_stoop_80')
 
     std40_g_m = np.std(exp_values_40_g_m)
     mean40_g_m= np.mean(exp_values_40_g_m)

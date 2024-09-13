@@ -16,3 +16,5 @@ models/
 *.xlsx
 *.ods
 *.zip
+
+!exo_forces_static_stoop.npy

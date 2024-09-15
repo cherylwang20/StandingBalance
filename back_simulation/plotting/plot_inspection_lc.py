@@ -13,7 +13,7 @@ def plot_csv_files(folder_name):
             continue
         
         # Read the CSV file into a DataFrame
-        df = pd.read_csv(file_path, delimiter=';', decimal=',')
+        df = pd.read_csv(file_path, delimiter=';', decimal='.')
         
         # Ensure the required columns exist in the DataFrame
         if {'Column1', 'Column2', 'Column3'}.issubset(df.columns):
@@ -31,4 +31,4 @@ def plot_csv_files(folder_name):
             print(f"Missing required columns in {file_path}")
 
 
-plot_csv_files('lc_aux_static_stoop_80')
+plot_csv_files('lc_aux_static_squat_70')

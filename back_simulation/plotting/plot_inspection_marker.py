@@ -56,4 +56,4 @@ def compute_and_plot_distances(folder_name):
             plt.show()
 
 # Example usage
-compute_and_plot_distances('aux_static_stoop_80')
+compute_and_plot_distances('aux_static_squat_110')

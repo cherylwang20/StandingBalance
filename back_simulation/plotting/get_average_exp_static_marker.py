@@ -55,7 +55,7 @@ def get_data(folder):
             dist_RL1_RL2 *= stiffness
             dist_LL2_LL1 *= stiffness
 
-            mask = (dist_RL1_RL2 >= 5) & (dist_LL2_LL1 >= 5)
+            mask = (dist_RL1_RL2 >= 1) & (dist_LL2_LL1 >= 1)
             
             time = np.arange(0, len(dist_RL1_RL2 ) * 0.01, 0.01)[mask]
             col2_filtered = dist_RL1_RL2[mask]

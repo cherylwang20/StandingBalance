@@ -59,10 +59,10 @@ def compute_and_plot_distances(folder_name):
             
             # Plot the distances
             plt.figure(figsize=(12, 6))
-            plt.plot(np.degrees(hip_right), label='Angle between hip and knee (right)', color='blue')
-            plt.plot(np.degrees(hip_left), label='Angle between hip and knee (left)', color='red')
-            # plt.plot(np.degrees(knee_right), label='Angle between knee and foot (right)', color='blue')
-            # plt.plot(np.degrees(knee_left), label='Angle between knee and foot (left)', color='red')
+            # plt.plot(np.degrees(hip_right), label='Angle between hip and knee (right)', color='blue')
+            # plt.plot(np.degrees(hip_left), label='Angle between hip and knee (left)', color='red')
+            plt.plot(np.degrees(knee_right)+np.degrees(hip_right), label='Angle between knee and foot (right)', color='blue')
+            plt.plot(np.degrees(knee_left)+np.degrees(hip_left), label='Angle between knee and foot (left)', color='red')
             # plt.plot(np.degrees(flex_right), label='Flex extension (right)', color='blue')
             # plt.plot(np.degrees(flex_left), label='Flex extension (left)', color='red')
             # plt.plot(np.array(range(len(dist_LL2_LL1)))/100, dist_LL2_LL1, label='Distance between LL2 and LL1', color='red')
@@ -74,5 +74,5 @@ def compute_and_plot_distances(folder_name):
             plt.show()
 
 # Example usage
-compute_and_plot_distances('aux_static_stoop_80')
+compute_and_plot_distances('aux_static_squat_110')
 

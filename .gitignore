@@ -18,3 +18,4 @@ models/
 *.zip
 
 !exo_forces_static_stoop.npy
+!exo_forces_static_squat.npy

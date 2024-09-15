@@ -58,14 +58,14 @@ def plot_exo_forces(joint):
     # Tracer les forces
     plt.figure(figsize=(10, 6))
     plt.ylim(0, 100)  # Limites de l'axe y de 0 à 100
-    plt.plot(-x, forces_actuator_1, label='Simulated Exoskeleton force', color='black')
+    plt.plot(-x, forces_actuator_1, label='Simulated exoskeleton force', color='black')
     plt.errorbar(means_angle, means, xerr=stds_angle, yerr=stds, fmt='-o', label='Experimental loadcell force', color='tab:green')
     plt.errorbar(means_angle, means_m, xerr=stds_angle, yerr=stds_m, fmt='-o', label='Experimental marker force', color='tab:red')
 
     # Ajouter des titres et des légendes
-    plt.xlabel("Flex extension [°]", fontdict={'fontname': 'Times New Roman'})
-    plt.ylabel("Force [N]", fontdict={'fontname': 'Times New Roman'})
-    plt.legend()
+    plt.xlabel("Flex extension [°]", fontsize=14)
+    plt.ylabel("Force [N]", fontsize=14)
+    plt.legend(fontsize=14)
     plt.grid(True)
     
     # Afficher le graphique

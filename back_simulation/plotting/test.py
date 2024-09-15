@@ -95,6 +95,22 @@ def main(joint, res):
         # qpos_flex[:, 28] = 0.66942284*joint_val**2 -0.75844598*joint_val + 0.38226856
         # qpos_flex[:, 42] = 0.66942284*joint_val**2 -0.75844598*joint_val + 0.38226856
 
+    elif joint=="squat":
+        squat_val = np.linspace(1.13446, 1.91986, res)[::-1]
+        joint_val = -(-0.3080105*squat_val**2 + 1.19170557*squat_val - 0.67519123)
+
+        qpos_flex[:, 7] = 0.03305523 * joint_val
+        qpos_flex[:, 8] = 0.01101841 * joint_val
+        qpos_flex[:, 9] = 0.6 * joint_val
+        qpos_flex[:, 13] = 0.03*joint_val #(0.0008971 * joint_val**4 + 0.00427047 * joint_val**3 -
+                           #0.01851051 * joint_val**2 - 0.05787512 * joint_val - 0.00800539) + np.sin(0.64285726 * joint_val)*0.04
+        qpos_flex[:, 14] = (3.89329927e-04 * joint_val**4 - 4.18762151e-03 * joint_val**3 -
+                           1.86233838e-02 * joint_val**2 + 5.78749087e-02 * joint_val)
+        qpos_flex[:, 15] = 0.64285726 * joint_val
+        qpos_flex[:, 16] = 0.185 * joint_val
+        qpos_flex[:, 19] = 0.204 * joint_val
+        qpos_flex[:, 22] = 0.231 * joint_val
+        qpos_flex[:, 25] = 0.255 * joint_val
 
     elif joint == "lat_bending":
         joint_val = np.linspace(-0.4363, 0.4363, res)
@@ -140,7 +156,7 @@ def main(joint, res):
 
 
 if __name__ == '__main__':
-    main(joint="flex_extension", res=500)
+    main(joint="squat", res=500)
 
 
  

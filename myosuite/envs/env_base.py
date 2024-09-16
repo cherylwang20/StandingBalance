@@ -273,13 +273,13 @@ class MujocoEnv(gym.Env, gym.utils.EzPickle, ObsVecDict):
     def forward(self, **kwargs):
         obs, reward, done, info = self._forward(**kwargs)
         terminal = done
-        return obs, reward, terminal, False, info
+        return obs, reward, terminal, done, info
 
     @implement_for("gymnasium")
     def forward(self, **kwargs):
         obs, reward, done, info = self._forward(**kwargs)
         terminal = done
-        return obs, reward, terminal, False, info
+        return obs, reward, terminal, done, info
 
     def _forward(self, **kwargs):
         """

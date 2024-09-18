@@ -149,26 +149,6 @@ register_env_with_variants(id='myoStandingBack-v1',
                 },
             'normalize_act': True,
             'frame_skip': 5,
-            'weighted_reward_keys':{
-                        "positionError":        2.,
-                        #"smallErrorBonus":      1,
-                        #"timeStanding":          3,
-                        "act_reg":         .1,
-                        #"highError":            5,
-                        #"centerOfMass":         2,
-                        #'verticalStep':          1, 
-                        "com_error":            1.,
-                        #"pelvis_rot_err":        .1,
-                        #'feet_height':           .5,
-                        #"com_v":                 .2,
-                        #"feet_width":            .3, 
-                        #"hip_add":               .5,
-                        #"hip_flex":               0.5,
-                        #"hip_flex_r":            .5,
-                        #"com_height_error":      .5, 
-                        #"knee_angle":            .5,
-                        "done":                 -100.
-                }   
         }
     )
 

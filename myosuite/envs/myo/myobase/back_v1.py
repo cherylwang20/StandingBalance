@@ -17,6 +17,8 @@ class BackEnvV0(BaseV0):
     DEFAULT_OBS_KEYS = ['qpos', 'qvel', 'pose_err']
     DEFAULT_RWD_KEYS_AND_WEIGHTS = {
         "pose": 1.0,
+        "positionError": 2,
+        "com_error": 1.,
         "bonus": 4.0,
         "act_reg": 1.0,
         "penalty": 50,
@@ -188,11 +190,11 @@ class BackEnvV0(BaseV0):
             ('bonus',   1.*(pose_dist<self.pose_thd) + 1.*(pose_dist<1.5*self.pose_thd)),
             ('penalty', -1.*(pose_dist>far_th)),
             ('act_reg', -1.*act_mag),
-            ('com_error',             np.exp(-2.*np.abs(comError))),
+            ('com_error', np.exp(-2.*np.abs(comError[0]))),
             # Must keys
             ('sparse',  -1.0*pose_dist),
             ('solved',  pose_dist<self.pose_thd),
-            ('done',    pose_dist[0][0]>far_th),
+            ('done',    pose_dist>far_th),
         ))
         rwd_dict['dense'] = np.sum([wt*rwd_dict[key] for key, wt in self.rwd_keys_wt.items()], axis=0)
         return rwd_dict

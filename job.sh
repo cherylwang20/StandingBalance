@@ -24,4 +24,4 @@ export MKL_NUM_THREADS=1
 
 wandb offline
 
-parallel -j 5 python train_back.py --group 'myoback_1' --num_envs 4 --learning_rate 0.0002 --clip_range 0.1 --seed ::: {6..10} 
+parallel -j 5 python train_back.py --group 'myoback_1' --num_envs 8 --learning_rate 0.0002 --clip_range 0.1 --seed ::: {6..10} 

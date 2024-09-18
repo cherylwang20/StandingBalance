@@ -132,6 +132,46 @@ register_env_with_variants(id='myoStandingBack-v0',
         }
     )
 
+register_env_with_variants(id='myoStandingBack-v1',
+        entry_point='myosuite.envs.myo.myobase.back_v1:BackEnvV0',
+        max_episode_steps=200,
+        kwargs={
+            'model_path': curr_dir+'/../../../simhive/myo_sim/back/myobacklegs.xml',
+            'target_jnt_range': {'LB_wrapjnt_t1':(0, 0),'LB_wrapjnt_t2':(0, 0),'LB_wrapjnt_r3':(0, 0),
+                                 'Abs_t1':(0, 0),'Abs_t2':(0,0),'Abs_r3':(0, 0),
+                                 'flex_extension':(0, 0),'lat_bending':(-0.436, 0.436),'axial_rotation':(0, 0),
+                                 'L4_L5_FE':(0, 0),'L4_L5_LB':(0, 0),'L4_L5_AR':(0, 0),
+                                 'L3_L4_FE':(0, 0),'L3_L4_LB':(0, 0),'L3_L4_AR':(0, 0),
+                                 'L2_L3_FE':(0, 0),'L2_L3_LB':(0, 0),'L2_L3_AR':(0, 0),
+                                 'L1_L2_FE':(0, 0),'L1_L2_LB':(0, 0),'L1_L2_AR':(0, 0),},
+            'target_reach_range': {
+                'pelvis': ((-.005, -.005, .90), (0.005, 0.005, .92)),
+                },
+            'normalize_act': True,
+            'frame_skip': 5,
+            'weighted_reward_keys':{
+                        "positionError":        2.,
+                        #"smallErrorBonus":      1,
+                        #"timeStanding":          3,
+                        "act_reg":         .1,
+                        #"highError":            5,
+                        #"centerOfMass":         2,
+                        #'verticalStep':          1, 
+                        "com_error":            1.,
+                        #"pelvis_rot_err":        .1,
+                        #'feet_height':           .5,
+                        #"com_v":                 .2,
+                        #"feet_width":            .3, 
+                        #"hip_add":               .5,
+                        #"hip_flex":               0.5,
+                        #"hip_flex_r":            .5,
+                        #"com_height_error":      .5, 
+                        #"knee_angle":            .5,
+                        "done":                 -100.
+                }   
+        }
+    )
+
 
 
 # Elbow Exo posing ==============================

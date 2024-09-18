@@ -18,7 +18,7 @@ path = './'
 
 model_num =  '2024_06_18_12_17_42' #'2024_04_23_17_17_53' 
 #'2024_05_04_23_52_14': trained with forward pushing force.
-env_name = 'myoStandingBack-v0'
+env_name = 'myoStandingBack-v1'
 
 
 model = PPO.load('ep_train_results')
@@ -50,9 +50,9 @@ for _ in tqdm(range(2)):
           if movie:
                   geom_1_indices = np.where(env.sim.model.geom_group == 1)
                   env.sim.model.geom_rgba[geom_1_indices, 3] = 0
-                  frame = env.sim.renderer.render_offscreen(width= 640, height=480,camera_id=f'{view}_camera')
+                  frame = env.sim.renderer.render_offscreen(width= 640, height=480,camera_id=f'{view}_view')
                   
-                  frame = (frame).astype(np.uint8)
+                  #frame = (frame).astype(np.uint8)
                   frame = np.flipud(frame)
             # if slow see https://github.com/facebookresearch/myosuite/blob/main/setup/README.md
                   frames.append(frame[::-1,:,:])

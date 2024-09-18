@@ -16,12 +16,14 @@ torso = False
 movie = True
 path = './'
 
-model_num =  '2024_06_18_12_17_42' #'2024_04_23_17_17_53' 
-#'2024_05_04_23_52_14': trained with forward pushing force.
 env_name = 'myoStandingBack-v0'
+model_num =  '2024_09_17_10_36_35' #'2024_04_23_17_17_53' 
+model = PPO.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num +
+                 r'/best_model')
 
 
-model = PPO.load('ep_train_results')
+
+#model = PPO.load('ep_train_results')
 env = gym.make(env_name)
 s, m, t = [], [], []
 
@@ -38,7 +40,7 @@ for _ in tqdm(range(2)):
     obs = env.reset()
     step = 0
     muscle_act = []
-    for _ in tqdm(range(200)):
+    for _ in tqdm(range(300)):
           obs = env.obsdict2obsvec(env.obs_dict, env.obs_keys)[1]
           #obs = env.get_obs_dict()
           

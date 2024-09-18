@@ -128,7 +128,7 @@ class BackEnvV0(BaseV0):
             # Must keys
             ('sparse',  -1.0*pose_dist),
             ('solved',  pose_dist<self.pose_thd),
-            ('done',    pose_dist[0][0]>far_th),
+            ('done',    pose_dist>far_th),
         ))
         rwd_dict['dense'] = np.sum([wt*rwd_dict[key] for key, wt in self.rwd_keys_wt.items()], axis=0)
         return rwd_dict

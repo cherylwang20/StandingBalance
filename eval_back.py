@@ -9,6 +9,10 @@ import os
 import cv2
 import random
 from tqdm.auto import tqdm
+import warnings
+
+# Ignore specific warning
+warnings.filterwarnings("ignore", message=".*tostring.*is deprecated.*")
 
 nb_seed = 1
 
@@ -16,8 +20,10 @@ torso = False
 movie = True
 path = './'
 
-env_name = 'myoStandingBack-v0'
-model_num =  '2024_09_17_10_36_35' #'2024_04_23_17_17_53' 
+#env_name = 'myoStandingBack-v1'
+env_name = 'myoTorsoReachFixed-v0'
+
+model_num = '2024_10_27_12_17_545'
 model = PPO.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num +
                  r'/best_model')
 
@@ -32,22 +38,23 @@ env.reset()
 random.seed() 
 
 frames = []
-view = 'front'
+view = 'side'
 m_act = []
+all_rewards = []
 for _ in tqdm(range(2)):
     ep_rewards = []
     done = False
     obs = env.reset()
     step = 0
     muscle_act = []
-    for _ in tqdm(range(300)):
+    while (not done) and (step < 500):
           obs = env.obsdict2obsvec(env.obs_dict, env.obs_keys)[1]
           #obs = env.get_obs_dict()
           
-          action, _ = model.predict(obs, deterministic=True)
+          action, _ = model.predict(obs, deterministic= False)
           #env.sim.data.ctrl[:] = action
           obs, reward, done, info, _ = env.step(action)
-          #t.append(env.obs_dict['reach_err']) #s.append(env.sim.data.qpos[joint_interest_id])
+          ep_rewards.append(reward)
           m.append(action)
           if movie:
                   geom_1_indices = np.where(env.sim.model.geom_group == 1)
@@ -60,8 +67,9 @@ for _ in tqdm(range(2)):
                   frames.append(frame[::-1,:,:])
                   #env.sim.mj_render(mode='window') # GUI
           step += 1
+    all_rewards.append(np.sum(ep_rewards))
     m_act.append(muscle_act)
-
+print(f"Average reward: {np.mean(all_rewards)}")
 
 '''
 # evaluate policy
@@ -98,5 +106,5 @@ print(f"Metabolic Cost {np.mean(meta_list)}")
 
 if movie:
     os.makedirs(path+'/videos' +'/' + env_name, exist_ok=True)
-    skvideo.io.vwrite(path+'/videos'  +'/' + env_name + '/' + model_num + f'{view}_video.mp4', np.asarray(frames), inputdict = {'-r':'100'} , outputdict={"-pix_fmt": "yuv420p"})
+    skvideo.io.vwrite(path+'/videos'  +'/' + env_name + '/' + model_num + f'{view}_video.mp4', np.asarray(frames), inputdict = {'-r':'200'} , outputdict={"-pix_fmt": "yuv420p"})
 	

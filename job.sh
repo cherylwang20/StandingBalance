@@ -1,10 +1,10 @@
 #!/bin/bash 
 #SBATCH --account=def-durandau
-#SBATCH --job-name=back
+#SBATCH --job-name=back_qpos_pelvis_up
 #SBATCH --cpus-per-task=12
 #SBATCH --time=0-23:00
 #SBATCH --array=1
-#SBATCH --mem=68G
+#SBATCH --mem=48G
 #SBATCH --mail-user=huiyi.wang@mail.mcgill.ca
 #SBATCH --mail-type=ALL
 
@@ -24,4 +24,5 @@ export MKL_NUM_THREADS=1
 
 wandb offline
 
-parallel -j 5 python train_back.py --group 'myoback_1' --num_envs 8 --learning_rate 0.0002 --clip_range 0.1 --seed ::: {6..10} 
+#parallel -j 10 python train_back.py --env_name 'myoStandingBack-v1' --group 'myoback_3' --num_envs 8 --learning_rate 0.0002 --clip_range 0.1 --seed ::: {1..10} 
+parallel -j 10 python train_back.py --env_name 'myoTorsoReachFixed-v0' --group 'myoback_full_5' --num_envs 8 --learning_rate 0.0001 --clip_range 0.1 --seed ::: {1..10} 

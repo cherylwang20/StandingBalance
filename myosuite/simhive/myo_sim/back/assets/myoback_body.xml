@@ -1,25 +1,6 @@
-<?xml version="1.0" ?>
-<mujoco model="MyoSuite's MyoBackLeg Model">
+<mujocoinclude model="MyoBack_v0.01">
 
-<!-- =================================================
-    Copyright 2020 Vikash Kumar, Vittorio Caggiano, Huawei Wang
-    Model   :: Myo Hand (MuJoCoV2.0)
-    Author  :: Vikash Kumar (vikashplus@gmail.com), Vittorio Caggiano, Huawei Wang
-    source  :: https://github.com/vikashplus
-    License :: Under Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-====================================================== -->
-
-    <include file="../scene/myosuite_scene.xml"/>
-    <include file="assets/myoback_assets.xml"/>
-
-<worldbody>
-
-        <geom name="terrain" type="hfield" hfield="terrain" pos="0 0 -0.005" material="matfloor" conaffinity="1" contype="1" rgba="1 1 1 0"/>
-        <!--site name="pelvis_target" size="0.02" pos="-0.01 0.079 .92" group="4"/>-->
-        <site name="pelvis_target" size="0.02" pos="-0.01 0.0192 .9372" group="4"/>
-
-
-        <body name="root" pos="0 0 1" euler="0 0 -1.57">
+    <body name="root" pos="0 0 1" euler="0 0 -1.57">
             <body name="pelvis" pos="0 0 0" quat="0.707107 0.707107 0 0" childclass="myolegs">
                 <site name="pelvis" class="myo_leg_marker"/>
                 <inertial pos="-0.07 -0.03 0" mass="10.96" diaginertia="0.0622075 0.0532711 0.0299242" />
@@ -237,7 +218,6 @@
                 <body name="sacrum" pos="0 0 0" euler="0 0 0">
                     <inertial pos="0 0 0" quat="0.707107 0 0 0.707107" mass="7.486" diaginertia="0.08 0.075 0.03"/>
                     <geom name="sacrum_geom_1" type="mesh" rgba="1 1 1 1" mesh="sacrum_geom_1_sacrum"/>
-                    <!--geom name="sacrum_geom_1_col" type="ellipsoid" size=".110 .13 0.11" class="coll" pos="-.08 -.03 0.07" euler="0.2 0 0" mass="2"/>-->
                     <site name="LTpT_T7_r_LTpT_t7_R-P1" pos="-0.131317 0.0605127 0.00027686"/>
                     <site name="LTpT_T8_r_LTpT_t8_R-P1" pos="-0.142901 0.0502456 0.00037451"/>
                     <site name="LTpT_T9_r_LTpT_t9_R-P1" pos="-0.165822 0.0268352 0"/>
@@ -290,7 +270,6 @@
                         <joint name="LB_wrapjnt_t2" pos="0 0 0" axis="0 1 0" limited="false" type="slide" range="-100000 100000"/>
                         <joint name="LB_wrapjnt_r3" pos="0 0 0" axis="0 0 1" limited="false" range="-1 1"/>
                         <geom name="Cylinder2_cylinder" size="0.07 0.13" pos="-0.118 0.0768 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
-                        <!--geom name="Cylinder2_cylinder_col" type="ellipsoid" size=".110 .13 0.11" class="coll" pos="-.08 -.03 0.07" euler="0.2 0 0" mass="2"/>-->
                         <site name="Cylinder2_cylinder_IL_L1_r_1_sidesite" pos="-0.0340058 0.0777894 -0.00109894" size="0.0005"/>
                         <site name="Cylinder2_cylinder_IL_L1_l_1_sidesite" pos="-0.0418844 0.112331 -0.0720796" size="0.0005"/>
                         <site name="Cylinder2_cylinder_IL_R5_r_1_sidesite" pos="-0.0340043 0.0759544 -0.0125701" size="0.0005"/>
@@ -312,7 +291,6 @@
                         <joint name="lat_bending" pos="0 0 0" axis="1 0 0" range="-0.1 0.1"/>
                         <joint name="axial_rotation" pos="0 0 0" axis="0 1 0" range="-0.1 0.1"/>
                         <geom name="lumbar5_geom_1" type="mesh" rgba="1 1 1 1" mesh="lumbar5_geom_1_lumbar5"/>
-                        <!--geom name="lumbar5_geom_1_col" type="ellipsoid" size=".110 .13 0.11" class="coll" pos="-.08 -.03 0.07" euler="0.2 0 0" mass="2"/>-->
                         <site name="Ps_L5_TP_r_Ps_L5_TP_r-P1" pos="-0.00562001 0.0291398 0.0252881"/>
                         <site name="Ps_L5_VB_r_Ps_L5_VB_r-P1" pos="0.01 0.01241 0.019"/>
                         <site name="Ps_L5_TP_l_Ps_L5_TP_l-P1" pos="-0.00562001 0.0291398 -0.02529"/>
@@ -345,7 +323,6 @@
                             <joint name="Abs_t2" pos="0 0 0" axis="0 1 0" limited="false" type="slide" range="-100000 100000"/>
                             <joint name="Abs_r3" pos="0 0 0" axis="0 0 1" limited="false" range="-1.7 1.7"/>
                             <geom name="Abdomen_ellipsoid" size="0.01" group="2" rgba="0.19 0.83 0.78 0.2"/>
-                            <geom name="abdomen_col" type="ellipsoid" size=".110 .13 0.11" class="coll" pos="-.08 -.03 0.07" euler="0.2 0 0" mass="2"/>
                             <site name="Abdomen_sidesite" pos="0.011 0 0" size="0.0005"/>
                             <site name="EO1_r_EO1_r-P1" pos="0.0065502 0.0627431 0.0308937"/>
                             <site name="EO2_r_EO2_r-P2" pos="0.00723321 0.0329565 0.0364551"/>
@@ -368,7 +345,6 @@
                             <joint name="L4_L5_LB" pos="0 0 0" axis="1 0 0" limited="true" range="-0.0789703 0.0789703"/>
                             <joint name="L4_L5_AR" pos="0 0 0" axis="0 1 0" limited="true" range="-0.02968812 0.02968812"/>
                             <geom name="lumbar4_geom_1" type="mesh" rgba="1 1 1 1" mesh="lumbar4_geom_1_lumbar4"/>
-                            <!--geom name="lumbar4_geom_1_col" type="ellipsoid" size=".110 .13 0.11" class="coll" pos="-.08 -.03 0.07" euler="0.2 0 0" mass="2"/>-->
                             <site name="Ps_L4_TP_r_Ps_L4_TP_r-P1" pos="-0.015649 0.0249464 0.0258768"/>
                             <site name="Ps_L4_L5_IVD_r_Ps_L4_L5_IVD_r-P1" pos="0.00541963 0.00394754 0.0205966"/>
                             <site name="Ps_L4_TP_l_Ps_L4_TP_l-P1" pos="-0.015649 0.0249464 -0.02588"/>
@@ -431,7 +407,6 @@
                                 <joint name="L3_L4_LB" pos="0 0 0" axis="1 0 0" limited="true" range="-0.1068935 0.1068935"/>
                                 <joint name="L3_L4_AR" pos="0 0 0" axis="0 1 0" limited="true" range="-0.02968812 0.02968812"/>
                                 <geom name="lumbar3_geom_1" type="mesh" rgba="1 1 1 1" mesh="lumbar3_geom_1_lumbar3"/>
-                                <!--geom name="lumbar3_geom_1_col" type="ellipsoid" size=".110 .13 0.11" class="coll" pos="-.08 -.03 0.07" euler="0.2 0 0" mass="2"/>-->
                                 <site name="Ps_L3_TP_r_Ps_L3_TP_r-P1" pos="-0.0245065 0.0207283 0.0282599"/>
                                 <site name="Ps_L3_L4_IVD_r_Ps_L3_L4_IVD_r-P1" pos="0.00115193 0.00621063 0.0211533"/>
                                 <site name="Ps_L3_TP_l_Ps_L3_TP_l-P1" pos="-0.0245065 0.0207283 -0.02826"/>
@@ -496,7 +471,6 @@
                                     <joint name="L2_L3_LB" pos="0 0 0" axis="1 0 0" limited="true" range="-0.109075 0.109075"/>
                                     <joint name="L2_L3_AR" pos="0 0 0" axis="0 1 0" limited="true" range="-0.02442594 0.02442594"/>
                                     <geom name="lumbar2_geom_1" type="mesh" rgba="1 1 1 1" mesh="lumbar2_geom_1_lumbar2"/>
-                                    <!--geom name="lumbar2_geom_1_col" type="ellipsoid" size=".110 .13 0.11" class="coll" pos="-.08 -.03 0.07" euler="0.2 0 0" mass="2"/>-->
                                     <site name="Ps_L2_TP_r_Ps_L2_TP_r-P1" pos="-0.0216214 0.014587 0.022249"/>
                                     <site name="Ps_L2_L3_IVD_r_Ps_L2_L3_IVD_r-P1" pos="0.00196252 0.00338519 0.0214479"/>
                                     <site name="Ps_L2_TP_l_Ps_L2_TP_l-P1" pos="-0.0216214 0.014587 -0.02225"/>
@@ -576,7 +550,7 @@
                                         <joint name="L1_L2_FE" pos="0 0 0" axis="0 0 1" limited="true" range="-0.31161 0.115719"/>
                                         <joint name="L1_L2_LB" pos="0 0 0" axis="1 0 0" limited="true" range="-0.0820244 0.0820244"/>
                                         <joint name="L1_L2_AR" pos="0 0 0" axis="0 1 0" limited="true" range="-0.02269806 0.02269806"/>
-                                        <!--geom name="lumbar1_geom_1" type="mesh" rgba="1 1 1 1" mesh="lumbar1_geom_1_lumbar1"/>-->
+                                        <geom name="lumbar1_geom_1" type="mesh" rgba="1 1 1 1" mesh="lumbar1_geom_1_lumbar1"/>
                                         <site name="Ps_L1_VB_r_Ps_L1_VB_r-P1" pos="-0.0101595 0.02327 0.02"/>
                                         <site name="Ps_L1_TP_r_Ps_L1_TP_r-P1" pos="-0.02325 0.0146584 0.0226252"/>
                                         <site name="Ps_L1_L2_IVD_r_Ps_L1_L2_IVD_r-P1" pos="-0.00125362 0.00350798 0.0206834"/>
@@ -620,11 +594,6 @@
                                             <geom name="torso_geom_11" pos="-0.032 0.358 0" quat="0.992198 0 0 -0.124675" type="mesh" rgba="1 1 1 1" mesh="torso_geom_11_thoracic2_s"/>
                                             <geom name="torso_geom_12" pos="-0.028 0.375 0" quat="0.988771 0 0 -0.149438" type="mesh" rgba="1 1 1 1" mesh="torso_geom_12_thoracic1_s"/>
                                             <geom name="torso_geom_13" type="mesh" rgba="1 1 1 1" mesh="torso_geom_13_ribcage_s"/>
-                                            <geom name="torso_geom_2_col" type="ellipsoid" size=".10 .13 0.11" class="coll" pos=".03 .13 0.07" euler="0. 0 0" mass="2"/>
-                                            <geom name="torso_geom_9_col" type="ellipsoid" size=".10 .13 0.11" class="coll" pos=".03 .13 -0.07" euler="0. 0 0" mass="2"/>
-                                            <geom name="torso_geom_10_col" type="ellipsoid" size=".11 .18 0.11" class="coll" pos=".0 .23 0.07" euler="0. 0 0" mass="2"/>
-                                            <geom name="torso_geom_11_col" type="ellipsoid" size=".11 .18 0.11" class="coll" pos=".0 .23 -0.07" euler="0. 0 0" mass="2"/>
-                                            <geom name="torso_geom_12_col" type="ellipsoid" size=".100 .13 0.11" class="coll" pos=".03 -.01 -0.07" euler="0 0 0" mass="2"/>
                                             <geom name="Cylinder_cylinder" size="0.17 0.13" pos="-0.21 0.04 0" type="cylinder" group="2" rgba="0.19 0.83 0.78 0.2"/>
                                             <geom name="Chest_r_ellipsoid" size="0.073" pos="0.008 0.21 0.01" quat="0.97517 -0.0198338 -0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
                                             <geom name="Chest_l_ellipsoid" size="0.073" pos="0.008 0.21 -0.01" quat="0.97517 0.0198338 0.197677 0.0978434" group="2" rgba="0.19 0.83 0.78 0.2"/>
@@ -838,7 +807,7 @@
                 <body name="femur_r" pos="-0.056276 -0.07849 0.07726">
                     <site name="hip_r" class="myo_leg_marker"/>
                     <inertial pos="0 -0.195 -0.0005" quat="0.708013 -0.7062 0 0" mass="8.4" diaginertia="0.1694 0.1694 0.0245269" />
-                    <joint axis="0 0 1" name="hip_flexion_r" pos="0 0 0" range="-0.523599 1.0944"/>
+                    <joint axis="0 0 1" name="hip_flexion_r" pos="0 0 0" range="-0.523599 2.0944"/>
                     <joint axis="1 0 0" name="hip_adduction_r" pos="0 0 0" range="-0.872665 0.523599"/>
                     <joint axis="0 1 0" name="hip_rotation_r" pos="0 0 0" range="-0.698132 0.698132"/>
                     <geom name="r_femur1_col" size=".080" class="coll" fromto="0 0 .02 0 -0.2 .015" mass="4"/>
@@ -1052,7 +1021,7 @@
                 <body name="femur_l" pos="-0.056276 -0.07849 -0.07726">
                     <site name="hip_l" class="myo_leg_marker"/>
                     <inertial pos="0 -0.195 0.0005" quat="0.7062 -0.708013 0 0" mass="8.4" diaginertia="0.1694 0.1694 0.0245269" />
-                    <joint axis="0 0 1" name="hip_flexion_l" pos="0 0 0" range="-0.523599 1.0944"/>
+                    <joint axis="0 0 1" name="hip_flexion_l" pos="0 0 0" range="-0.523599 2.0944"/>
                     <joint axis="-1 0 0" name="hip_adduction_l" pos="0 0 0" range="-0.872665 0.523599"/>
                     <joint axis="0 -1 0" name="hip_rotation_l" pos="0 0 0" range="-0.698132 0.698132"/>
                     <geom name="l_femur1_col" size=".080" class="coll" fromto="0 0 -.02 0 -0.2 -.015" mass="4"/>
@@ -1264,13 +1233,5 @@
                     </body>
                 </body>
             </body>
-            <freejoint name="root"/>
         </body>
-    </worldbody>
-
-    <keyframe>
-        <key qpos='0 0 0.97 0.707388 0 0 -0.706825 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'/>   
-        <key qpos='-0.0136944 0.0698699 0.94441 0.689328 0.0389724 -0.0076196 -0.72336 -0.00642821 -0.00214284 -0.116637 -0.1 0.001 0 -0.000126978 -0.000226566 -0.124976 -0.0361496 -0.0178107 0.00180319 -0.0398699 -0.0241601 0.00188748 -0.0451664 -0.0246399 0.00157585 -0.0498488 -0.018522 0.00147089 0.188144 -0.139139 -0.0286107 0.00343204 0.0012698 0.16752 0.0338426 0.182137 0.0472991 0.170183 -0.224107 -0.0366147 0.0310955 -0.372985 0.147704 -0.0334383 -0.133154 -0.00318332 0.00121277 0.14658 0.0324214 -0.170968 -0.00352039 0.0552167 -0.183708 -0.0350717 0.0332817 -0.323264'/>    
-    </keyframe>
-
-</mujoco>
+</mujocoinclude>

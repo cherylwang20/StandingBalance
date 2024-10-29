@@ -18,9 +18,9 @@ class BackEnvV0(BaseV0):
     DEFAULT_RWD_KEYS_AND_WEIGHTS = {
         "pose": 1.0,
         "positionError": 2,
-        "com_error": 1.,
+        "com_error": 2.,
         "bonus": 4.0,
-        "act_reg": 1.0,
+        "act_reg": 2.0,
         "penalty": 50,
         "done": 0,
     }
@@ -181,7 +181,6 @@ class BackEnvV0(BaseV0):
         far_th = np.pi/2
         positionError = np.linalg.norm(obs_dict['reach_err'], axis=-1)
         comError = np.linalg.norm(obs_dict['err_com'], axis=-1)
-        #print(pose_dist)
 
         rwd_dict = collections.OrderedDict((
             # Optional Keys
@@ -194,7 +193,7 @@ class BackEnvV0(BaseV0):
             # Must keys
             ('sparse',  -1.0*pose_dist),
             ('solved',  pose_dist<self.pose_thd),
-            ('done',    pose_dist>far_th),
+            ('done',    obs_dict['com_height'][0] < 0.5),
         ))
         rwd_dict['dense'] = np.sum([wt*rwd_dict[key] for key, wt in self.rwd_keys_wt.items()], axis=0)
         return rwd_dict

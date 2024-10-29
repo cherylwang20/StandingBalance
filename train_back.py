@@ -11,7 +11,7 @@ from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.callbacks import EvalCallback, CallbackList, BaseCallback
 from stable_baselines3.common.monitor import Monitor
 from wandb.integration.sb3 import WandbCallback
-#import helper_callback
+from typing import Callable, Dict, List, Optional, Tuple, Type, Union
 
 from datetime import datetime
 import torch
@@ -22,7 +22,7 @@ parser = argparse.ArgumentParser(description="Main script to train an agent")
 parser.add_argument("--seed", type=int, default=0, help="Seed for random number generator")
 parser.add_argument("--num_envs", type=int, default=1, help="Number of parallel environments")
 parser.add_argument("--env_name", type=str, default=1, help="environment name")
-parser.add_argument("--group", type=str, default='testing', help="environment name")
+parser.add_argument("--group", type=str, default='testing', help="group name")
 parser.add_argument("--learning_rate", type=float, default=0.0003, help="Learning rate for the optimizer")
 parser.add_argument("--clip_range", type=float, default=0.2, help="Clip range for the policy gradient update")
 
@@ -38,6 +38,25 @@ def make_env(env_name, idx, seed=0):
         return env
     return _init
 
+def linear_schedule(initial_value: float) -> Callable[[float], float]:
+    """
+    Linear learning rate schedule.
+
+    :param initial_value: Initial learning rate.
+    :return: schedule that computes
+      current learning rate depending on remaining progress
+    """
+    def func(progress_remaining: float) -> float:
+        """
+        Progress will decrease from 1 (beginning) to 0.
+
+        :param progress_remaining:
+        :return: current learning rate
+        """
+        return progress_remaining * initial_value
+
+    return func
+
 class TensorboardCallback(BaseCallback):
 	"""
 	Custom callback for plotting additional values in tensorboard.
@@ -52,9 +71,9 @@ class TensorboardCallback(BaseCallback):
 	    return True
 	
 def main():
-    dof_env = ['myoStandingBack-v1']
+    dof_env = ['myoTorsoReachFixed-v0']
 
-    training_steps = 10000000
+    training_steps = 20000000
     for env_name in dof_env:
         print('Begin training')
         ENTROPY = 0.01
@@ -62,6 +81,8 @@ def main():
         time_now = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         time_now = time_now + str(args.seed)
         print(time_now + '\n\n')
+        LR = linear_schedule(args.learning_rate)
+        CR = linear_schedule(args.clip_range)
 
         IS_WnB_enabled = False
 
@@ -96,13 +117,13 @@ def main():
                             )
         except ImportError as e:
             pass 
-        env_name = 'myoStandingBack-v1'
+        env_name = args.env_name
         log_path = './standingBalance/policy_best_model/'+ env_name + '/' + time_now +'/'
-        num_cpu = 4
+        num_cpu = args.num_envs
         env = SubprocVecEnv([make_env(env_name, i, seed=args.seed) for i in range(num_cpu)])
         envs = VecMonitor(env)
         print(env_name)
-        eval_callback = EvalCallback(env, best_model_save_path=log_path, log_path=log_path, eval_freq=10000, deterministic=True, render=False)
+        eval_callback = EvalCallback(env, best_model_save_path=log_path, log_path=log_path, eval_freq=2000, deterministic=True, render=False)
 
 
         policy_kwargs = {
@@ -112,7 +133,7 @@ def main():
         #policy_kwargs = dict(activation_fn=torch.nn.Sigmoid, net_arch=(dict(pi=[64, 64], vf=[64, 64])))
         #model = PPO.load('standingBalance/policy_best_model/myoLegReachFixed-v2/2023_11_16_16_11_00/best_model',  env, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
     
-        model = PPO('MlpPolicy', env, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
+        model = PPO('MlpPolicy', env, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
 
         obs_callback = TensorboardCallback()
         callback = CallbackList([eval_callback, WandbCallback(gradient_save_freq=100,

@@ -23,7 +23,7 @@ path = './'
 #env_name = 'myoStandingBack-v1'
 env_name = 'myoTorsoReachFixed-v0'
 
-model_num = '2024_10_27_12_17_545'
+model_num = '2024_10_26_10_58_3010'
 model = PPO.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num +
                  r'/best_model')
 

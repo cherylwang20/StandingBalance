@@ -20,16 +20,17 @@ class ReachEnvV0(BaseV0):
     DEFAULT_OBS_KEYS = ['qpos', 'qvel', 'tip_pos', 'reach_err']
     # Weights should be positive, unless the contribution of the components of the reward shuld be changed. 
     DEFAULT_RWD_KEYS_AND_WEIGHTS = {
-        "positionError":    3.0,
+        #"positionError":    1.0,
         "metabolicCost":    1,
-        #"pose": 0.1,
-        #"bonus": 0.1,
-        "pelvis_rot_err": .5, 
-        #'hip_add': 1,
-        'centerOfMass':        1, 
-        'feet_height':          3,
-        #"com_error":            .5,
+        "pose":             3,
+        #"pelvis_rot_err": .5, 
+        #'hip_flex':               1,
+        #'knee_angle':             1, 
+        #'centerOfMass':        1, 
+        #'feet_height':          2,
+        "com_error":            .5,
         #"com_height_error":      1, 
+        #"bonus":                1, 
         "done":                 -10.
     } 
 
@@ -111,6 +112,7 @@ class ReachEnvV0(BaseV0):
             self.obs_dict['tip_pos'] = np.append(self.obs_dict['tip_pos'], self.sim.data.site_xpos[self.tip_sids[isite]].copy())
             self.obs_dict['target_pos'] = np.append(self.obs_dict['target_pos'], self.sim.data.site_xpos[self.target_sids[isite]].copy())
         self.obs_dict['reach_err'] = np.array(self.obs_dict['target_pos'])-np.array(self.obs_dict['tip_pos'])
+
         # center of mass and base of support
         xpos = {}
         body_names = ['calcn_l', 'calcn_r', 'femur_l', 'femur_r', 'patella_l', 'patella_r', 'pelvis', 
@@ -214,8 +216,10 @@ class ReachEnvV0(BaseV0):
         hip_flex_r = self.obs_dict['hip_flex_r'].reshape(-1)[0]
         hip_add = self.obs_dict['hip_add']
         knee_angle = self.obs_dict['knee_angle']
-        self.obs_dict['pelvis_target_rot'] = [np.pi/2, -np.pi/2 , 0]
+        self.obs_dict['pelvis_target_rot'] = [-2.6389, -np.pi/2 , 2.012]
         self.obs_dict['pelvis_rot'] = mat2euler(np.reshape(self.sim.data.site_xmat[self.sim.model.site_name2id("pelvis")], (3, 3)))
+        
+        #print('rotation', self.obs_dict['pelvis_rot'])
         pelvis_rot_err = np.abs(np.linalg.norm(self.obs_dict['pelvis_rot'] - self.obs_dict['pelvis_target_rot'] , axis=-1))
         #print(self.obs_dict['pelvis_rot'])
         #print(-self.obs_dict['pelvis_rot'][0]+self.sim.data.joint('hip_flexion_r').qpos.copy() )
@@ -232,12 +236,11 @@ class ReachEnvV0(BaseV0):
         centerMass = np.squeeze(obs_dict['com']) #.reshape(1,2)
         bos = mplPath.Path(baseSupport.T)
         within = bos.contains_point(centerMass)
-        print(within)
         
         feet_width, vertical_sep = self.feet_width()
         feet_height = np.linalg.norm(obs_dict['feet_heights'])
         com_height = obs_dict['com_height'][0]
-        com_height_error = np.linalg.norm(obs_dict['com_height'][0]-0.89)
+        com_height_error = np.linalg.norm(obs_dict['com_height'][0]-0.855)
         com_bos = 1 if within else -1 # Reward is 100 if com is in bos.
         farThresh = self.far_th*len(self.tip_sids) if np.squeeze(obs_dict['time'])>2*self.dt else np.inf # farThresh = 0.5
         nearThresh = len(self.tip_sids)*.050 # nearThresh = 0.05
@@ -250,12 +253,13 @@ class ReachEnvV0(BaseV0):
         timeStanding = timeStanding.reshape(-1)[0]
         com_height = com_height.reshape(-1)[0]
         hip_add = hip_add.reshape(-1)[0]
-        hip_fle = hip_fle.reshape(-1)[0]
+        hip_fle = np.abs(hip_fle.reshape(-1)[0] - 0.2)
         knee_angle = knee_angle.reshape(-1)[0]
         com_vel = com_vel.reshape(-1)[0]
+        #print(pose_dist, hip_fle)
         rwd_dict = collections.OrderedDict((
             # Optional Keys
-            ('positionError',        np.exp(-5*positionError) ),#-10.*vel_dist
+            ('positionError',        np.exp(-1*positionError) ),#-10.*vel_dist
             ('pose',    -1.*pose_dist),
             ('bonus',   1.*(pose_dist<self.pose_thd) + 1.*(pose_dist<1.5*self.pose_thd)),
             #('smallErrorBonus',     1.*(positionError<2*nearThresh) + 1.*(positionError<nearThresh)),
@@ -270,15 +274,17 @@ class ReachEnvV0(BaseV0):
             ('pelvis_rot_err',        -1 * pelvis_rot_err),
             ('com_v',                  3*np.exp(-5*np.abs(com_vel))), #3*(com_bos - np.tanh(feet_v))**2), #penalize when COM_v is high
             ('hip_add',               2*np.clip(hip_add, -0.3, -0.2)),
-            ('knee_angle',             10*np.clip(knee_angle, 1, 1.2)),
-            ('hip_flex',              10*np.clip(hip_fle, 0.4, 0.7)),
+            ('knee_angle',             10*np.clip(knee_angle, 0.4, 0.6)),
+            ('hip_flex',               np.exp(-hip_fle)),#10*np.clip(hip_fle, 0.4, 0.7)),
             ('hip_flex_r',             5*np.exp(-.5*np.abs(hip_flex_r - 1))),
             # Must keys
+            ('bonus',                1),
             ('sparse',              -1.*positionError),
             ('solved',              1.*hip_flex_r>1),  # standing task succesful
             ('done',                1.*com_height < 0.5), # model has failed to complete the task 
         ))
         rwd_dict['dense'] = np.sum([wt*rwd_dict[key] for key, wt in self.rwd_keys_wt.items()], axis=0)
+        #print([wt*rwd_dict[key] for key, wt in self.rwd_keys_wt.items()])
         return rwd_dict
     
     def _get_feet_heights(self):

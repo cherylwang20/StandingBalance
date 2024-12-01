@@ -38,7 +38,7 @@ class BaseV0(env_base.MujocoEnv):
             obs_keys = (
                 obs_keys.copy()
             )  # copy before editing incase other envs are using the defaults
-            obs_keys.append("act")
+            #obs_keys.append("act")
 
         # ids
         self.tip_sids = []

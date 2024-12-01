@@ -1,5 +1,6 @@
 import gym
 from myosuite.myosuite.utils import gym
+from gym import spaces
 import numpy as np
 from stable_baselines3 import PPO, SAC
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecMonitor
@@ -23,15 +24,65 @@ parser.add_argument("--env_name", type=str, default=1, help="environment name")
 parser.add_argument("--group", type=str, default='testing', help="group name")
 parser.add_argument("--learning_rate", type=float, default=0.0003, help="Learning rate for the optimizer")
 parser.add_argument("--clip_range", type=float, default=0.2, help="Clip range for the policy gradient update")
+parser.add_argument("--algo", type=str, default='PPO', help="algorithm for training")
 
 args = parser.parse_args()
 
 step = False
 sarco = False
 
+class ActionSpaceWrapper(gym.ActionWrapper):
+    def __init__(self, env):
+        super().__init__(env)
+        self.syn_action_shape = 26 + 80  # 26 reduced + 80 direct mappings
+        self.action_space = gym.spaces.Box(low=-1., high=1., shape=(self.syn_action_shape,), dtype=np.float32)
+        
+        # Define the mapping from reduced to original action space for the first 210 muscles
+        self.action_mapping = {
+            0: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            1: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+            2: [22],
+            3: [23],
+            4: [24, 25, 26, 27, 32, 33, 34, 35, 36, 37, 38, 39],
+            5: [28, 29, 30, 31, 40, 41, 42, 43, 44, 45, 46, 47],
+            6: [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
+            7: [60, 61, 62, 63, 64, 65, 66, 67, 68],
+            8: [69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80],
+            9: [81, 82, 83, 84, 85, 86, 87, 88, 89],
+            10: [90, 91, 92, 93, 94],
+            11: [95, 96, 97, 98, 99],
+            12: [100, 101, 102, 103, 104, 105, 106],
+            13: [107, 108, 109, 110, 111, 112, 113],
+            14: [114, 115, 116, 117, 118],
+            15: [119, 120, 121, 122, 123],
+            16: [124, 125, 126, 127, 128, 129],
+            17: [130, 131, 132, 133, 134, 135],
+            18: [136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155],
+            19: [156, 157, 158, 159, 160],
+            20: [161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180],
+            21: [181, 182, 183, 184, 185],
+            22: [186, 187, 188, 189, 190, 191],
+            23: [192, 193, 194, 195, 196, 197],
+            24: [198, 199, 200, 201, 202, 203],
+            25: [204, 205, 206, 207, 208, 209]
+        }
+        
+        # Add the direct mapping for the next 80 muscles (210 to 289)
+        for i in range(26, 106):
+            self.action_mapping[i] = [i + 184]  # Mapping 210 to 290 (offset by 184)
+
+    def action(self, action):
+        # Map the reduced action space to the full action vector
+        assert len(action) == self.syn_action_shape
+
+        full_action = np.zeros(self.env.action_space.shape)
+        for i, indices in self.action_mapping.items():
+            full_action[indices] = action[i]
+        return full_action
+
 def make_env(env_name, idx, seed=0):
     def _init():
-        env = gym.make(env_name)
+        env = ActionSpaceWrapper(gym.make(env_name))
         env.seed(seed + idx)
         return env
     return _init
@@ -69,7 +120,8 @@ class TensorboardCallback(BaseCallback):
 	    return True
 	
 def main():
-    dof_env = ['myoTorsoReachFixed-v0']
+    dof_env = ['myoStandingBack-v0']
+
 
     training_steps = 20000000
     for env_name in dof_env:
@@ -77,7 +129,7 @@ def main():
         ENTROPY = 0.01
         start_time = time.time()
         time_now = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        time_now = time_now + str(args.seed)
+        time_now = time_now + str(args.seed) + args.algo
         print(time_now + '\n\n')
         LR = linear_schedule(args.learning_rate)
         CR = linear_schedule(args.clip_range)
@@ -120,8 +172,8 @@ def main():
         num_cpu = args.num_envs
         env = SubprocVecEnv([make_env(env_name, i, seed=args.seed) for i in range(num_cpu)])
         envs = VecMonitor(env)
-        print(env_name)
-        eval_callback = EvalCallback(env, best_model_save_path=log_path, log_path=log_path, eval_freq=2000, deterministic=True, render=False)
+
+        eval_callback = EvalCallback(envs, best_model_save_path=log_path, log_path=log_path, eval_freq=2000, deterministic=True, render=False)
 
 
         policy_kwargs = {
@@ -130,14 +182,13 @@ def main():
             }
         #policy_kwargs = dict(activation_fn=torch.nn.Sigmoid, net_arch=(dict(pi=[64, 64], vf=[64, 64])))
         #model = PPO.load('standingBalance/policy_best_model/myoLegReachFixed-v2/2023_11_16_16_11_00/best_model',  env, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
-        #model = PPO('MlpPolicy', env, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
-
-        model = SAC('MlpPolicy', env, learning_rate=LR,  buffer_size=10000, verbose=0,  tensorboard_log=f"runs/{time_now}")
-
+        if args.algo == 'PPO':
+            model = PPO('MlpPolicy', envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
+        elif args.algo == 'SAC':
+            model = SAC('MlpPolicy', envs, buffer_size=10000, learning_rate=LR, verbose=0, tensorboard_log=f"runs/{time_now}")
+        
         obs_callback = TensorboardCallback()
-        callback = CallbackList([eval_callback, WandbCallback(gradient_save_freq=100,
-                    model_save_freq=10000,
-                    model_save_path=f"models/{time_now}")])#, obs_callback])
+        callback = CallbackList([eval_callback, WandbCallback(gradient_save_freq=100)])#, obs_callback])
 
         model.learn(total_timesteps= training_steps, tb_log_name=env_name+"_" + time_now, callback=callback)
         model.save('ep_train_results')
@@ -151,6 +202,8 @@ def main():
         print(f"Elapsed time: {hours} hours, {minutes} minutes, {seconds} seconds.")
         if IS_WnB_enabled:
             run.finish()
+
+
 if __name__ == "__main__":
     # TRAIN
     main()

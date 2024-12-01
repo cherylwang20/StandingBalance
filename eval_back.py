@@ -1,12 +1,11 @@
 import gym
 from myosuite.myosuite.utils import gym
 import numpy as np
-from stable_baselines3 import PPO
+from stable_baselines3 import PPO, SAC
 import matplotlib.pyplot as plt
 import skvideo
 import skvideo.io
 import os
-import cv2
 import random
 from tqdm.auto import tqdm
 import warnings
@@ -23,10 +22,9 @@ path = './'
 #env_name = 'myoStandingBack-v1'
 env_name = 'myoTorsoReachFixed-v0'
 
-model_num = '2024_10_26_10_58_3010'
-model = PPO.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num +
-                 r'/best_model')
-
+model_num = '2024_11_06_10_27_380'
+#model = PPO.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num + r'/best_model')
+model = SAC.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num + r'/best_model')
 
 
 #model = PPO.load('ep_train_results')
@@ -51,7 +49,7 @@ for _ in tqdm(range(2)):
           obs = env.obsdict2obsvec(env.obs_dict, env.obs_keys)[1]
           #obs = env.get_obs_dict()
           
-          action, _ = model.predict(obs, deterministic= False)
+          action, _ = model.predict(obs, deterministic= True)
           #env.sim.data.ctrl[:] = action
           obs, reward, done, info, _ = env.step(action)
           ep_rewards.append(reward)

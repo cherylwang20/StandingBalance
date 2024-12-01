@@ -20,15 +20,15 @@ class ReachEnvV0(BaseV0):
     DEFAULT_OBS_KEYS = ['qpos', 'qvel', 'tip_pos', 'reach_err']
     # Weights should be positive, unless the contribution of the components of the reward shuld be changed. 
     DEFAULT_RWD_KEYS_AND_WEIGHTS = {
-        #"positionError":    1.0,
+        "positionError":    1.0,
         "metabolicCost":    1,
-        "pose":             3,
+        "pose":             1,
         #"pelvis_rot_err": .5, 
         #'hip_flex':               1,
         #'knee_angle':             1, 
         #'centerOfMass':        1, 
-        #'feet_height':          2,
-        "com_error":            .5,
+        'feet_height':          1,
+        "com_error":            1,
         #"com_height_error":      1, 
         #"bonus":                1, 
         "done":                 -10.
@@ -267,9 +267,9 @@ class ReachEnvV0(BaseV0):
             ('metabolicCost',       -1.*metabolicCost),
             #('highError',           -1.*(positionError>farThresh)),
             ('centerOfMass',        1.*(com_bos)),
-            ('com_error',             np.exp(-2.*np.abs(comError))),
+            ('com_error',             np.exp(-1.*np.abs(comError))),
             ('com_height_error',     np.exp(-5*np.abs(com_height_error))),
-            ('feet_height',         -1*(feet_height)),
+            ('feet_height',         np.exp(-1*feet_height)),
             ('feet_width',            5*np.clip(feet_width, 0.3, 0.5)),
             ('pelvis_rot_err',        -1 * pelvis_rot_err),
             ('com_v',                  3*np.exp(-5*np.abs(com_vel))), #3*(com_bos - np.tanh(feet_v))**2), #penalize when COM_v is high

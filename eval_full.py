@@ -72,7 +72,7 @@ path = './'
 env_name = 'myoTorsoReachFixed-v0'
 #env_name = 'myoStandingBack-v1'
 
-model_num ='2024_11_30_22_03_240SAC' #'2024_09_17_10_36_35'
+model_num ='2024_12_01_13_45_340SAC' #'2024_09_17_10_36_35'
 model = SAC.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num +
                  r'/best_model')
 

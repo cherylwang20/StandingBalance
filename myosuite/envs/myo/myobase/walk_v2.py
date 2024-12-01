@@ -150,8 +150,8 @@ class ReachEnvV0(BaseV0):
         obs_dict = {}
 
         obs_dict['time'] = np.array([sim.data.time])      
-        obs_dict['qpos'] = sim.data.qpos[:].copy()
-        obs_dict['qvel'] = sim.data.qvel[:].copy()*self.dt
+        obs_dict['qpos'] = sim.data.qpos[:56].copy()
+        obs_dict['qvel'] = sim.data.qvel[:56].copy()*self.dt
         obs_dict['pose_err'] = np.array([0, 0, 0]) - np.array([sim.data.joint('flex_extension').qpos.copy(),sim.data.joint('lat_bending').qpos.copy(), sim.data.joint('axial_rotation').qpos.copy()])
         #print([self.sim.data.joint('flex_extension').qpos.copy(),self.sim.data.joint('lat_bending').qpos.copy(), self.sim.data.joint('axial_rotation').qpos.copy()])
         if sim.model.na>0:
@@ -281,7 +281,7 @@ class ReachEnvV0(BaseV0):
             ('bonus',                1),
             ('sparse',              -1.*positionError),
             ('solved',              1.*hip_flex_r>1),  # standing task succesful
-            ('done',                1.*com_height < 0.5), # model has failed to complete the task 
+            ('done',                False), # model has failed to complete the task 
         ))
         rwd_dict['dense'] = np.sum([wt*rwd_dict[key] for key, wt in self.rwd_keys_wt.items()], axis=0)
         #print([wt*rwd_dict[key] for key, wt in self.rwd_keys_wt.items()])

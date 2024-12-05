@@ -51,7 +51,8 @@ class ReachEnvV0(BaseV0):
         self.cpt = 0
         self.perturbation_time = -1
         self.perturbation_duration = 0
-        self.force_range = [0, 0]
+        eval_range = kwargs['eval_range'] if 'eval_range' in kwargs else [0, 0]
+        self.force_range = eval_range
         self._setup(**kwargs)
 
     def _setup(self,
@@ -151,8 +152,8 @@ class ReachEnvV0(BaseV0):
 
         obs_dict['time'] = np.array([sim.data.time])      
         obs_dict['qpos'] = sim.data.qpos[:56].copy()
-        obs_dict['qvel'] = sim.data.qvel[:56].copy()*self.dt
-        obs_dict['pose_err'] = np.array([0, 0, 0]) - np.array([sim.data.joint('flex_extension').qpos.copy(),sim.data.joint('lat_bending').qpos.copy(), sim.data.joint('axial_rotation').qpos.copy()])
+        obs_dict['qvel'] = sim.data.qvel[:55].copy()*self.dt
+        obs_dict['pose_err'] = np.array([-0.3, 0, 0]) - np.array([sim.data.joint('flex_extension').qpos.copy(),sim.data.joint('lat_bending').qpos.copy(), sim.data.joint('axial_rotation').qpos.copy()])
         #print([self.sim.data.joint('flex_extension').qpos.copy(),self.sim.data.joint('lat_bending').qpos.copy(), self.sim.data.joint('axial_rotation').qpos.copy()])
         if sim.model.na>0:
             obs_dict['act'] = sim.data.act[:].copy()
@@ -315,7 +316,7 @@ class ReachEnvV0(BaseV0):
         else:
             perturbation_magnitude = np.random.uniform(ran[0], ran[1])
         self.perturbation_magnitude = self.allocate_randomly(perturbation_magnitude)#[0,0,0, perturbation_magnitude, 0, 0] # front and back
-        self.perturbation_duration = 20  # steps
+        self.perturbation_duration = 40  # steps
         return
         # generate a valid target
 

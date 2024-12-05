@@ -1,18 +1,12 @@
 import gym
 from myosuite.myosuite.utils import gym
 import numpy as np
-from stable_baselines3 import PPO, SAC
-import matplotlib.pyplot as plt
-import skvideo
-import skvideo.io
-import os
-import random
-from tqdm.auto import tqdm
-import warnings
-
-# Ignore specific warning
-warnings.filterwarnings("ignore", message=".*tostring.*is deprecated.*")
-
+from gym.spaces import Box
+import ray
+from ray import tune
+from ray.rllib.algorithms.ppo import PPO
+from ray.rllib.env.multi_agent_env import MultiAgentEnv
+from ray.tune.registry import register_env
 
 class ActionSpaceWrapper(gym.ActionWrapper):
     def __init__(self, env):
@@ -63,65 +57,47 @@ class ActionSpaceWrapper(gym.ActionWrapper):
             full_action[indices] = action[i]
         return full_action
 
-nb_seed = 1
 
-torso = False
-movie = True
-path = './'
+class MyMultiAgentEnv(MultiAgentEnv):
+    def __init__(self, env_config):
+        self.env = ActionSpaceWrapper(gym.make('myoTorsoReachFixed-v0'))
+        # Split the action space for two agents with different policies
+        self.agents = {
+            "agent_1": Box(low=-1, high=1, shape=(26,), dtype=np.float32),  # Actions 0-25
+            "agent_2": Box(low=-1, high=1, shape=(81,), dtype=np.float32)   # Actions 26-106
+        }
 
-env_name = 'myoTorsoReachFixed-v1'
-#env_name = 'myoStandingBack-v1'
+    def reset(self):
+        obs = self.env.reset()
+        return {agent: obs for agent in self.agents}
 
-model_num ='2024_12_03_16_21_320PPO' #'2024_09_17_10_36_35'
-model = PPO.load(path+'/standingBalance/policy_best_model'+ '/'+ 'myoTorsoReachFixed-v0' + '/' + model_num +
-                 r'/best_model')
-
-
-
-#model = PPO.load('ep_train_results')
-env = ActionSpaceWrapper(gym.make(env_name))
-s, m, t = [], [], []
-
-env.reset()
-
-random.seed() 
-
-leg_action = np.loadtxt('muscle_activation.txt', dtype=np.float32)
-back_action = np.loadtxt('back_activation.txt', dtype=np.float32)
-
-frames = []
-view = 'front'
-m_act = []
-all_rewards = []
-for _ in tqdm(range(1)):
-    ep_rewards = []
-    done = False
-    obs = env.reset()
-    step = 0
-    muscle_act = []
-    while (not done) and (step < 600):
-          obs = env.obsdict2obsvec(env.obs_dict, env.obs_keys)[1]  
-          action, _ = model.predict(obs, deterministic= True)
-          obs, reward, done, info, _ = env.step(action)
-          ep_rewards.append(reward)
-          m.append(action)
-          if movie:
-                  geom_1_indices = np.where(env.sim.model.geom_group == 1)
-                  env.sim.model.geom_rgba[geom_1_indices, 3] = 0
-                  frame = env.sim.renderer.render_offscreen(width= 440, height=380,camera_id='self')
-                  
-                  #frame = (frame).astype(np.uint8)
-                  frame = np.flipud(frame)
-            # if slow see https://github.com/facebookresearch/myosuite/blob/main/setup/README.md
-                  frames.append(frame[::-1,:,:])
-                  #env.sim.mj_render(mode='window') # GUI
-          step += 1
-    all_rewards.append(np.sum(ep_rewards))
-    m_act.append(muscle_act)
-print(f"Average reward: {np.mean(all_rewards)}")
+    def step(self, action_dict):
+        combined_action = np.concatenate([action_dict["agent_1"], action_dict["agent_2"]])
+        obs, reward, done, info = self.env.step(combined_action)
+        return {agent: obs for agent in self.agents}, {agent: reward for agent in self.agents}, {agent: done for agent in self.agents}, {agent: info for agent in self.agents}
 
 
-if movie:
-    os.makedirs(path+'/videos' +'/' + env_name, exist_ok=True)
-    skvideo.io.vwrite(path+'/videos'  +'/' + env_name + '/' + model_num + f'{view}_video.mp4', np.asarray(frames), inputdict = {'-r':'200'} , outputdict={"-pix_fmt": "yuv420p"})
-	
+ray.init()
+env_name = 'myoTorsoReachFixed-v0'
+gym.make(env_name)
+register_env('myoTorsoReachFixed-v1', lambda config: MyMultiAgentEnv(config))
+
+policy_1 = (None, Box(low=-1, high=1, shape=(26,), dtype=np.float32), Box(low=-1, high=1, shape=(26,), dtype=np.float32), {})
+policy_2 = (None, Box(low=-1, high=1, shape=(81,), dtype=np.float32), Box(low=-1, high=1, shape=(81,), dtype=np.float32), {})
+
+policy_mapping_fn = lambda agent_id: "policy_1" if agent_id == "agent_1" else "policy_2"
+
+trainer_config = {
+    "env": env_name,
+    "multiagent": {
+        "policies": {
+            "policy_1": policy_1,
+            "policy_2": policy_2
+        },
+        "policy_mapping_fn": policy_mapping_fn,
+    },
+}
+
+trainer = PPO(config=trainer_config)
+for i in range(100):  # Train for 100 iterations
+    print(trainer.train())

@@ -121,7 +121,7 @@ def main():
         env = SubprocVecEnv([make_env(env_name, i, seed=args.seed) for i in range(num_cpu)])
         envs = VecMonitor(env)
         print(env_name)
-        eval_callback = EvalCallback(env, best_model_save_path=log_path, log_path=log_path, eval_freq=2000, deterministic=True, render=False)
+        eval_callback = EvalCallback(envs, best_model_save_path=log_path, log_path=log_path, eval_freq=2000, deterministic=True, render=False)
 
 
         policy_kwargs = {

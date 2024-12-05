@@ -136,7 +136,7 @@ def main():
 
         IS_WnB_enabled = False
 
-        loaded_model = 'N/A'
+        loaded_model = '2024_12_03_16_21_320PPO'
         try:
             import wandb
             from wandb.integration.sb3 import WandbCallback
@@ -184,6 +184,7 @@ def main():
         #model = PPO.load('standingBalance/policy_best_model/myoLegReachFixed-v2/2023_11_16_16_11_00/best_model',  env, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
         if args.algo == 'PPO':
             model = PPO('MlpPolicy', envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
+            model = PPO.load('standingBalance/policy_best_model/' + 'myoTorsoReachFixed-v0' + '/' + loaded_model +'/best_model',  envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
         elif args.algo == 'SAC':
             model = SAC('MlpPolicy', envs, buffer_size=10000, learning_rate=LR, verbose=0, tensorboard_log=f"runs/{time_now}")
         

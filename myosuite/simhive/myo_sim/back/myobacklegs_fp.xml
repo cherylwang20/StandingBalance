@@ -17,25 +17,27 @@
         <geom name="terrain" type="hfield" hfield="terrain" pos="0 0 -0.005" material="matfloor" conaffinity="1" contype="1" rgba="1 1 1 0"/>
         <!--site name="pelvis_target" size="0.02" pos="-0.01 0.079 .92" group="4"/>-->
         <site name="pelvis_target" size="0.02" pos="-0.00 0.0 .903" group="4"/>
+        <camera name = "self" pos="-2.266 1.863 2.008" xyaxes="-0.653 -0.757 -0.000 0.316 -0.272 0.909"/>
 
-        <body name="floating_block" pos="0 -0.3 1">
-            <geom type="box" size="0.3 0.05 0.05" rgba="0 0 1 1"/> 
+
+        <body name="floating_block" pos="0 -0.4 1.3">
+            <geom type="box" size="0.4 0.05 0.05" rgba="0 0 1 1"/> 
         </body>
 
-        <body name="floating_block3" pos="0.3 -0. 1"> 
-            <geom type="box" size="0.05 0.3 0.05" rgba="0 0 1 1"/> 
+        <body name="floating_block3" pos="0.4 -0. 1.3"> 
+            <geom type="box" size="0.05 0.4 0.05" rgba="0 0 1 1"/> 
         </body>
 
-        <body name="floating_block4" pos="-0.3 -0. 1">
-            <geom type="box" size="0.05 0.3 0.05" rgba="0 0 1 1"/> 
+        <body name="floating_block4" pos="-0.4 -0. 1.3">
+            <geom type="box" size="0.05 0.4 0.05" rgba="0 0 1 1"/> 
         </body>
 
-        <body name="floating_block2" pos="0 0.3 1"> 
-            <geom type="box" size="0.3 0.05 0.05" rgba="0 0 1 1"/> 
+        <body name="floating_block2" pos="0 0.4 1.3"> 
+            <geom type="box" size="0.4 0.05 0.05" rgba="0 0 1 1"/> 
         </body>
 
 
-        <body name="root" pos="0 0 0.91" euler="0 0 -1.57">
+        <body name="root" pos="0 0 1.11" euler="0 0 -1.57">
             <body name="pelvis" pos="0 0 0" euler="1.57 -1.57 0" childclass="myolegs">
                 <site name="pelvis" class="myo_leg_marker"/>
                 <inertial pos="-0.07 -0.03 0" mass="10.96" diaginertia="0.0622075 0.0532711 0.0299242" />
@@ -1270,11 +1272,18 @@
             </body>
             <freejoint name="root"/>
         </body>
+
+        <body name="plate" pos="0 0 0.175">
+            <joint type="slide" axis="1 0 0" name="slide_joint" limited="false" damping="5000" stiffness="10000" armature="1"/>
+            <inertial pos="0 0 0" mass="10" diaginertia="0.0001 0.0001 0.0001"/>
+            <geom type="box" size="0.8 0.8 0.03" group="0" rgba="0.5 0.2 0.1 1"/>
+        </body>
     </worldbody>
 
     <keyframe>
-        <key qpos='0 0 0.97 0.707388 0 0 -0.706825 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'/> 
-        <key qpos='0 0 0.91 0.707388 0 0 -0.706825 0 0 0 -0.305 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.26168 -0.251346 -0.076791 0 0 0.57585 0 0 0.352562 0 0 0 0 0 0.26168 -0.251346 -0.076791 0 0 0.57585 -0.001678 0 0.352562 0 0 0 0 0'/>
+        <key qpos='0 0 0.97 0.707388 0 0 -0.706825 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'/> 
+        <key qpos='0 0 1.11 0.707388 0 0 -0.706825 0 0 0 -0.305 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.26168 -0.251346 -0.076791 0 0 0.57585 0 0 0.352562 0 0 0 0 0 0.26168 -0.251346 -0.076791 0 0 0.57585 -0.001678 0 0.352562 0 0 0 0 0 0'/>
+        <key qpos='0 0 0.91 0.707388 0 0 -0.706825 0 0 0 -0.305 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.26168 -0.251346 -0.076791 0 0 0.57585 0 0 0.352562 0 0 0 0 0 0.26168 -0.251346 -0.076791 0 0 0.57585 -0.001678 0 0.352562 0 0 0 0 0 0'/>
         <!--key qpos='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.183152 -0.0977535 0.006981 7.693e-11 0 0.6282 0 0 0.5236 0 0 0 0 0 0.183152 -0.0558645 0 0 0 0.45021 0 0 0.5236 0 0 0 0 0'/>-->    
     </keyframe>
 

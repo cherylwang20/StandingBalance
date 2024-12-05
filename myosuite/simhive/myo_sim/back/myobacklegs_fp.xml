@@ -1274,8 +1274,8 @@
         </body>
 
         <body name="plate" pos="0 0 0.175">
-            <joint type="slide" axis="1 0 0" name="slide_joint" limited="false" damping="5000" stiffness="10000" armature="1"/>
-            <inertial pos="0 0 0" mass="10" diaginertia="0.0001 0.0001 0.0001"/>
+            <joint type="slide" axis="1 0 0" name="slide_joint" limited="false" damping="1000" stiffness="5000" armature="1"/>
+            <inertial pos="0 0 0" mass="20" diaginertia="0.0001 0.0001 0.0001"/>
             <geom type="box" size="0.8 0.8 0.03" group="0" rgba="0.5 0.2 0.1 1"/>
         </body>
     </worldbody>

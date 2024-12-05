@@ -50,9 +50,10 @@ class ReachEnvV0(BaseV0):
         super().__init__(model_path=model_path, obsd_model_path=obsd_model_path, seed=seed)
         self.cpt = 0
         self.perturbation_time = -1
-        self.perturbation_duration = 20
+        self.perturbation_duration = 40
+        self.perturbation_magnitude = 0
         eval_range = kwargs['eval_range'] if 'eval_range' in kwargs else [0, 0]
-        self.force_range = [800, 1000]
+        self.force_range = [1890, 2000]
         self._setup(**kwargs)
 
     def _setup(self,
@@ -302,7 +303,7 @@ class ReachEnvV0(BaseV0):
     
     def allocate_randomly(self, perturbation_magnitude): #allocate the perturbation randomly in one of the six directions
         array = np.zeros(6)
-        random_index = 1 #np.random.randint(0, 1) # 0: ML, 1: AP fall back, 3: AP fall forward
+        random_index = 0 #np.random.randint(0, 1) # 0: ML, 1: AP fall back, 3: AP fall forward
         array[random_index] = perturbation_magnitude
         return array
     # generate a perturbation
@@ -318,7 +319,7 @@ class ReachEnvV0(BaseV0):
         else:
             perturbation_magnitude = np.random.uniform(ran[0], ran[1])
         self.perturbation_magnitude = self.allocate_randomly(perturbation_magnitude)#[0,0,0, perturbation_magnitude, 0, 0] # front and back
-        self.perturbation_duration = 20  # steps
+        self.perturbation_duration = 40  # steps
         return
         # generate a valid target
 

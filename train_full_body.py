@@ -22,8 +22,8 @@ parser.add_argument("--seed", type=int, default=0, help="Seed for random number 
 parser.add_argument("--num_envs", type=int, default=1, help="Number of parallel environments")
 parser.add_argument("--env_name", type=str, default=1, help="environment name")
 parser.add_argument("--group", type=str, default='testing', help="group name")
-parser.add_argument("--learning_rate", type=float, default=0.0003, help="Learning rate for the optimizer")
-parser.add_argument("--clip_range", type=float, default=0.2, help="Clip range for the policy gradient update")
+parser.add_argument("--learning_rate", type=float, default=0.0001, help="Learning rate for the optimizer")
+parser.add_argument("--clip_range", type=float, default=0.05, help="Clip range for the policy gradient update")
 parser.add_argument("--algo", type=str, default='PPO', help="algorithm for training")
 
 args = parser.parse_args()
@@ -136,7 +136,7 @@ def main():
 
         IS_WnB_enabled = False
 
-        loaded_model = '2024_12_03_16_21_320PPO'
+        loaded_model = '2024_12_10_12_49_520PPO'
         try:
             import wandb
             from wandb.integration.sb3 import WandbCallback
@@ -183,8 +183,8 @@ def main():
         #policy_kwargs = dict(activation_fn=torch.nn.Sigmoid, net_arch=(dict(pi=[64, 64], vf=[64, 64])))
         #model = PPO.load('standingBalance/policy_best_model/myoLegReachFixed-v2/2023_11_16_16_11_00/best_model',  env, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
         if args.algo == 'PPO':
-            model = PPO('MlpPolicy', envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
-            model = PPO.load('standingBalance/policy_best_model/' + 'myoTorsoReachFixed-v0' + '/' + loaded_model +'/best_model',  envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
+            #model = PPO('MlpPolicy', envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
+            model = PPO.load('standingBalance/policy_best_model/' + 'myoTorsoReachFixed-v1' + '/' + loaded_model +'/best_model',  envs, ent_coef=0.001, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
         elif args.algo == 'SAC':
             model = SAC('MlpPolicy', envs, buffer_size=10000, learning_rate=LR, verbose=0, tensorboard_log=f"runs/{time_now}")
         

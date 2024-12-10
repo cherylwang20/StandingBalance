@@ -72,8 +72,8 @@ path = './'
 env_name = 'myoTorsoReachFixed-v1'
 #env_name = 'myoStandingBack-v1'
 
-model_num ='2024_12_03_16_21_320PPO' #'2024_09_17_10_36_35'
-model = PPO.load(path+'/standingBalance/policy_best_model'+ '/'+ 'myoTorsoReachFixed-v0' + '/' + model_num +
+model_num ='2024_12_10_12_49_520PPO' #'2024_09_17_10_36_35'
+model = PPO.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num +
                  r'/best_model')
 
 
@@ -108,7 +108,7 @@ for _ in tqdm(range(1)):
           if movie:
                   geom_1_indices = np.where(env.sim.model.geom_group == 1)
                   env.sim.model.geom_rgba[geom_1_indices, 3] = 0
-                  frame = env.sim.renderer.render_offscreen(width= 440, height=380,camera_id='self')
+                  frame = env.sim.renderer.render_offscreen(width= 440, height=380,camera_id=1)
                   
                   #frame = (frame).astype(np.uint8)
                   frame = np.flipud(frame)

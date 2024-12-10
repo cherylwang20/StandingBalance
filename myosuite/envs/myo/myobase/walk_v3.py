@@ -20,8 +20,8 @@ class ReachEnvV0(BaseV0):
     DEFAULT_OBS_KEYS = ['qpos', 'qvel', 'tip_pos', 'reach_err']
     # Weights should be positive, unless the contribution of the components of the reward shuld be changed. 
     DEFAULT_RWD_KEYS_AND_WEIGHTS = {
-        "positionError":    1.0,
-        "metabolicCost":    1,
+        "positionError":    1,
+        "metabolicCost":    2,
         "pose":             1,
         #"pelvis_rot_err": .5, 
         #'hip_flex':               1,
@@ -53,7 +53,7 @@ class ReachEnvV0(BaseV0):
         self.perturbation_duration = 40
         self.perturbation_magnitude = 0
         eval_range = kwargs['eval_range'] if 'eval_range' in kwargs else [0, 0]
-        self.force_range = [1890, 2000]
+        self.force_range = [0, 0]
         self._setup(**kwargs)
 
     def _setup(self,
@@ -156,7 +156,7 @@ class ReachEnvV0(BaseV0):
         obs_dict['time'] = np.array([sim.data.time])      
         obs_dict['qpos'] = sim.data.qpos[:56].copy()
         obs_dict['qvel'] = sim.data.qvel[:55].copy()*self.dt
-        obs_dict['pose_err'] = np.array([-0.3, 0, 0]) - np.array([sim.data.joint('flex_extension').qpos.copy(),sim.data.joint('lat_bending').qpos.copy(), sim.data.joint('axial_rotation').qpos.copy()])
+        obs_dict['pose_err'] = np.array([-0.3, 0, 0]) - np.array([sim.data.joint('flex_extension').qpos[0].copy(),sim.data.joint('lat_bending').qpos[0].copy(), sim.data.joint('axial_rotation').qpos[0].copy()])
         #print([self.sim.data.joint('flex_extension').qpos.copy(),self.sim.data.joint('lat_bending').qpos.copy(), self.sim.data.joint('axial_rotation').qpos.copy()])
         if sim.model.na>0:
             obs_dict['act'] = sim.data.act[:].copy()
@@ -171,7 +171,6 @@ class ReachEnvV0(BaseV0):
             obs_dict['tip_pos'] = np.append(obs_dict['tip_pos'], sim.data.site_xpos[self.tip_sids[isite]].copy())
             obs_dict['target_pos'] = np.append(obs_dict['target_pos'], sim.data.site_xpos[self.target_sids[isite]].copy())
         obs_dict['reach_err'] = np.array(obs_dict['target_pos'])-np.array(obs_dict['tip_pos'])
-        #print(np.array(obs_dict['target_pos']), np.array(obs_dict['tip_pos']))
 
         obs_dict['feet_heights'] = self._get_feet_heights().copy()
         a = (self.sim.data.joint('hip_adduction_r').qpos.copy()+self.sim.data.joint('hip_adduction_l').qpos.copy())/2
@@ -250,8 +249,10 @@ class ReachEnvV0(BaseV0):
         nearThresh = len(self.tip_sids)*.050 # nearThresh = 0.05
         # Rewards are defined ni the dictionary with the appropiate sign
         comError = comError.reshape(-1)[0]
+        #print(comError)
         positionError = positionError.reshape(-1)[0]
         pose_dist = pose_dist.reshape(-1)[0]
+        #print(positionError, pose_dist)
         com_height_error = com_height_error.reshape(-1)[0]
         feet_v = feet_v.reshape(-1)[0]
         timeStanding = timeStanding.reshape(-1)[0]
@@ -263,7 +264,7 @@ class ReachEnvV0(BaseV0):
         #print(pose_dist, hip_fle)
         rwd_dict = collections.OrderedDict((
             # Optional Keys
-            ('positionError',        np.exp(-1*positionError) ),#-10.*vel_dist
+            ('positionError',        -1*positionError ),#-10.*vel_dist
             ('pose',    -1.*pose_dist),
             ('bonus',   1.*(pose_dist<self.pose_thd) + 1.*(pose_dist<1.5*self.pose_thd)),
             #('smallErrorBonus',     1.*(positionError<2*nearThresh) + 1.*(positionError<nearThresh)),
@@ -271,7 +272,7 @@ class ReachEnvV0(BaseV0):
             ('metabolicCost',       -1.*metabolicCost),
             #('highError',           -1.*(positionError>farThresh)),
             ('centerOfMass',        1.*(com_bos)),
-            ('com_error',             np.exp(-1.*np.abs(comError))),
+            ('com_error',             np.exp(-5.*np.abs(comError))),
             ('com_height_error',     np.exp(-5*np.abs(com_height_error))),
             ('feet_height',         np.exp(-1*feet_height)),
             ('feet_width',            5*np.clip(feet_width, 0.3, 0.5)),

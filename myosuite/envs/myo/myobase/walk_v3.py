@@ -3,7 +3,7 @@
 Authors  :: Vikash Kumar (vikashplus@gmail.com), Vittorio Caggiano (caggiano@gmail.com)
 SCRIPT CREATED TO TRY DIFFERENT REWARDS ON THE WALK_V0 ENVIRONMENT. 
 ================================================= """
-
+ 
 import collections
 import random
 import gym
@@ -20,15 +20,15 @@ class ReachEnvV0(BaseV0):
     DEFAULT_OBS_KEYS = ['qpos', 'qvel', 'tip_pos', 'reach_err']
     # Weights should be positive, unless the contribution of the components of the reward shuld be changed. 
     DEFAULT_RWD_KEYS_AND_WEIGHTS = {
-        "positionError":    1,
-        "metabolicCost":    2,
+        #"positionError":    .5,
+        #"metabolicCost":    1,
         "pose":             1,
         #"pelvis_rot_err": .5, 
         #'hip_flex':               1,
         #'knee_angle':             1, 
         #'centerOfMass':        1, 
-        'feet_height':          1,
-        "com_error":            1,
+        #'feet_height':          1,
+        #"com_error":            1,
         #"com_height_error":      1, 
         #"bonus":                1, 
         "done":                 -10.
@@ -50,10 +50,10 @@ class ReachEnvV0(BaseV0):
         super().__init__(model_path=model_path, obsd_model_path=obsd_model_path, seed=seed)
         self.cpt = 0
         self.perturbation_time = -1
-        self.perturbation_duration = 40
+        self.perturbation_duration = 50
         self.perturbation_magnitude = 0
         eval_range = kwargs['eval_range'] if 'eval_range' in kwargs else [0, 0]
-        self.force_range = [0, 0]
+        self.force_range = [150, 2500] #150N --> 1m/s/s ; 5m/s/s --> 700 N #low: 150, 2500 #high: 5500 - 8100
         self._setup(**kwargs)
 
     def _setup(self,
@@ -85,7 +85,7 @@ class ReachEnvV0(BaseV0):
                 sites=self.target_reach_range.keys(),
                 **kwargs,
                 )     
-        self.init_qpos = self.sim.model.key_qpos[1]
+        self.init_qpos = self.sim.model.key_qpos[2]
     
 
     def step(self, a):
@@ -145,8 +145,7 @@ class ReachEnvV0(BaseV0):
         # print('Ordered keys: {}'.format(self.obs_keys))
         self.obs_dict['err_cal'] = np.array(0.31 - self.obs_dict['cal_l'] )
         self.obs_dict['knee_angle'] = np.array(np.mean(self.sim.data.qpos[self.sim.model.joint_name2id('knee_angle_l')].copy() + self.sim.data.qpos[self.sim.model.joint_name2id('knee_angle_r')].copy()))
-        self.obs_dict['pose_err'] = np.array([0, 0, 0]) - np.array([self.sim.data.joint('flex_extension').qpos.copy(),self.sim.data.joint('lat_bending').qpos.copy(), self.sim.data.joint('axial_rotation').qpos.copy()])
-
+        self.obs_dict['pose_err'] = self.sim.model.key_qpos[2] - self.sim.data.qpos.copy()
         t, obs = self.obsdict2obsvec(self.obs_dict, self.obs_keys)
         return obs
 
@@ -156,7 +155,8 @@ class ReachEnvV0(BaseV0):
         obs_dict['time'] = np.array([sim.data.time])      
         obs_dict['qpos'] = sim.data.qpos[:56].copy()
         obs_dict['qvel'] = sim.data.qvel[:55].copy()*self.dt
-        obs_dict['pose_err'] = np.array([-0.3, 0, 0]) - np.array([sim.data.joint('flex_extension').qpos[0].copy(),sim.data.joint('lat_bending').qpos[0].copy(), sim.data.joint('axial_rotation').qpos[0].copy()])
+        obs_dict['pose_err'] = sim.model.key_qpos[2] - sim.data.qpos.copy()
+        #np.array([-0.3, 0, 0]) - np.array([sim.data.joint('flex_extension').qpos[0].copy(),sim.data.joint('lat_bending').qpos[0].copy(), sim.data.joint('axial_rotation').qpos[0].copy()])
         #print([self.sim.data.joint('flex_extension').qpos.copy(),self.sim.data.joint('lat_bending').qpos.copy(), self.sim.data.joint('axial_rotation').qpos.copy()])
         if sim.model.na>0:
             obs_dict['act'] = sim.data.act[:].copy()
@@ -214,6 +214,7 @@ class ReachEnvV0(BaseV0):
 
     def get_reward_dict(self, obs_dict):
         pose_dist = np.linalg.norm(obs_dict['pose_err'], axis=-1)
+        #print(pose_dist)
         #print('hip flexion',self.sim.data.joint('hip_flexion_r').qpos.copy())
         hip_fle = self.obs_dict['hip_flex']
         hip_flex_r = self.obs_dict['hip_flex_r'].reshape(-1)[0]
@@ -239,6 +240,7 @@ class ReachEnvV0(BaseV0):
         centerMass = np.squeeze(obs_dict['com']) #.reshape(1,2)
         bos = mplPath.Path(baseSupport.T)
         within = bos.contains_point(centerMass)
+        #print(within)
         
         feet_width, vertical_sep = self.feet_width()
         feet_height = np.linalg.norm(obs_dict['feet_heights'])
@@ -249,7 +251,7 @@ class ReachEnvV0(BaseV0):
         nearThresh = len(self.tip_sids)*.050 # nearThresh = 0.05
         # Rewards are defined ni the dictionary with the appropiate sign
         comError = comError.reshape(-1)[0]
-        #print(comError)
+        #print(within,comError)
         positionError = positionError.reshape(-1)[0]
         pose_dist = pose_dist.reshape(-1)[0]
         #print(positionError, pose_dist)
@@ -304,7 +306,7 @@ class ReachEnvV0(BaseV0):
     
     def allocate_randomly(self, perturbation_magnitude): #allocate the perturbation randomly in one of the six directions
         array = np.zeros(6)
-        random_index = 0 #np.random.randint(0, 1) # 0: ML, 1: AP fall back, 3: AP fall forward
+        random_index = random.choice([0]) # 0: ML, 1: AP fall back, 3: AP fall forward
         array[random_index] = perturbation_magnitude
         return array
     # generate a perturbation
@@ -312,15 +314,15 @@ class ReachEnvV0(BaseV0):
     def generate_perturbation(self):
         M = self.sim.model.body_mass.sum()
         g = np.abs(self.sim.model.opt.gravity.sum())
-        self.perturbation_time = np.random.uniform(self.dt*(0.15*self.horizon), self.dt*(0.20*self.horizon)) # between 10 and 20 percent
+        self.perturbation_time = np.random.uniform(self.dt*(0.1*self.horizon), self.dt*(0.4*self.horizon)) # between 10 and 20 percent
         # perturbation_magnitude = np.random.uniform(0.08*M*g, 0.14*M*g)
         ran = self.force_range
-        if np.random.choice([True, False]):
-            perturbation_magnitude = np.random.uniform(ran[0], ran[1])
-        else:
-            perturbation_magnitude = np.random.uniform(ran[0], ran[1])
+    
+        perturbation_magnitude = np.random.uniform(ran[0], ran[1])
+        if random.random() > 1:
+            perturbation_magnitude = - perturbation_magnitude
         self.perturbation_magnitude = self.allocate_randomly(perturbation_magnitude)#[0,0,0, perturbation_magnitude, 0, 0] # front and back
-        self.perturbation_duration = 40  # steps
+
         return
         # generate a valid target
 
@@ -345,3 +347,11 @@ class ReachEnvV0(BaseV0):
         self.robot.sync_sims(self.sim, self.sim_obsd)
         obs = super().reset(**kwargs)
         return obs
+    
+    def get_limitfrc(self, joint_name):
+        non_joint_limit_efc_idxs = np.where(self.sim.data.efc_type != self.sim.lib.mjtConstraint.mjCNSTR_LIMIT_JOINT)[0]
+        only_jnt_lim_efc_force = self.sim.data.efc_force.copy()
+        only_jnt_lim_efc_force[non_joint_limit_efc_idxs] = 0.0
+        joint_force = np.zeros((self.sim.model.nv,))
+        self.sim.lib.mj_mulJacTVec(self.sim.model._model, self.sim.data._data, joint_force, only_jnt_lim_efc_force)
+        return joint_force[self.sim.model.joint(joint_name).dofadr]

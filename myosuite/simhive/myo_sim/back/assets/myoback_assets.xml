@@ -6,6 +6,7 @@
     <size nconmax="2000" njmax="5000" nkey="1" nuser_jnt="1"/>
     <visual>
         <headlight ambient=".5 .5 .5" diffuse="0.50 0.50 0.50" specular="0.50 0.50 0.50"/>
+        <global offwidth="1440" offheight ="1080"/>
     </visual>
 
   <default class="main">
@@ -30,7 +31,7 @@
                 <geom rgba=".5 .5 .9 0.5" group="3" contype="0" conaffinity="0"  type="cylinder"/>
             </default>
             <default class="coll">
-                <geom type="capsule" group="1" contype="1" conaffinity="0" condim="3" rgba="0.8 0.7 .5 1" margin="0.001" material="MatSkin"/>
+                <geom type="capsule" group="1" contype="1" conaffinity="0" condim="3" friction = "1.1  0.005 0.0001" rgba="0.8 0.7 .5 1" margin="0.001" material="MatSkin"/>
             </default>
             <default class="myo_leg_touch">
                 <site type="box" group="3" rgba="0.8 0.2 .2 .4"/>

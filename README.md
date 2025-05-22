@@ -1,6 +1,6 @@
 ## Demo
 
-![Standing Balance Simulation Demo](videos/PNAS_demo.gif)
+<img src="videos/SI_movie.gif" width="600">
 
 ## Download Pretrained Standing Balance Policies in Simulation
 

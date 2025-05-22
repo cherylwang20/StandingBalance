@@ -1,3 +1,32 @@
+## Download Pretrained Standing Balance Policies in Simulation
+
+Pretrained standing balance policies for use in simulation can be downloaded as a single ZIP archive:
+
+- [Download Pretrained Policies (ZIP)](https://mcgill-my.sharepoint.com/:u:/g/personal/huiyi_wang_mcgill_ca/EXPpRqGm5QVOkrQuSRjeOzYBNjmkWX-j4nHxhmMcp4DMOQ?e=DKqDms)
+
+### Folder Descriptions
+
+After extracting the archive, you will find the following folders, each corresponding to a different virtual agent condition:
+
+
+- **MSR_pretrained/**  
+  Reference standing plicies for extracting Muscle Synergy Representation (MSR)
+
+- **healthy/**  
+  Pretrained policy for the healthy musculoskeletal model.
+
+- **Sarco_80/**  
+  Pretrained policy for the mild sarcopenia agent.
+
+- **Sarco_60/**  
+  Pretrained policy for the moderate sarcopenia agent.
+
+- **Sarco_40/**  
+  Pretrained policy for the severe sarcopenia agent.
+
+If you use these pretrained policies in your research or projects, please cite this repository or contact the authors for further information.
+
+
 ## Human Standing Experiment Data
 
 Data from the human standing experiments can be downloaded from the following links:

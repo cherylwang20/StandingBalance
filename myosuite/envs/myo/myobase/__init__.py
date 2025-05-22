@@ -179,12 +179,12 @@ register_env_with_variants(id='myoTorsoReachFixed-v0',
     )
 
 # we want this condition to be fp
-register_env_with_variants(id='myoTorsoReachFixed-v1',
-        entry_point='myosuite.envs.myo.myobase.walk_v3:ReachEnvV0',
+register_env_with_variants(id='myoTorsoBalance-v0',
+        entry_point='myosuite.envs.myo.myobase.balance_v0:ReachEnvV0',
         # max_episode_steps=500,
         max_episode_steps=700,
                 kwargs={
-            'model_path': curr_dir+'/../../../simhive/myo_sim/back/myobacklegs_fp.xml',
+            'model_path': curr_dir+'/../../../simhive/myo_sim/full_body/myoFullBody_fp.xml',
             'target_reach_range': {
                 #'pelvis': ((-0.0, -0.0, .90), (0.0, 0.0, .90)),
                 # 'pelvis': ((-.050, -.050, -.050), (0.05, 0.05, .05)),
@@ -202,6 +202,7 @@ register_env_with_variants(id='myoTorsoReachFixed-v1',
             'far_th': 1,       
             }
     )
+
 
 # Elbow Exo posing ==============================
 register_env_with_variants(id='myoElbowPose1D6MExoFixed-v0',

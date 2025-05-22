@@ -105,11 +105,11 @@ torso = False
 movie = True
 path = './'
 ica,pca,normalizer = load_locomotion_SAR()
-env_name = 'myoTorsoReachFixed-v1'#'myoSarcTorsoReachFixed-v1'
+env_name = 'myoTorsoBalance-v0'#'myoTorsoReachFixed-v1'#'myoSarcTorsoReachFixed-v1'
 #env_name = 'myoStandingBack-v1'
 
 model_num = '2025_02_06_15_05_110SAC' #'2025_02_18_13_42_070SAC' #'2025_02_10_13_44_020SAC' #'2025_01_22_22_53_000SAC' #'2025_01_09_21_13_490PPO'#'2025_01_08_00_21_460PPO'#'2024_12_10_22_59_450PPO' #'2024_09_17_10_36_35'
-model = SAC.load(path+'/standingBalance/policy_best_model'+ '/'+ env_name + '/' + model_num +
+model = SAC.load(path+'/standingBalance/policy_best_model'+ '/'+ 'myoTorsoReachFixed-v1' + '/' + model_num +
                  r'/best_model')
 
 

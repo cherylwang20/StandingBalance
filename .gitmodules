@@ -1,0 +1,3 @@
+[submodule "myosuite/simhive/myo_sim"]
+	path = myosuite/simhive/myo_sim
+	url = https://github.com/cherylwang20/myo_sim.git

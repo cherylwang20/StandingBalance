@@ -25,6 +25,7 @@ class ActionSpaceWrapper(gym.ActionWrapper):
         self.syn_action_shape = 24
         self.action_space = gym.spaces.Box(low=-1., high=1., shape=(self.syn_action_shape,),dtype=np.float32)
         #self.observation_space = env.observation_space
+        self.metabolic = 0
         
         # Define the mapping from reduced to original action space
         self.action_mapping = {
@@ -62,6 +63,7 @@ class ActionSpaceWrapper(gym.ActionWrapper):
         full_action = np.zeros(self.env.action_space.shape)
         for i, indices in self.action_mapping.items():
             full_action[indices] = action[i]
+        self.metabolic = full_action**2/len(full_action)
         return full_action
 
 env_name = 'myoStandingBack-v0'
@@ -83,13 +85,13 @@ frames = []
 view = 'side'
 m_act = []
 all_rewards = []
-for _ in tqdm(range(2)):
+for _ in tqdm(range(1)):
     ep_rewards = []
     done = False
     obs = env.reset()
     step = 0
     muscle_act = []
-    while (not done) and (step < 500):
+    while (not done) and (step < 200):
           obs = env.obsdict2obsvec(env.obs_dict, env.obs_keys)[1]
           #obs = env.get_obs_dict()
           
@@ -97,7 +99,8 @@ for _ in tqdm(range(2)):
           #env.sim.data.ctrl[:] = action
           obs, reward, done, info, _ = env.step(action)
           ep_rewards.append(reward)
-          m.append(action)
+          m.append(action**2)
+          #print(len(action))
           if movie:
                   geom_1_indices = np.where(env.sim.model.geom_group == 1)
                   env.sim.model.geom_rgba[geom_1_indices, 3] = 0
@@ -109,9 +112,11 @@ for _ in tqdm(range(2)):
                   frames.append(frame[::-1,:,:])
                   #env.sim.mj_render(mode='window') # GUI
           step += 1
+          m_act.append(env.metabolic)
     all_rewards.append(np.sum(ep_rewards))
-    m_act.append(muscle_act)
 print(f"Average reward: {np.mean(all_rewards)}")
+print(len(m_act),np.sum(m_act)/200)
+
 
 '''
 # evaluate policy

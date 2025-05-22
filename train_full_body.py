@@ -22,8 +22,8 @@ parser.add_argument("--seed", type=int, default=0, help="Seed for random number 
 parser.add_argument("--num_envs", type=int, default=1, help="Number of parallel environments")
 parser.add_argument("--env_name", type=str, default=1, help="environment name")
 parser.add_argument("--group", type=str, default='testing', help="group name")
-parser.add_argument("--learning_rate", type=float, default=0.0001, help="Learning rate for the optimizer")
-parser.add_argument("--clip_range", type=float, default=0.05, help="Clip range for the policy gradient update")
+parser.add_argument("--learning_rate", type=float, default=0.0005, help="Learning rate for the optimizer")
+parser.add_argument("--clip_range", type=float, default=0.2, help="Clip range for the policy gradient update")
 parser.add_argument("--algo", type=str, default='PPO', help="algorithm for training")
 
 args = parser.parse_args()
@@ -34,41 +34,39 @@ sarco = False
 class ActionSpaceWrapper(gym.ActionWrapper):
     def __init__(self, env):
         super().__init__(env)
-        self.syn_action_shape = 26 + 80  # 26 reduced + 80 direct mappings
+        self.syn_action_shape = 24 + 80  # 24 reduced + 80 direct mappings
         self.action_space = gym.spaces.Box(low=-1., high=1., shape=(self.syn_action_shape,), dtype=np.float32)
         
         # Define the mapping from reduced to original action space for the first 210 muscles
         self.action_mapping = {
-            0: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            1: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-            2: [22],
-            3: [23],
-            4: [24, 25, 26, 27, 32, 33, 34, 35, 36, 37, 38, 39],
-            5: [28, 29, 30, 31, 40, 41, 42, 43, 44, 45, 46, 47],
-            6: [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
-            7: [60, 61, 62, 63, 64, 65, 66, 67, 68],
-            8: [69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80],
-            9: [81, 82, 83, 84, 85, 86, 87, 88, 89],
-            10: [90, 91, 92, 93, 94],
-            11: [95, 96, 97, 98, 99],
-            12: [100, 101, 102, 103, 104, 105, 106],
-            13: [107, 108, 109, 110, 111, 112, 113],
-            14: [114, 115, 116, 117, 118],
-            15: [119, 120, 121, 122, 123],
-            16: [124, 125, 126, 127, 128, 129],
-            17: [130, 131, 132, 133, 134, 135],
-            18: [136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155],
-            19: [156, 157, 158, 159, 160],
-            20: [161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180],
-            21: [181, 182, 183, 184, 185],
-            22: [186, 187, 188, 189, 190, 191],
-            23: [192, 193, 194, 195, 196, 197],
-            24: [198, 199, 200, 201, 202, 203],
-            25: [204, 205, 206, 207, 208, 209]
+            0: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], #psoas major right
+            1: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],  #psoas major left
+            2: [22], # RA, right
+            3: [23], #RA left
+            4: [24, 25, 26, 27], #ILpL right
+            5: [28, 29, 30, 31], #ILpL left
+            6: [32, 33, 34, 35, 36, 37, 38, 39],  #ILpT right
+            7: [40, 41, 42, 43, 44, 45, 46, 47], #ILpT left
+            8: [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68], #LTpT right
+            9: [69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89], #LTpT left
+            10: [90, 91, 92, 93, 94], #LTpL right
+            11: [95, 96, 97, 98, 99], #LTpL left
+            12: [100, 101, 102, 103, 104, 105, 106], #QL_post right
+            13: [107, 108, 109, 110, 111, 112, 113],  #QL_post left
+            14: [114, 115, 116, 117, 118],  #QL_mid right
+            15: [119, 120, 121, 122, 123],  #QL_mid left
+            16: [124, 125, 126, 127, 128, 129 ], #QL_ant right
+            17: [130, 131, 132, 133, 134, 135], #QL_ant left
+            18: [136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160], #MF right
+            19: [161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185], #MF left
+            20: [186, 187, 188, 189, 190, 191], #EO right
+            21: [192, 193, 194, 195, 196, 197], #IO right
+            22: [198, 199, 200, 201, 202, 203], #EO left
+            23: [204, 205, 206, 207, 208, 209] #IO left
         }
         
         # Add the direct mapping for the next 80 muscles (210 to 289)
-        for i in range(26, 106):
+        for i in range(24, 104):
             self.action_mapping[i] = [i + 184]  # Mapping 210 to 290 (offset by 184)
 
     def action(self, action):
@@ -123,7 +121,7 @@ def main():
     dof_env = ['myoStandingBack-v0']
 
 
-    training_steps = 20000000
+    training_steps = 8000000
     for env_name in dof_env:
         print('Begin training')
         ENTROPY = 0.01
@@ -136,7 +134,7 @@ def main():
 
         IS_WnB_enabled = False
 
-        loaded_model = '2024_12_10_12_49_520PPO'
+        loaded_model = '2025_01_21_16_23_510SAC'
         try:
             import wandb
             from wandb.integration.sb3 import WandbCallback
@@ -183,10 +181,13 @@ def main():
         #policy_kwargs = dict(activation_fn=torch.nn.Sigmoid, net_arch=(dict(pi=[64, 64], vf=[64, 64])))
         #model = PPO.load('standingBalance/policy_best_model/myoLegReachFixed-v2/2023_11_16_16_11_00/best_model',  env, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
         if args.algo == 'PPO':
-            #model = PPO('MlpPolicy', envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
-            model = PPO.load('standingBalance/policy_best_model/' + 'myoTorsoReachFixed-v1' + '/' + loaded_model +'/best_model',  envs, ent_coef=0.001, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
+            model = PPO('MlpPolicy', envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
+            #model = PPO.load('standingBalance/policy_best_model/' + 'myoSarcTorsoReachFixed-v1' + '/' + loaded_model +'/best_model',  envs, ent_coef=0.001, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
         elif args.algo == 'SAC':
-            model = SAC('MlpPolicy', envs, buffer_size=10000, learning_rate=LR, verbose=0, tensorboard_log=f"runs/{time_now}")
+            net_shape = [400, 300]
+            policy_kwargs = dict(net_arch=dict(pi=net_shape, qf=net_shape))
+            #model = SAC('MlpPolicy', envs, buffer_size=100000, policy_kwargs=policy_kwargs, learning_rate=LR, verbose=0,  tensorboard_log=f"runs/{time_now}")
+            model = SAC.load('standingBalance/policy_best_model/' + 'myoTorsoReachFixed-v1' + '/' + loaded_model +'/best_model', envs,  buffer_size=100000, learning_rate=LR, verbose=0, tensorboard_log=f"runs/{time_now}")
         
         obs_callback = TensorboardCallback()
         callback = CallbackList([eval_callback, WandbCallback(gradient_save_freq=100)])#, obs_callback])

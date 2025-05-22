@@ -26,7 +26,7 @@ class ReachEnvV0(BaseV0):
         #"pelvis_rot_err": .5, 
         #'hip_flex':               1,
         #'knee_angle':             1, 
-        #'centerOfMass':        1, 
+        'centerOfMass':        1, 
         #'feet_height':          1,
         #"com_error":            1,
         #"com_height_error":      1, 
@@ -53,7 +53,7 @@ class ReachEnvV0(BaseV0):
         self.perturbation_duration = 50
         self.perturbation_magnitude = 0
         eval_range = kwargs['eval_range'] if 'eval_range' in kwargs else [0, 0]
-        self.force_range = [150, 2500] #150N --> 1m/s/s ; 5m/s/s --> 700 N #low: 150, 2500 #high: 5500 - 8100
+        self.force_range = [8000, 8000] #150N --> 1m/s/s ; 5m/s/s --> 700 N #low: 150, 2500 #high: 5500 - 8100
         self._setup(**kwargs)
 
     def _setup(self,
@@ -95,7 +95,7 @@ class ReachEnvV0(BaseV0):
             self.sim.data.xfrc_applied[self.sim.model.body_name2id('plate'), :] = -self.perturbation_magnitude
         else: self.sim.data.xfrc_applied[self.sim.model.body_name2id('plate'), :] = np.zeros((1, 6))
         # rest of the code for performing a regular environment step
-        a = np.clip(a, self.action_space.low, self.action_space.high)
+        a = np.clip(a, self.action_space.low, self.action_space.high )
         self.last_ctrl = self.robot.step(ctrl_desired=a,
                                           ctrl_normalized=self.normalize_act,
                                           step_duration=self.dt,
@@ -132,6 +132,7 @@ class ReachEnvV0(BaseV0):
         pos = self.sim.data.xipos.copy()
         vel = self.sim.data.cvel.copy()
         mass = self.sim.model.body_mass
+        print(np.sum(mass))
         com_v = np.sum(vel *  mass.reshape((-1, 1)), axis=0) / np.sum(mass)
         self.obs_dict['com_v'] = com_v[-3:]
         com = np.sum(pos * mass.reshape((-1, 1)), axis=0) / np.sum(mass)
@@ -196,6 +197,7 @@ class ReachEnvV0(BaseV0):
         obs_dict['feet_v'] = sim.data.cvel[sim.model.body_name2id('patella_r')].copy()
         #3*sim.data.cvel[sim.model.body_name2id('pelvis')].copy() - sim.data.cvel[sim.model.body_name2id('toes_r')].copy()
         mass = sim.model.body_mass
+        #print(np.sum(mass))
         com = np.sum(pos * mass.reshape((-1, 1)), axis=0) / np.sum(mass)
         com_v = np.sum(vel *  mass.reshape((-1, 1)), axis=0) / np.sum(mass)
         obs_dict['com_v'] = com_v[-3:]
@@ -314,7 +316,7 @@ class ReachEnvV0(BaseV0):
     def generate_perturbation(self):
         M = self.sim.model.body_mass.sum()
         g = np.abs(self.sim.model.opt.gravity.sum())
-        self.perturbation_time = np.random.uniform(self.dt*(0.1*self.horizon), self.dt*(0.4*self.horizon)) # between 10 and 20 percent
+        self.perturbation_time = np.random.uniform(self.dt*(0.35*self.horizon), self.dt*(0.36*self.horizon)) # between 10 and 20 percent, was between 0.1 and 0.4
         # perturbation_magnitude = np.random.uniform(0.08*M*g, 0.14*M*g)
         ran = self.force_range
     

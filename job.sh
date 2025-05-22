@@ -25,4 +25,5 @@ export MKL_NUM_THREADS=1
 wandb offline
 
 #parallel -j 10 python train_back.py --env_name 'myoStandingBack-v1' --group 'myoback_3' --num_envs 8 --learning_rate 0.0002 --clip_range 0.1 --seed ::: {1..10} 
-parallel -j 10 python train_back.py --env_name 'myoTorsoReachFixed-v0' --group 'myoback_full_7' --num_envs 8 --learning_rate 0.0001 --clip_range 0.01 --seed ::: {1..10} 
+parallel -j 10 python train_back.py --env_name 'myoTorsoReachFixed-v0' --group 'myoback_full_7' --num_envs 4 --learning_rate 0.0002 --clip_range 0.1 --seed ::: {1..10}
+python train_full_body.py --env_name 'myoTorsoReachFixed-v1' --group 'fp_1' --num_envs 4 

@@ -43,11 +43,45 @@ For more details about the experiments, please refer to the following papers:
 
 **If you use these data in your research, please cite this project or contact the authors for additional information.**
 
+---
+
+## Training a Policy
+
+To train a standing balance policy, use the following command:
+
+```bash
+python MSR_extraction/train_syn.py --group balancing_1 --num_envs 8 --learning_rate 0.0002 --clip_range 0.1 --seed 7
 ```
-python train_back.py --group myoback_1 --num_envs 8 --learning_rate 0.0002 --clip_range 0.1 --seed 7
+
+**Arguments:**
+- `--group`: WandB training group name.
+- `--num_envs`: Number of parallel environments for training.
+- `--learning_rate`: Learning rate for PPO.
+- `--clip_range`: Clip range for PPO.
+- `--seed`: Random seed for reproducibility.
+
+---
+
+## Loading a Pretrained Policy
+
+To evaluate a pretrained policy, use:
+
+```bash
+python MSR_extraction/eval_syn.py --env_name "myoTorsoBalance_v0" --policy_name "Healthy"
 ```
-- `--group`: Wandb training group name
-- `--num_envs`: Number of envs to train in parallel
-- `--learning_rate`: learning rate for PPO
-- `--clip_range`: clip range for PPO
-- `--seed`: env seeding
+
+For sarcopenia agents, set `--env_name` to `"myoSarcTorsoBalance_v0"` and `--policy_name` to the corresponding sarcopenia model (`Sarco_80`, `Sarco_60`, or `Sarco_40`).
+
+**Important:**  
+To change the sarcopenia severity level, you must also manually update the level inside  
+`myosuite/envs/myo/base_v0.py`.  
+Find the parameter or setting related to sarcopenia level, and set it to the desired value (`0.8`, `0.6`, or `0.4`) before running the evaluation script.
+
+**Example for sarcopenia:**
+```bash
+python MSR_extraction/eval_syn.py --env_name "myoSarcTorsoBalance_v0" --policy_name "Sarco_80"
+```
+
+Make sure the sarcopenia level in `base_v0.py` matches the policy you want to evaluate.
+
+---

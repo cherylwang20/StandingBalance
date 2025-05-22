@@ -11,6 +11,11 @@ import random
 from tqdm.auto import tqdm
 import warnings
 import joblib
+import argparse
+parser = argparse.ArgumentParser(description="Main script to train an agent")
+
+parser.add_argument("--env_name", type=str, default=1, help="environment name")
+parser.add_argument("--policy", type=str, default='testing', help="policy name")
 
 # Ignore specific warning
 warnings.filterwarnings("ignore", message=".*tostring.*is deprecated.*")

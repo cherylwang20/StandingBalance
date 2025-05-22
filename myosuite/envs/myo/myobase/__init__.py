@@ -122,7 +122,7 @@ register_env_with_variants(id='myoStandingBack-v0',
             'model_path': curr_dir+'/../../../simhive/myo_sim/back/myoback_v2.0.xml',
             'target_jnt_range': {'LB_wrapjnt_t1':(0, 0),'LB_wrapjnt_t2':(0, 0),'LB_wrapjnt_r3':(0, 0),
                                  'Abs_t1':(0, 0),'Abs_t2':(0,0),'Abs_r3':(0, 0),
-                                 'flex_extension':(0, 0),'lat_bending':(-0.436, 0.436),'axial_rotation':(0, 0),
+                                 'flex_extension':(-0.3, -0.3),'lat_bending':(-0.436, 0.436),'axial_rotation':(0, 0),
                                  'L4_L5_FE':(0, 0),'L4_L5_LB':(0, 0),'L4_L5_AR':(0, 0),
                                  'L3_L4_FE':(0, 0),'L3_L4_LB':(0, 0),'L3_L4_AR':(0, 0),
                                  'L2_L3_FE':(0, 0),'L2_L3_LB':(0, 0),'L2_L3_AR':(0, 0),
@@ -134,9 +134,9 @@ register_env_with_variants(id='myoStandingBack-v0',
 
 register_env_with_variants(id='myoStandingBack-v1',
         entry_point='myosuite.envs.myo.myobase.back_v1:BackEnvV0',
-        max_episode_steps=200,
+        max_episode_steps=300,
         kwargs={
-            'model_path': curr_dir+'/../../../simhive/myo_sim/back/myobacklegs.xml',
+            'model_path': curr_dir+'/../../../simhive/myo_sim/back/myobacklegs_v2.0.xml',
             'target_jnt_range': {'LB_wrapjnt_t1':(0, 0),'LB_wrapjnt_t2':(0, 0),'LB_wrapjnt_r3':(0, 0),
                                  'Abs_t1':(0, 0),'Abs_t2':(0,0),'Abs_r3':(0, 0),
                                  'flex_extension':(0, 0),'lat_bending':(-0.436, 0.436),'axial_rotation':(0, 0),
@@ -152,6 +152,56 @@ register_env_with_variants(id='myoStandingBack-v1',
         }
     )
 
+
+
+register_env_with_variants(id='myoTorsoReachFixed-v0',
+        entry_point='myosuite.envs.myo.myobase.walk_v2:ReachEnvV0',
+        # max_episode_steps=500,
+        max_episode_steps=500,
+        kwargs={
+            'model_path': curr_dir+'/../../../simhive/myo_sim/back/myobacklegs_v2.0.xml',
+            'target_reach_range': {
+                #'pelvis': ((-0.0, -0.0, .90), (0.0, 0.0, .90)),
+                # 'pelvis': ((-.050, -.050, -.050), (0.05, 0.05, .05)),
+                #'pelvis': ((-.5, -.5, .7), (0.5, 0.5, .9)),
+                'pelvis': ((-.005, -.005, .90), (0.005, 0.05, .94)),
+                },
+            'target_jnt_range': {'LB_wrapjnt_t1':(0, 0),'LB_wrapjnt_t2':(0, 0),'LB_wrapjnt_r3':(0, 0),
+                                 'Abs_t1':(0, 0),'Abs_t2':(0,0),'Abs_r3':(0, 0),
+                                 'flex_extension':(0, 0),'lat_bending':(0, 0),'axial_rotation':(0, 0),
+                                 'L4_L5_FE':(-0.0, -0.0),'L4_L5_LB':(0, 0),'L4_L5_AR':(0, 0),
+                                 'L3_L4_FE':(0, 0),'L3_L4_LB':(0, 0),'L3_L4_AR':(0, 0),
+                                 'L2_L3_FE':(0, 0),'L2_L3_LB':(0, 0),'L2_L3_AR':(0, 0),
+                                 'L1_L2_FE':(0, 0),'L1_L2_LB':(0, 0),'L1_L2_AR':(0, 0),},
+            'normalize_act': True,
+            'far_th': 1,       
+            }
+    )
+
+# we want this condition to be fp
+register_env_with_variants(id='myoTorsoBalance-v0',
+        entry_point='myosuite.envs.myo.myobase.balance_v0:ReachEnvV0',
+        # max_episode_steps=500,
+        max_episode_steps=700,
+                kwargs={
+            'model_path': curr_dir+'/../../../simhive/myo_sim/full_body/myoFullBody_fp.xml',
+            'target_reach_range': {
+                #'pelvis': ((-0.0, -0.0, .90), (0.0, 0.0, .90)),
+                # 'pelvis': ((-.050, -.050, -.050), (0.05, 0.05, .05)),
+                #'pelvis': ((-.5, -.5, .7), (0.5, 0.5, .9)),
+                'pelvis': ((-.005, -.005, .90), (0.005, 0.05, .94)),
+                },
+            'target_jnt_range': {'LB_wrapjnt_t1':(0, 0),'LB_wrapjnt_t2':(0, 0),'LB_wrapjnt_r3':(0, 0),
+                                 'Abs_t1':(0, 0),'Abs_t2':(0,0),'Abs_r3':(0, 0),
+                                 'flex_extension':(0, 0),'lat_bending':(0, 0),'axial_rotation':(0, 0),
+                                 'L4_L5_FE':(-0.0, -0.0),'L4_L5_LB':(0, 0),'L4_L5_AR':(0, 0),
+                                 'L3_L4_FE':(0, 0),'L3_L4_LB':(0, 0),'L3_L4_AR':(0, 0),
+                                 'L2_L3_FE':(0, 0),'L2_L3_LB':(0, 0),'L2_L3_AR':(0, 0),
+                                 'L1_L2_FE':(0, 0),'L1_L2_LB':(0, 0),'L1_L2_AR':(0, 0),},
+            'normalize_act': True,
+            'far_th': 1,       
+            }
+    )
 
 
 # Elbow Exo posing ==============================

@@ -32,7 +32,7 @@ class MjPyRenderer(Renderer):
             self._update_viewer_settings(self._onscreen_renderer.vopt)
 
         self.refresh_window()
-        # self._onscreen_renderer.cam.azimuth+=.1 # trick to rotate camera for 360 videos
+        self._onscreen_renderer.cam.azimuth+=.1 # trick to rotate camera for 360 videos
 
 
     def refresh_window(self):

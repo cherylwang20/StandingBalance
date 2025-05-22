@@ -1,3 +1,7 @@
+## Demo
+
+![Standing Balance Simulation Demo](videos/PNAS_demo.gif)
+
 ## Download Pretrained Standing Balance Policies in Simulation
 
 Pretrained standing balance policies for use in simulation can be downloaded as a single ZIP archive:

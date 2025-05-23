@@ -1,5 +1,6 @@
-import gym
 import mujoco
+import sys
+sys.path.append('./../')
 from myosuite.myosuite.utils import gym
 import numpy as np
 from stable_baselines3 import PPO, SAC
@@ -14,8 +15,10 @@ import joblib
 import argparse
 parser = argparse.ArgumentParser(description="Main script to train an agent")
 
-parser.add_argument("--env_name", type=str, default=1, help="environment name")
-parser.add_argument("--policy", type=str, default='testing', help="policy name")
+parser.add_argument("--env_name", type=str, default='myoTorsoBalanceExo-v0', help="environment name")
+parser.add_argument("--policy", type=str, default='Healthy', help="policy name")
+
+args = parser.parse_args()
 
 # Ignore specific warning
 warnings.filterwarnings("ignore", message=".*tostring.*is deprecated.*")
@@ -108,21 +111,16 @@ nb_seed = 1
 
 torso = False
 movie = True
-path = './'
+path = os.getcwd()
 ica,pca,normalizer = load_locomotion_SAR()
-env_name = 'myoTorsoBalance-v0'#'myoTorsoReachFixed-v1'#'myoSarcTorsoReachFixed-v1'
-#env_name = 'myoStandingBack-v1'
+env_name = args.env_name 
 
-model_num = '2025_02_06_15_05_110SAC' #'2025_02_18_13_42_070SAC' #'2025_02_10_13_44_020SAC' #'2025_01_22_22_53_000SAC' #'2025_01_09_21_13_490PPO'#'2025_01_08_00_21_460PPO'#'2024_12_10_22_59_450PPO' #'2024_09_17_10_36_35'
-model = SAC.load(path+'/standingBalance/policy_best_model'+ '/'+ 'myoTorsoReachFixed-v1' + '/' + model_num +
+model_num = args.policy 
+model = SAC.load(path+'/pretrained_policies/' + model_num +
                  r'/best_model')
 
-
-
-#model = PPO.load('ep_train_results')
 env = SynergyWrapper(ActionSpaceWrapper(gym.make(env_name)), ica, pca, normalizer)
-#env = ActionSpaceWrapper(gym.make(env_name))
-s, m, t = [], [], []
+m = []
 
 env.reset()
 
@@ -139,9 +137,6 @@ env.sim.model.vis.scale.forcewidth = 0.05
 env.sim.model.vis.map.force = 0.05
 
 random.seed() 
-
-leg_action = np.loadtxt('muscle_activation.txt', dtype=np.float32)
-back_action = np.loadtxt('back_activation.txt', dtype=np.float32)
 
 frames = []
 view = 'front'
@@ -170,7 +165,7 @@ for _ in tqdm(range(1)):
                   env.sim.model.geom_rgba[geom_1_indices, 3] = 0
                   env.sim.model.geom_rgba[geom_2_indices, 3] = 0
                   #env.sim.renderer.render_to_window()
-                  frame = env.sim.renderer.render_offscreen(width= 640, height=480,camera_id='front_view')
+                  frame = env.sim.renderer.render_offscreen(width= 640, height=480,camera_id='side_view')
                   ank_muscle.append(env.sim.data.act[env.sim.model.actuator_name2id('tibant_r')].copy())
                   acceleration.append(np.abs(env.sim.data.joint('slide_joint').qacc.copy()  ))
                   ankle_torque.append(env.sim.data.joint('hip_flexion_r').qfrc_actuator.copy())
@@ -189,10 +184,6 @@ plt.show()
 
 plt.plot(ank_muscle)
 plt.show()
-#plt.plot(np.linspace(1, 500, 500), ankle_torque_2)
-#plt.plot(np.linspace(1, 500, 500), ankle_torque_3, label = 'joint angle')
-#plt.legend()
-#plt.show()
 
 
 if movie:

@@ -22,7 +22,7 @@ import os
 import json
 import gym
 import time as timer
-import myosuite
+import myosuite.myosuite as myosuite
 
 def train_loop(job_data) -> None:
 

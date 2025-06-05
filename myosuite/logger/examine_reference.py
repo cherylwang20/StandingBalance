@@ -1,4 +1,4 @@
-import myosuite
+import myosuite.myosuite as myosuite
 from myosuite.utils import gym
 import time
 import click

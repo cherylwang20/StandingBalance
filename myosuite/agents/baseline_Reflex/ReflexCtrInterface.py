@@ -10,7 +10,7 @@ from __future__ import division # '/' always means non-truncating division
 import numpy as np
 from reflexCtr import LocoCtrl
 
-import myosuite
+import myosuite.myosuite as myosuite
 import gym
 
 import numpy as np

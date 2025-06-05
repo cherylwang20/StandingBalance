@@ -1,5 +1,5 @@
 import gym
-from myosuite.myosuite.utils import gym
+from myosuite.utils import gym
 from gym import spaces
 import joblib
 import numpy as np

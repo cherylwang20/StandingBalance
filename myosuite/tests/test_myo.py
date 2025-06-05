@@ -7,9 +7,9 @@ import unittest
 import click
 import click.testing
 from myosuite.tests.test_envs import TestEnvs
-from myosuite import myosuite_myobase_suite
-from myosuite import myosuite_myochal_suite
-from myosuite import myosuite_myodm_suite
+from myosuite.myosuite import myosuite_myobase_suite
+from myosuite.myosuite import myosuite_myochal_suite
+from myosuite.myosuite import myosuite_myodm_suite
 
 class TestMyo(TestEnvs):
     def test_myosuite_envs(self):

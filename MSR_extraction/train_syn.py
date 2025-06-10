@@ -43,7 +43,7 @@ def load_icapca():
         The trained ICA model, PCA model, and scaler for locomotion tasks.
     """
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = os.path.join(current_dir, '。./ICAPCA')
+    root_dir = os.path.join(current_dir, '../ICAPCA')
     dim = 35
 
     ica = joblib.load(os.path.join(root_dir, f'ica_{dim}.pkl'))

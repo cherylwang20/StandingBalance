@@ -33,7 +33,7 @@ args = parser.parse_args()
 step = False
 sarco = False
 
-def load_locomotion_SAR():
+def load_icapca():
     """
     Loads the trained SAR model for locomotion tasks.
 
@@ -43,7 +43,7 @@ def load_locomotion_SAR():
         The trained ICA model, PCA model, and scaler for locomotion tasks.
     """
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = os.path.join(current_dir, './ICAPCA')
+    root_dir = os.path.join(current_dir, '。./ICAPCA')
     dim = 35
 
     ica = joblib.load(os.path.join(root_dir, f'ica_{dim}.pkl'))
@@ -208,7 +208,7 @@ def main():
         env_name = args.env_name
         log_path = './standingBalance/policy_best_model/'+ env_name + '/' + time_now +'/'
         num_cpu = args.num_envs
-        ica,pca,normalizer = load_locomotion_SAR()
+        ica,pca,normalizer = load_icapca()
         env = SubprocVecEnv([make_env(env_name, i, ica, pca, normalizer, seed=args.seed) for i in range(num_cpu)])
         envs = VecMonitor(env)
 

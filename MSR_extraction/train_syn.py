@@ -22,7 +22,7 @@ parser = argparse.ArgumentParser(description="Main script to train an agent")
 
 parser.add_argument("--seed", type=int, default=0, help="Seed for random number generator")
 parser.add_argument("--num_envs", type=int, default=1, help="Number of parallel environments")
-parser.add_argument("--env_name", type=str, default=1, help="environment name")
+parser.add_argument("--env_name", type=str, default='myoStandingBack-v0', help="environment name")
 parser.add_argument("--group", type=str, default='testing', help="group name")
 parser.add_argument("--learning_rate", type=float, default=0.0005, help="Learning rate for the optimizer")
 parser.add_argument("--clip_range", type=float, default=0.2, help="Clip range for the policy gradient update")
@@ -33,9 +33,9 @@ args = parser.parse_args()
 step = False
 sarco = False
 
-def load_locomotion_SAR():
+def load_MSR():
     """
-    Loads the trained SAR model for locomotion tasks.
+    Loads the trained muscle synergy
 
     Returns
     -------
@@ -174,7 +174,6 @@ def main():
 
         IS_WnB_enabled = False
 
-        loaded_model = '2025_02_14_11_07_380SAC'
         try:
             import wandb
             from wandb.integration.sb3 import WandbCallback
@@ -192,7 +191,7 @@ def main():
                 "lr": args.learning_rate,
                 "CR": args.clip_range,
                 "num_envs": args.num_envs,
-                "loaded_model": loaded_model,
+                "loaded_model": 'NA',
             }
             #config = {**config, **envs.rwd_keys_wt}
             run = wandb.init(project="MyoBack_Train",
@@ -208,7 +207,7 @@ def main():
         env_name = args.env_name
         log_path = './standingBalance/policy_best_model/'+ env_name + '/' + time_now +'/'
         num_cpu = args.num_envs
-        ica,pca,normalizer = load_locomotion_SAR()
+        ica,pca,normalizer = load_MSR()
         env = SubprocVecEnv([make_env(env_name, i, ica, pca, normalizer, seed=args.seed) for i in range(num_cpu)])
         envs = VecMonitor(env)
 
@@ -220,9 +219,9 @@ def main():
             'activation_fn': torch.nn.modules.activation.ReLU,
             'net_arch': {'pi': [512, 512], 'vf': [512, 512]}
             }
-        #policy_kwargs = dict(activation_fn=torch.nn.Sigmoid, net_arch=(dict(pi=[64, 64], vf=[64, 64])))
-        #model = PPO.load('standingBalance/policy_best_model/myoLegReachFixed-v2/2023_11_16_16_11_00/best_model',  env, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
-        if args.algo == 'PPO':
+        
+	
+	    if args.algo == 'PPO':
             model = PPO('MlpPolicy', envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
             #model = PPO.load('standingBalance/policy_best_model/' + 'myoSarcTorsoReachFixed-v1' + '/' + loaded_model +'/best_model',  envs, ent_coef=0.001, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
         elif args.algo == 'SAC':

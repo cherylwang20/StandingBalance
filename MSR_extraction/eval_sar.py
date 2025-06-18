@@ -96,15 +96,7 @@ class SynergyWrapper(gym.ActionWrapper):
         action = self.pca.inverse_transform(self.ica.inverse_transform(self.scaler.inverse_transform([act])))
         return action[0]
 
-def load_locomotion_SAR():
-    """
-    Loads the trained SAR model for locomotion tasks.
-
-    Returns
-    -------
-    tuple
-        The trained ICA model, PCA model, and scaler for locomotion tasks.
-    """
+def load_MSR():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.join(current_dir, '../ICAPCA')
     dim = 35
@@ -118,7 +110,7 @@ def load_locomotion_SAR():
 torso = False
 movie = True
 path = os.getcwd()
-ica,pca,normalizer = load_locomotion_SAR()
+ica,pca,normalizer = load_MSR()
 env_name = args.env_name 
 env = SynergyWrapper(ActionSpaceWrapper(gym.make(env_name)), ica, pca, normalizer)
 

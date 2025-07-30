@@ -221,14 +221,14 @@ def main():
             }
         
 	
-	    if args.algo == 'PPO':
+	if args.algo == 'PPO':
             model = PPO('MlpPolicy', envs, ent_coef=0.01, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs =policy_kwargs, tensorboard_log=f"runs/{time_now}")
             #model = PPO.load('standingBalance/policy_best_model/' + 'myoSarcTorsoReachFixed-v1' + '/' + loaded_model +'/best_model',  envs, ent_coef=0.001, learning_rate=LR, clip_range=CR, verbose=0, policy_kwargs=policy_kwargs, tensorboard_log="./standingBalance/temp_env_tensorboard/"+env_name)
         elif args.algo == 'SAC':
             net_shape = [400, 300]
             policy_kwargs = dict(net_arch=dict(pi=net_shape, qf=net_shape))
-            model = SAC('MlpPolicy', envs, buffer_size=100000, policy_kwargs=policy_kwargs, learning_rate=LR, verbose=0,  tensorboard_log=f"runs/{time_now}")
-            #model = SAC.load('standingBalance/policy_best_model/' + 'myoTorsoReachFixed-v1' + '/' + loaded_model +'/best_model', envs,  buffer_size=100000, learning_rate=LR, verbose=0, tensorboard_log=f"runs/{time_now}")
+            model = SAC('MlpPolicy', envs,  batch_size = 512, buffer_size=1000000, policy_kwargs=policy_kwargs, learning_rate=LR, verbose=0,  tensorboard_log=f"runs/{time_now}")
+            #model = SAC.load('standingBalance/policy_best_model/' + 'myoTorsoReachFixed-v1' + '/' + loaded_model +'/best_model', envs,  buffer_size=1000000, learning_rate=LR, verbose=0, tensorboard_log=f"runs/{time_now}")
         
         obs_callback = TensorboardCallback()
         callback = CallbackList([eval_callback, WandbCallback(gradient_save_freq=100)])#, obs_callback])

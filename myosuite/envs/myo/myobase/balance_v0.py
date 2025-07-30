@@ -21,12 +21,12 @@ class ReachEnvV0(BaseV0):
     # Weights should be positive, unless the contribution of the components of the reward shuld be changed. 
     DEFAULT_RWD_KEYS_AND_WEIGHTS = {
         #"positionError":    .5,
-        #"metabolicCost":    1,
+        "metabolicCost":    1,
         "pose":             1,
         #"pelvis_rot_err": .5, 
         #'hip_flex':               1,
         #'knee_angle':             1, 
-        'centerOfMass':        1, 
+        #'centerOfMass':        1, 
         #'feet_height':          1,
         #"com_error":            1,
         #"com_height_error":      1, 

@@ -4,9 +4,7 @@
 
 ## Download Pretrained Standing Balance Policies in Simulation
 
-Pretrained standing balance policies for use in simulation can be downloaded as a single ZIP archive:
-
-- [Download Pretrained Policies (ZIP)](https://mcgill-my.sharepoint.com/:u:/g/personal/huiyi_wang_mcgill_ca/EXPpRqGm5QVOkrQuSRjeOzYBNjmkWX-j4nHxhmMcp4DMOQ?e=DKqDms)
+Pretrained standing balance policies for use in simulation can be downloaded on huggingface here: https://huggingface.co/cheryl-tootty/standing-balance-policies. 
 
 ### Folder Descriptions
 
